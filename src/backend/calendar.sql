@@ -11,5 +11,6 @@ INSERT INTO absence_types(type) VALUES ('Ferie');
 CREATE TABLE absence_days (
     id SERIAL PRIMARY KEY,
     employee INTEGER REFERENCES employees(id) NOT NULL,
-    type INTEGER REFERENCES absence_types(id) NOT NULL
+    type INTEGER REFERENCES absence_types(id) NOT NULL,
+    date DATE NOT NULL
 );
