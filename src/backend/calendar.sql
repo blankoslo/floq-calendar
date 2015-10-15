@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS absence_types;
-DROP TABLE IF EXISTS absence_days;
+DROP TABLE IF EXISTS absence_types CASCADE;
+DROP TABLE IF EXISTS absence_days CASCADE;
 
 CREATE TABLE absence_types (
     id SERIAL PRIMARY KEY,
