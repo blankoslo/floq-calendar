@@ -14,7 +14,7 @@ function handleError(err, client, done) {
 }
 
 module.exports = {
-    query: function(query, input, success, failure) {
+    singleQuery: function(query, input, success, failure) {
         pg.connect(cs, function(err, client, done) {
             if (handleError(err, client, done)) {
                 failure(err);

@@ -18,7 +18,7 @@ var absence_types = function() {
         process.exit(1);
     }
 
-    db.query('SELECT * FROM absence_types', null, success, failure);
+    db.singleQuery('SELECT * FROM absence_types', null, success, failure);
 
     return out;
 }();
@@ -47,7 +47,7 @@ api.post('/absence_days', function(req, res) {
     }
 
     var data = req.body;
-    db.query('INSERT INTO absence_days(employee, type, date)'
+    db.singleQuery('INSERT INTO absence_days(employee, type, date)'
             // TODO: Perhaps we should return the full row.
             + ' VALUES ($1, $2, $3) RETURNING id',
             [data.employee, data.absence_type, data.date],
@@ -74,7 +74,7 @@ api.post('/absence_days/range', function(req, res) {
     }
 
     var data = req.body;
-    db.query('INSERT INTO absence_days(employee, type, date)'
+    db.singleQuery('INSERT INTO absence_days(employee, type, date)'
             + ' SELECT $1, $2, d::date'
             + ' FROM generate_series($3::date, $4, \'1 day\') AS d'
             + ' RETURNING id',
