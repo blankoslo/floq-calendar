@@ -40,6 +40,7 @@ var api = express();
 api.use(bodyParser.json());
 
 api.post('/absence_days', function(req, res) {
+    // TODO: Do a more complete check for well-formed requests.
     if (!req.body.date) {
         res.sendStatus(400);
         console.log('Received bad request.')
@@ -55,8 +56,8 @@ api.post('/absence_days', function(req, res) {
         var data = req.body;
         client.query(
             'INSERT INTO absence_days(employee, type, date)'
-            // TODO: Perhaps we should return full row.
-            + 'VALUES ($1, $2, $3) RETURNING id',
+            // TODO: Perhaps we should return the full row.
+            + ' VALUES ($1, $2, $3) RETURNING id',
             [data.employee, data.absence_type, data.date],
             function(err, qRes) {
                 if (utils.handleDBErr(err, client, done, res)) {
