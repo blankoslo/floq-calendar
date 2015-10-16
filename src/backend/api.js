@@ -5,25 +5,27 @@ var pg = require('pg');
 // but shouldn't be in git. Use env-variables.
 var cs = 'postgres://qqpzgylo:xVINSxGAIrwBxAMAsn6Ts1U63FZ7aQJY@horton.elephantsql.com:5432/qqpzgylo';
 
+var utils = require('./utils.js');
+
 // TODO: This might complete after app begins serving requests. Not a problem in
 // practice, but not very clean perhaps.
 var absence_types = function() {
     var out = [];
     pg.connect(cs, function(err, client, done) {
-        if (err) {
-            done();
+        if (utils.handleDBErr(err, client, done)) {
             console.log('Unable to fetch absence types:', err);
             process.exit(1);
         }
 
-        client.query('SELECT * FROM absence_types', function(err, result) {
+        client.query('SELECT * FROM absence_types', function(err, qRes) {
             done();
 
-            if (err) {
+            if (utils.handleDBErr(err, client, done)) {
                 console.log('Unable to fetch absence types:', err);
                 process.exit(1);
             }
-            out = result.rows;
+
+            out = qRes.rows;
             console.log("Absence types loaded from db:", out);
         });
     });
@@ -45,10 +47,9 @@ api.post('/absence_days', function(req, res) {
     }
 
     pg.connect(cs, function(err, client, done) {
-        if (err) {
-            done();
-            console.log(err);
-            res.status(500).send({success: false, data: err});
+        if (utils.handleDBErr(err, client, done, res)) {
+            console.log('An error occured when connecting to db:', err);
+            return;
         }
 
         // TODO: employee and type are hardcoded for now.
