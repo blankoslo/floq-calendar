@@ -52,19 +52,20 @@ api.post('/absence_days', function(req, res) {
             return;
         }
 
-        // TODO: employee and type are hardcoded for now.
+        var data = req.body;
         client.query(
-            'INSERT INTO absence_days(employee, type, date) VALUES (1, 1, $1)',
-            [req.body.date],
-            function(err, result) {
-                done();
-                if (err) {
-                    console.log(err);
-                    res.status(500).send({success: false, data: err});
-                } else {
-                    // TODO: Remove.
-                    console.log("result:", result);
+            'INSERT INTO absence_days(employee, type, date)'
+            // TODO: Perhaps we should return full row.
+            + 'VALUES ($1, $2, $3) RETURNING id',
+            [data.employee, data.absence_type, data.date],
+            function(err, qRes) {
+                if (utils.handleDBErr(err, client, done, res)) {
+                    console.log('An error occured when INSERTing to db:', err);
+                    return;
                 }
+
+                done(client);
+                res.json({success: true, data: qRes.rows[0]});
             }
         );
     });
