@@ -72,4 +72,38 @@ api.post('/absence_days', function(req, res) {
     });
 });
 
+api.post('/absence_days/range', function(req, res) {
+    // TODO: Do a more complete check for well-formed requests.
+    if (!req.body.fromDate || !req.body.toDate) {
+        res.sendStatus(400);
+        console.log('Received bad request.')
+        return;
+    }
+
+    pg.connect(cs, function(err, client, done) {
+        if (utils.handleDBErr(err, client, done, res)) {
+            console.log('An error occured when connecting to db:', err);
+            return;
+        }
+
+        var data = req.body;
+        client.query(
+            'INSERT INTO absence_days(employee, type, date)'
+            + ' SELECT $1, $2, d::date'
+            + ' FROM generate_series($3::date, $4, \'1 day\') AS d'
+            + ' RETURNING id',
+            [data.employee, data.absence_type, data.fromDate, data.toDate],
+            function(err, qRes) {
+                if (utils.handleDBErr(err, client, done, res)) {
+                    console.log('An error occured when INSERTing to db:', err);
+                    return;
+                }
+
+                done(client);
+                res.json({success: true, data: qRes.rows});
+            }
+        );
+    });
+});
+
 module.exports = api;
