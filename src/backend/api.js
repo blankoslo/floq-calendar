@@ -4,7 +4,8 @@ var bodyParser = require('body-parser');
 var db = require('./db.js');
 
 // TODO: This might complete after app begins serving requests. Not a problem in
-// practice, but not very clean perhaps.
+// practice, but not very clean perhaps. Not currently used, however.
+/*
 var absence_types = function() {
     var out = [];
 
@@ -22,7 +23,7 @@ var absence_types = function() {
 
     return out;
 }();
-
+*/
 
 var api = express();
 
