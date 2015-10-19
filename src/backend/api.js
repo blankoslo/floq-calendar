@@ -35,7 +35,7 @@ api.get('/absence_days', function(req, res) {
 
     var data = req.body;
 
-    // TODO: Support range here? Or in /absence_days/range?
+    // TODO: Support ranges.
     // TODO: Should always constrain to range anyways, so...
     var query = 'SELECT * FROM absence_days';
     var paramList = []
@@ -47,8 +47,7 @@ api.get('/absence_days', function(req, res) {
         query += ' ORDER BY employee';
     }
 
-    db.singleQuery(query, paramList)
-            .then(success, failure);
+    db.singleQuery(query, paramList).then(success, failure);
 });
 
 api.post('/absence_days', function(req, res) {
