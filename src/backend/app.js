@@ -3,7 +3,8 @@ var express = require('express');
 var app = express();
 
 app.get('/', function (req, res) {
-    res.send('Hello World!');
+    // TODO: This is pretty ad-hoc...
+    res.send('<!doctype html><div id="app"></div><script src="bundle.js"></script>');
 });
 
 app.use('/api', require('./api'));
