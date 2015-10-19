@@ -51,10 +51,8 @@ api.post('/absence_days', function(req, res) {
     db.singleQuery('INSERT INTO absence_days(employee, type, date)'
             // TODO: Perhaps we should return the full row.
             + ' VALUES ($1, $2, $3) RETURNING id',
-            [data.employee, data.absence_type, data.date],
-            success,
-            failure
-    );
+            [data.employee, data.absence_type, data.date])
+                .then(success, failure);
 });
 
 api.post('/absence_days/range', function(req, res) {
@@ -79,10 +77,8 @@ api.post('/absence_days/range', function(req, res) {
             + ' SELECT $1, $2, d::date'
             + ' FROM generate_series($3::date, $4, \'1 day\') AS d'
             + ' RETURNING id',
-            [data.employee, data.absence_type, data.fromDate, data.toDate],
-            success,
-            failure
-    );
+            [data.employee, data.absence_type, data.fromDate, data.toDate])
+                .then(success, failure);
 });
 
 module.exports = api;
