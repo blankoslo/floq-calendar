@@ -21,6 +21,9 @@ api.get('/absence_types', function(req, res) {
     db.singleQuery('SELECT * FROM absence_types').then(success, failure);
 });
 
+// None of the absence_days endpoints use the typical /absence_days/:id-pattern,
+// since we support doing operations on multiple days at once.
+
 api.get('/absence_days', function(req, res) {
     // TODO: `success` and `failure` are equal in all calls.
     // Pull out as "middleware"?
