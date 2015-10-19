@@ -3,32 +3,23 @@ var bodyParser = require('body-parser');
 
 var db = require('./db.js');
 
-// TODO: This might complete after app begins serving requests. Not a problem in
-// practice, but not very clean perhaps. Not currently used, however.
-/*
-var absence_types = function() {
-    var out = [];
-
-    var success = function(qRes) {
-        out = qRes.rows;
-        console.log("Absence types loaded from db:", out);
-    }
-
-    var failure = function(err) {
-        console.log('Unable to query absence types:', err);
-        process.exit(1);
-    }
-
-    db.singleQuery('SELECT * FROM absence_types', null, success, failure);
-
-    return out;
-}();
-*/
-
 var api = express();
 
 // Parses all request-bodies to JSON.
 api.use(bodyParser.json());
+
+api.get('/absence_types', function(req, res) {
+    var success = function(qRes) {
+        res.json({success: true, data: qRes.rows});
+    }
+
+    var failure = function(err) {
+        console.log('Unable to query absence days:', err);
+        res.status(500).json({success: false, data: err});
+    }
+
+    db.singleQuery('SELECT * FROM absence_types').then(success, failure);
+});
 
 api.get('/absence_days', function(req, res) {
     // TODO: `success` and `failure` are equal in all calls.
