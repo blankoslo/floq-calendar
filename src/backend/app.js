@@ -4,10 +4,11 @@ var app = express();
 
 app.get('/', function (req, res) {
     // TODO: This is pretty ad-hoc...
-    res.send('<!doctype html><div id="app"></div><script src="bundle.js"></script>');
+    res.send('<!doctype html><div id="app"></div><script src="static/js/app.bundle.js"></script>');
 });
 
 app.use('/api', require('./api'));
+app.use('/static', express.static('../frontend/dist/'));
 
 var server = app.listen(3000, function () {
     var host = server.address().address;
