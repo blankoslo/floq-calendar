@@ -1,1 +1,2 @@
-./gradlew stage
+cd src/backend/
+npm test
