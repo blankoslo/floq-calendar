@@ -1,5 +1,10 @@
 var React = require('react');
 
+var monthNames = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli',
+    'August', 'September', 'Oktober', 'November', 'Desember'];
+var calHeader = [<th>ma</th>, <th>ti</th>, <th>on</th>, <th>to</th>,
+    <th>fr</th>, <th>lø</th>, <th>sø</th>];
+
 function generateRows(firstDay, daysInMonth) {
     let weeks = [];
 
@@ -40,7 +45,9 @@ var MonthCalendar = React.createClass({
 
         return (
             <div className="month">
+                <h3>{monthNames[now.getMonth()]}, {now.getFullYear()}</h3>
                 <table className="month-table">
+                    <thead><tr>{calHeader}</tr></thead>
                     <tbody>{weeks}</tbody>
                 </table>
             </div>
