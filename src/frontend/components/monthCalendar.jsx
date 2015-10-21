@@ -5,6 +5,8 @@ var monthNames = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli',
 var calHeader = [<th>ma</th>, <th>ti</th>, <th>on</th>, <th>to</th>,
     <th>fr</th>, <th>lø</th>, <th>sø</th>];
 
+var DateCell = require('./dateCell.jsx');
+
 var MonthCalendar = React.createClass({
     render() {
         var now = this.props.month;
@@ -29,6 +31,8 @@ var MonthCalendar = React.createClass({
     },
 
     _generateRows(firstDay, daysInMonth) {
+        var absenceDays = this.props.absenceDays;
+
         let weeks = [];
 
         // TODO: Dynamically find # of weeks (rows).
@@ -37,38 +41,20 @@ var MonthCalendar = React.createClass({
             for (let d = 0; d < 7; d++) {
                 let day = w * 7 + d;
 
-                let print;
-                let styles;
-                if (day < firstDay || day - firstDay >= daysInMonth) {
-                    print = ' ';
-                } else {
-                    let actualDay = (day - firstDay) + 1;
-                    print = actualDay;
-                    styles = this._generateStyle(actualDay);
-                }
+                let date = !(day < firstDay || day - firstDay >= daysInMonth) ?
+                    (day - firstDay) + 1 : null;
 
-                days.push(<td className="day" style={styles || {}}>{print}</td>);
+                let absenceDay = absenceDays && date && absenceDays[date] ?
+                    absenceDays[date] : null;
+
+                days.push(<DateCell absenceDay={absenceDay} date={date}/>);
             }
+
             weeks.push(<tr className="week">{days}</tr>);
         }
 
         return weeks;
     },
-
-    _generateStyle(day) {
-        var absenceDays = this.props.absenceDays;
-        if (!absenceDays) return {};
-
-        var now = this.props.month;
-        var day = day.toString();
-
-        if (!absenceDays[day]) return {};
-
-        return {
-            color: 'red'
-        };
-    }
-
 });
 
 module.exports = MonthCalendar;
