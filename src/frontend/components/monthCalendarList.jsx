@@ -36,6 +36,8 @@ var MonthCalendarList = React.createClass({
                     curDate.getMonth() + i,
                     curDate.getDate()
             );
+
+            // Give each month the absence days within it.
             let yearKey = month.getFullYear().toString();
             let monthKey = month.getMonth().toString();
 
@@ -61,6 +63,7 @@ var MonthCalendarList = React.createClass({
     _splitByMonth(allAbsenceDays) {
         var output = {}
 
+        // Split raw data into bins for year, month, day.
         allAbsenceDays.forEach((absenceDay) => {
             var fullDate = new Date(absenceDay.date);
             var year = fullDate.getFullYear().toString();

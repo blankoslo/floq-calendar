@@ -56,21 +56,13 @@ var MonthCalendar = React.createClass({
     },
 
     _generateStyle(day) {
+        var absenceDays = this.props.absenceDays;
+        if (!absenceDays) return {};
 
         var now = this.props.month;
         var day = day.toString();
 
-        var absenceDays = this.props.absenceDays;
-        if (!absenceDays) return {};
-        console.log(absenceDays, day);
-
-        console.log("before");
-        if (!absenceDays[day]) {
-            console.log("kuk");
-            return {};}
-
-        console.log("after");
-        //var data = absenceDays[year][month][day];
+        if (!absenceDays[day]) return {};
 
         return {
             color: 'red'
