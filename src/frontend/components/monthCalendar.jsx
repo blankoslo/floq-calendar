@@ -5,43 +5,17 @@ var monthNames = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli',
 var calHeader = [<th>ma</th>, <th>ti</th>, <th>on</th>, <th>to</th>,
     <th>fr</th>, <th>lø</th>, <th>sø</th>];
 
-function generateRows(firstDay, daysInMonth) {
-    let weeks = [];
-
-    // TODO: Dynamically find # of weeks (rows).
-    for (let w = 0; w < 6; w++) {
-        let days = [];
-        for (let d = 0; d < 7; d++) {
-            let day = w * 7 + d;
-            let print;
-            if (day < firstDay || day - firstDay >= daysInMonth) {
-                print = ' '; 
-            } else {
-                print = (day - firstDay) + 1;
-            }
-            days.push(<td className="day">{print}</td>); 
-        }
-        weeks.push(<tr className="week">{days}</tr>);
-    }
-
-    return weeks;
-}
-
 var MonthCalendar = React.createClass({
     render() {
-        var now = new Date(
-            this.props.now.getFullYear(),
-            this.props.now.getMonth() + this.props.offset,
-            this.props.now.getDate()
-        );
+        var now = this.props.month;
 
         // Correcting for the fact that Sunday is the first day in JavaScript,
         // while we consider Monday to be first.
         var firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDay() - 1;
         if (firstDay < 0) firstDay = 6;
-
         var daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
-        var weeks = generateRows(firstDay, daysInMonth);
+
+        var weeks = this._generateRows(firstDay, daysInMonth);
 
         return (
             <div className="month">
@@ -52,7 +26,57 @@ var MonthCalendar = React.createClass({
                 </table>
             </div>
         );
+    },
+
+    _generateRows(firstDay, daysInMonth) {
+        let weeks = [];
+
+        // TODO: Dynamically find # of weeks (rows).
+        for (let w = 0; w < 6; w++) {
+            let days = [];
+            for (let d = 0; d < 7; d++) {
+                let day = w * 7 + d;
+
+                let print;
+                let styles;
+                if (day < firstDay || day - firstDay >= daysInMonth) {
+                    print = ' ';
+                } else {
+                    let actualDay = (day - firstDay) + 1;
+                    print = actualDay;
+                    styles = this._generateStyle(actualDay);
+                }
+
+                days.push(<td className="day" style={styles || {}}>{print}</td>);
+            }
+            weeks.push(<tr className="week">{days}</tr>);
+        }
+
+        return weeks;
+    },
+
+    _generateStyle(day) {
+
+        var now = this.props.month;
+        var day = day.toString();
+
+        var absenceDays = this.props.absenceDays;
+        if (!absenceDays) return {};
+        console.log(absenceDays, day);
+
+        console.log("before");
+        if (!absenceDays[day]) {
+            console.log("kuk");
+            return {};}
+
+        console.log("after");
+        //var data = absenceDays[year][month][day];
+
+        return {
+            color: 'red'
+        };
     }
+
 });
 
 module.exports = MonthCalendar;
