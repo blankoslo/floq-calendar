@@ -1,2 +1,2 @@
-cd src/backend/
+cd src/frontend/
 npm test
