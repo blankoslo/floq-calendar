@@ -18,7 +18,7 @@ var MonthCalendarList = React.createClass({
     getStateFromFlux() {
         var allAbsenceDays = this.getFlux().store('AbsenceStore').absenceDays;
 
-        var sorted = Object.keys(allAbsenceDays).length !== 0 ?
+        var sorted = allAbsenceDays.length !== 0 ?
             this._splitByMonth(allAbsenceDays) : [];
 
         return {
@@ -60,6 +60,8 @@ var MonthCalendarList = React.createClass({
     },
 
     // TODO: Move this processing to the backend?
+    // TODO: or to the AbsenceStore?
+    // TODO: Currently this is called for every add...
     _splitByMonth(allAbsenceDays) {
         var output = {}
 

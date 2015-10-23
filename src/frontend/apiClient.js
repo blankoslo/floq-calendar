@@ -1,17 +1,21 @@
+var utils = require('./utils.js');
+
 var apiClient = function(rootUri) {
-
-    function isSuccess(req) {
-    }
-
     function xhr(method, url, data) {//, token) {
         const isSuccess = n => n >= 200 && n < 400;
         return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
             req.onload = () => {
-                if (!(req.status >= 200 && req.status < 400)) reject(req);
+                if (!(req.status >= 200 && req.status < 400)) {
+                    reject(req)
+                    return;
+                };
                 
                 var res = JSON.parse(req.responseText);
-                if (!res.success) reject(res);
+                if (!res.success) {
+                    reject(res);
+                    return
+                }
 
                 resolve(res.data);
             }
@@ -19,8 +23,8 @@ var apiClient = function(rootUri) {
             req.open(method, rootUri + url);
             //req.setRequestHeader('Authorization', token);
             if (data) {
-                req.setRequestHeader('Content-Type', 'text/json');
-            }   
+                req.setRequestHeader('Content-Type', 'application/json');
+            }
             req.send(data ? JSON.stringify(data) : null);
         }); 
     };
@@ -31,7 +35,7 @@ var apiClient = function(rootUri) {
     const xhrDelete = (url) => xhr('delete', url);
 
     // TODO: Does not support filtering on employee or date range yet.
-    function getAbsenceDays(employee) {
+    function loadAbsenceDays(employee) {
         return xhrGet('/absence_days', null);
     };
 

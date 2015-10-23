@@ -4,7 +4,7 @@ var constants = require('./../constants.js');
 
 var AbsenceStore = Fluxxor.createStore({
     initialize() {
-        this.absenceDays = {};
+        this.absenceDays = [];
 
         // TODO: Handle CUD and loading/failure etc.
         this.bindActions(
@@ -13,7 +13,7 @@ var AbsenceStore = Fluxxor.createStore({
     },
 
     onAbsenceLoaded(absenceDays) {
-        // TODO: Handle multiple employees differently.
+        // TODO: Handle multiple employees differently?
         this.absenceDays = absenceDays;
         this.emit('change');
     }

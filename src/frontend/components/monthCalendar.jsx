@@ -11,26 +11,24 @@ var MonthCalendar = React.createClass({
     render() {
         var now = this.props.month;
 
+        return (
+            <div className="month">
+                <h3>{monthNames[now.getMonth()]}, {now.getFullYear()}</h3>
+                <table className="month-table">
+                    <thead><tr>{calHeader}</tr></thead>
+                    <tbody>{this._generateRows(now)}</tbody>
+                </table>
+            </div>
+        );
+    },
+
+    _generateRows(now) {
         // Correcting for the fact that Sunday is the first day in JavaScript,
         // while we consider Monday to be first.
         var firstDay = new Date(now.getFullYear(), now.getMonth(), 1).getDay() - 1;
         if (firstDay < 0) firstDay = 6;
         var daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
 
-        var weeks = this._generateRows(firstDay, daysInMonth);
-
-        return (
-            <div className="month">
-                <h3>{monthNames[now.getMonth()]}, {now.getFullYear()}</h3>
-                <table className="month-table">
-                    <thead><tr>{calHeader}</tr></thead>
-                    <tbody>{weeks}</tbody>
-                </table>
-            </div>
-        );
-    },
-
-    _generateRows(firstDay, daysInMonth) {
         var absenceDays = this.props.absenceDays;
 
         let weeks = [];
@@ -39,15 +37,17 @@ var MonthCalendar = React.createClass({
         for (let w = 0; w < 6; w++) {
             let days = [];
             for (let d = 0; d < 7; d++) {
-                let day = w * 7 + d;
+                let cell = w * 7 + d;
 
-                let date = !(day < firstDay || day - firstDay >= daysInMonth) ?
-                    (day - firstDay) + 1 : null;
+                let date = !(cell < firstDay || cell - firstDay >= daysInMonth) ?
+                    (cell - firstDay) + 1 : null;
 
                 let absenceDay = absenceDays && date && absenceDays[date] ?
                     absenceDays[date] : null;
 
-                days.push(<DateCell absenceDay={absenceDay} date={date}/>);
+                let fullDate = date !== null ?
+                    new Date(now.getFullYear(), now.getMonth(), date) : null;
+                days.push(<DateCell absenceDay={absenceDay} date={fullDate}/>);
             }
 
             weeks.push(<tr className="week">{days}</tr>);
