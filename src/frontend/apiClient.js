@@ -34,14 +34,16 @@ var apiClient = function(rootUri) {
     const xhrPut = (url, data) => xhr('put', url, data);
     const xhrDelete = (url) => xhr('delete', url);
 
+    function loadAbsenceTypes() {
+        return xhrGet('/absence_types', null);
+    };
+
     // TODO: Does not support filtering on employee or date range yet.
     function loadAbsenceDays(employee) {
         return xhrGet('/absence_days', null);
     };
 
     function createAbsenceDay(date) {
-        console.log("API: createAbsenceDay", date);
-        console.log("API: createAbsenceDay after toJSON()", date.toJSON());
         return xhrPost('/absence_days', {
             // TODO: Don't hardcode
             employee: 1,

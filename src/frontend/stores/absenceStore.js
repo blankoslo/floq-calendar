@@ -20,7 +20,6 @@ var AbsenceStore = Fluxxor.createStore({
     },
 
     onAbsenceCreated(absenceDays) {
-        console.log(absenceDays);
         if (Array.isArray(absenceDays)) {
             absenceDays.forEach((day) => this.absenceDays.push(day));
         } else {
