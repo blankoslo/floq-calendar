@@ -8,13 +8,25 @@ var AbsenceStore = Fluxxor.createStore({
 
         // TODO: Handle CUD and loading/failure etc.
         this.bindActions(
-            constants.ABSENCE_LOAD_SUCCEEDED, this.onAbsenceLoaded
+            constants.ABSENCE_LOAD_SUCCEEDED, this.onAbsenceLoaded,
+            constants.ABSENCE_CREATE_SUCCEEDED, this.onAbsenceCreated
         );
     },
 
     onAbsenceLoaded(absenceDays) {
         // TODO: Handle multiple employees differently?
         this.absenceDays = absenceDays;
+        this.emit('change');
+    },
+
+    onAbsenceCreated(absenceDays) {
+        console.log(absenceDays);
+        if (Array.isArray(absenceDays)) {
+            absenceDays.forEach((day) => this.absenceDays.push(day));
+        } else {
+            this.absenceDays.push(absenceDays);
+        }
+
         this.emit('change');
     }
 });

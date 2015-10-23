@@ -10,6 +10,13 @@ var actions = {
             (res) => this.dispatch(constants.ABSENCE_LOAD_SUCCEEDED, res),
             (err) => console.log('TODO: handle this error:', err)
         );
+    },
+
+    createAbsenceDay(date) {
+        apiClient.createAbsenceDay(date).then(
+            (res) => this.dispatch(constants.ABSENCE_CREATE_SUCCEEDED, res),
+            (err) => console.log('TODO: handle this error:', err)
+        );
     }
 };
 
