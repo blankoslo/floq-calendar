@@ -3,8 +3,10 @@ var ReactDOM = require('react-dom');
 var Fluxxor = require('fluxxor');
 import { Router, Route, IndexRoute } from 'react-router'
 
+var AbsenceTypeStore = require('./stores/absenceTypeStore.js');
 var AbsenceStore = require('./stores/absenceStore.js');
 var stores = {
+    AbsenceTypeStore: new AbsenceTypeStore(),
     AbsenceStore: new AbsenceStore()
 }
 

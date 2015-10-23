@@ -2,6 +2,7 @@ var React = require('react');
 var Fluxxor = require('fluxxor');
 
 var MonthCalendar = require('./monthCalendar.jsx');
+var AbsenceTypeSelector = require('./absenceTypeSelector.jsx');
 
 var MonthCalendarList = React.createClass({
     mixins: [
@@ -54,6 +55,7 @@ var MonthCalendarList = React.createClass({
 
         return (
             <div className="month-list">
+                <AbsenceTypeSelector/>
                 {months}
             </div>
         );

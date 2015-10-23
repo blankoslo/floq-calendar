@@ -1,6 +1,8 @@
 var React = require('react');
 var Fluxxor = require('fluxxor');
 
+var constants = require('./../constants.js');
+
 var DateCell = React.createClass({
     mixins: [
         Fluxxor.FluxMixin(React),
@@ -22,11 +24,19 @@ var DateCell = React.createClass({
            <td
                onClick={this.handleClick}
                className="day"
-               style={this.props.absenceDay ? {color:'red'} : null}
+               style={this._generateStyles()}
            >
                {date ? date.getDate() : null}
            </td>
        );  
+    },
+
+    _generateStyles() {
+        if (!this.props.absenceDay) return {};
+
+        return {
+            color: constants.ABSENCE_TYPE_COLORS[this.props.absenceDay.type]
+        }
     }
 });
 

@@ -43,17 +43,17 @@ var apiClient = function(rootUri) {
         return xhrGet('/absence_days', null);
     };
 
-    function createAbsenceDay(date) {
+    function createAbsenceDay(type, date) {
         return xhrPost('/absence_days', {
             // TODO: Don't hardcode
             employee: 1,
             // TODO: Don't hardcode
-            absence_type: 1,
+            absence_type: type,
             date: utils.dateToISO8601Date(date)
         });
     };
 
-    return {loadAbsenceDays, createAbsenceDay};
+    return {loadAbsenceTypes, loadAbsenceDays, createAbsenceDay};
 }
 
 module.exports = apiClient;
