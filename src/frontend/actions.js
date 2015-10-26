@@ -30,6 +30,13 @@ var actions = {
         );
     },
 
+    updateAbsenceDay(selected, absenceDay) {
+        apiClient.updateAbsenceDay(selected, absenceDay).then(
+            (res) => this.dispatch(constants.ABSENCE_UPDATE_SUCCEEDED, res),
+            (err) => console.log('TODO: handle this error:', err)
+        );
+    },
+
     deleteAbsenceDay(absenceDay) {
         apiClient.deleteAbsenceDay(absenceDay).then(
             (res) => this.dispatch(constants.ABSENCE_DELETE_SUCCEEDED, res),

@@ -101,9 +101,14 @@ api.put('/absence_days', function(req, res) {
         res.status(500).json({success: false, data: err});
     }
 
-    var dat
+    var data = req.body;
+
+    db.singleQuery(
+            'UPDATE absence_days SET type = $1 WHERE id = $2 RETURNING *',
+            [data.type, data.id])
+                .then(success, failure);
 });
-*/
+
 
 api.delete('/absence_days', function(req, res) {
     // TODO: Do a more complete check for well-formed requests.

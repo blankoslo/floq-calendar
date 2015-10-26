@@ -17,10 +17,10 @@ var DateCell = React.createClass({
             return;
         }
 
-        /*if (!absenceDay.type == selected) {
+        if (!(absenceDay.type == selected)) {
             this.getFlux().actions.updateAbsenceDay(selected, this.props.absenceDay);
             return;
-        }*/
+        }
 
         this.getFlux().actions.deleteAbsenceDay(absenceDay);
 

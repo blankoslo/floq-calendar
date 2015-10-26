@@ -1,3 +1,5 @@
+"use strict"
+
 var Fluxxor = require('fluxxor');
 
 var constants = require('./../constants.js');
@@ -10,6 +12,7 @@ var AbsenceStore = Fluxxor.createStore({
         this.bindActions(
             constants.ABSENCE_LOAD_SUCCEEDED, this.onAbsenceLoaded,
             constants.ABSENCE_CREATE_SUCCEEDED, this.onAbsenceCreated,
+            constants.ABSENCE_UPDATE_SUCCEEDED, this.onAbsenceUpdated,
             constants.ABSENCE_DELETE_SUCCEEDED, this.onAbsenceDeleted
         );
     },
@@ -25,6 +28,17 @@ var AbsenceStore = Fluxxor.createStore({
             absenceDays.forEach((day) => this.absenceDays.push(day));
         } else {
             this.absenceDays.push(absenceDays);
+        }
+
+        this.emit('change');
+    },
+
+    onAbsenceUpdated(absenceDay) {
+        for (let i = 0; i < this.absenceDays.length; i++) {
+            if (this.absenceDays[i].id == absenceDay.id) {
+                this.absenceDays[i] = absenceDay;
+                break;
+            }
         }
 
         this.emit('change');

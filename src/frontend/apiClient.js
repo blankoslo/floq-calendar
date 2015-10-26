@@ -53,6 +53,11 @@ var apiClient = function(rootUri) {
         });
     };
 
+    function updateAbsenceDay(selected, absenceDay) {
+        absenceDay.type = selected;
+        return xhrPut('/absence_days', absenceDay);
+    };
+
     function deleteAbsenceDay(absenceDay) {
         return xhrDelete('/absence_days', {
             id: Array.isArray(absenceDay.id) ? absenceDay.id : [absenceDay.id]
@@ -63,6 +68,7 @@ var apiClient = function(rootUri) {
         loadAbsenceTypes,
         loadAbsenceDays,
         createAbsenceDay,
+        updateAbsenceDay,
         deleteAbsenceDay
     };
 }
