@@ -9,7 +9,8 @@ var AbsenceStore = Fluxxor.createStore({
         // TODO: Handle CUD and loading/failure etc.
         this.bindActions(
             constants.ABSENCE_LOAD_SUCCEEDED, this.onAbsenceLoaded,
-            constants.ABSENCE_CREATE_SUCCEEDED, this.onAbsenceCreated
+            constants.ABSENCE_CREATE_SUCCEEDED, this.onAbsenceCreated,
+            constants.ABSENCE_DELETE_SUCCEEDED, this.onAbsenceDeleted
         );
     },
 
@@ -24,6 +25,23 @@ var AbsenceStore = Fluxxor.createStore({
             absenceDays.forEach((day) => this.absenceDays.push(day));
         } else {
             this.absenceDays.push(absenceDays);
+        }
+
+        this.emit('change');
+    },
+
+    // TODO: This is pretty hacky and bad...
+    onAbsenceDeleted(ids) {
+        if (Array.isArray(ids)) {
+            this.absenceDays = this.absenceDays.filter((day) => {
+                for (id of ids) {
+                    if (id.id === day.id) return false;
+                }
+
+                return true;
+            });
+        } else {
+            console.error("DELETE on empty store, shouldn't be possible!");
         }
 
         this.emit('change');

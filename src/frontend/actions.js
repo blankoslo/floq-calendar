@@ -23,12 +23,16 @@ var actions = {
         );
     },
 
-    createAbsenceDay(date) {
-        // TODO: Is this the correct place to get this?
-        var selected = this.flux.store('AbsenceTypeStore').selected;
-
+    createAbsenceDay(selected, date) {
         apiClient.createAbsenceDay(selected, date).then(
             (res) => this.dispatch(constants.ABSENCE_CREATE_SUCCEEDED, res),
+            (err) => console.log('TODO: handle this error:', err)
+        );
+    },
+
+    deleteAbsenceDay(absenceDay) {
+        apiClient.deleteAbsenceDay(absenceDay).then(
+            (res) => this.dispatch(constants.ABSENCE_DELETE_SUCCEEDED, res),
             (err) => console.log('TODO: handle this error:', err)
         );
     }

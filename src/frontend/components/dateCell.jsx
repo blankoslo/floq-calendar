@@ -9,12 +9,21 @@ var DateCell = React.createClass({
     ],
 
     handleClick(event) {
-        if (this.props.absenceDay) {
-            console.log("TODO: handle this case.");
+        var selected = this.getFlux().store('AbsenceTypeStore').selected;
+        let absenceDay = this.props.absenceDay;
+
+        if (!absenceDay) {
+            this.getFlux().actions.createAbsenceDay(selected, this.props.date);
             return;
         }
 
-        this.getFlux().actions.createAbsenceDay(this.props.date);
+        /*if (!absenceDay.type == selected) {
+            this.getFlux().actions.updateAbsenceDay(selected, this.props.absenceDay);
+            return;
+        }*/
+
+        this.getFlux().actions.deleteAbsenceDay(absenceDay);
+
     },
 
     render() {

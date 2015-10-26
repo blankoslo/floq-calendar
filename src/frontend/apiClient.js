@@ -32,7 +32,7 @@ var apiClient = function(rootUri) {
     const xhrGet = (url, data) => xhr('get', url, data);
     const xhrPost = (url, data) => xhr('post', url, data);
     const xhrPut = (url, data) => xhr('put', url, data);
-    const xhrDelete = (url) => xhr('delete', url);
+    const xhrDelete = (url, data) => xhr('delete', url, data);
 
     function loadAbsenceTypes() {
         return xhrGet('/absence_types', null);
@@ -53,7 +53,18 @@ var apiClient = function(rootUri) {
         });
     };
 
-    return {loadAbsenceTypes, loadAbsenceDays, createAbsenceDay};
+    function deleteAbsenceDay(absenceDay) {
+        return xhrDelete('/absence_days', {
+            id: Array.isArray(absenceDay.id) ? absenceDay.id : [absenceDay.id]
+        });
+    };
+
+    return {
+        loadAbsenceTypes,
+        loadAbsenceDays,
+        createAbsenceDay,
+        deleteAbsenceDay
+    };
 }
 
 module.exports = apiClient;

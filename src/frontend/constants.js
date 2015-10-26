@@ -4,10 +4,11 @@ var constants ={
 
     ABSENCE_LOAD_SUCCEEDED: 'ABSENCE_LOAD_SUCCEEDED',
     ABSENCE_CREATE_SUCCEEDED: 'ABSENCE_CREATE_SUCCEEDED',
+    ABSENCE_DELETE_SUCCEEDED: 'ABSENCE_DELETE_SUCCEEDED',
 
     ABSENCE_TYPE_COLORS: {
         '1': 'red',
-        '2': 'blue'
+        '2': 'green'
     }
 };
 
