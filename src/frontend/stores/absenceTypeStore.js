@@ -21,7 +21,8 @@ var AbsenceTypeStore = Fluxxor.createStore({
     },
 
     onAbsenceTypeChange(type) {
-        this.selected = type;
+        // The "value"-field of a <select> is a string, so we must cast.
+        this.selected = parseInt(type);
         this.emit('change');
     }
 });
