@@ -47,8 +47,7 @@ var apiClient = function(rootUri) {
         return xhrPost('/absence_days', {
             // TODO: Don't hardcode
             employee: 1,
-            // TODO: Don't hardcode
-            absence_type: type,
+            type: type,
             date: utils.dateToISO8601Date(date)
         });
     };

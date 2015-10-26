@@ -41,7 +41,7 @@ api.post('/absence_days', function(req, res) {
         db.singleQuery('INSERT INTO absence_days(employee, type, date)'
                 // TODO: Perhaps we should return the full row.
                 + ' VALUES ($1, $2, $3) RETURNING *',
-                [data.employee, data.absence_type, data.date])
+                [data.employee, data.type, data.date])
                     .then(success, failure);
         return;
     // Dealing with a date range.
@@ -80,17 +80,17 @@ api.get('/absence_days', function(req, res) {
     var query = 'SELECT * FROM absence_days';
     var paramList = [];
     if (data.employee) {
-        query += ' WHERE employee = $1';
+        query += ' WHERE employee = $1 ORDER BY date';
         paramList.push(data.employee);
     } else {
         // Get for all employees, so we should order results.
-        query += ' ORDER BY employee';
+        query += ' ORDER BY employee, date';
     }
 
     db.singleQuery(query, paramList).then(success, failure);
 });
 
-/*
+
 api.put('/absence_days', function(req, res) {
     var success = function(qRes) {
         res.json({success: true, data: qRes.rows});
