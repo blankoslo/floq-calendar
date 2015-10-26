@@ -48,8 +48,8 @@ var AbsenceStore = Fluxxor.createStore({
     onAbsenceDeleted(ids) {
         if (Array.isArray(ids)) {
             this.absenceDays = this.absenceDays.filter((day) => {
-                for (id of ids) {
-                    if (id.id === day.id) return false;
+                for (let i = 0; i < ids.length; i++) {
+                    if (ids[i].id === day.id) return false;
                 }
 
                 return true;
