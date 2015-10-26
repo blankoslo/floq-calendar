@@ -73,14 +73,11 @@ api.get('/absence_days', function(req, res) {
         res.status(500).json({success: false, data: err});
     }
 
-    var data = req.body;
-
-    // TODO: Support ranges.
-    // TODO: Should always constrain to range anyways, so...
-    var query = 'SELECT * FROM absence_days';
-    var paramList = [];
+    var data = req.query;
+    var query = 'SELECT * FROM absence_days WHERE date >= $1 AND date <= $2';
+    var paramList = [data.from, data.to];
     if (data.employee) {
-        query += ' WHERE employee = $1 ORDER BY date';
+        query += ' AND employee = $3 ORDER BY date';
         paramList.push(data.employee);
     } else {
         // Get for all employees, so we should order results.

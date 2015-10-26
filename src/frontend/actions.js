@@ -14,10 +14,10 @@ var actions = {
         this.dispatch(constants.ABSENCE_TYPE_CHANGED, type);
     },
 
-    loadAbsenceDays(employee) {
+    loadAbsenceDays(employee, from, to) {
         // Employee (id) is not mandatory. If no employee is supplied,
         // absence_days of all employees are fetched.
-        apiClient.loadAbsenceDays(employee).then(
+        apiClient.loadAbsenceDays(employee, from, to).then(
             (res) => this.dispatch(constants.ABSENCE_LOAD_SUCCEEDED, res),
             (err) => console.log('TODO: handle this error:', err)
         );

@@ -20,11 +20,20 @@ var apiClient = function(rootUri) {
                 resolve(res.data);
             }
             req.onerror = () => reject(req);
+            if (data && method == 'get') {
+                console.log(data);
+                url += '?' + Object.keys(data)
+                        .filter((key) => data[key] !== null)
+                        .map((key) => {
+                            return key + '=' + data[key];
+                        }).join('&');
+                data = null;
+            }
             req.open(method, rootUri + url);
-            //req.setRequestHeader('Authorization', token);
-            if (data) {
+            if (data && !(method == 'get')) {
                 req.setRequestHeader('Content-Type', 'application/json');
             }
+            //req.setRequestHeader('Authorization', token);
             req.send(data ? JSON.stringify(data) : null);
         }); 
     };
@@ -39,8 +48,12 @@ var apiClient = function(rootUri) {
     };
 
     // TODO: Does not support filtering on employee or date range yet.
-    function loadAbsenceDays(employee) {
-        return xhrGet('/absence_days', null);
+    function loadAbsenceDays(employee, from, to) {
+        return xhrGet('/absence_days', {
+            employee,
+            from: utils.dateToISO8601Date(from),
+            to: utils.dateToISO8601Date(to)
+        });
     };
 
     function createAbsenceDay(type, date) {

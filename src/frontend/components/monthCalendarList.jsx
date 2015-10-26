@@ -7,13 +7,14 @@ var AbsenceTypeSelector = require('./absenceTypeSelector.jsx');
 var MonthCalendarList = React.createClass({
     mixins: [
         Fluxxor.FluxMixin(React),
-        Fluxxor.StoreWatchMixin('AbsenceStore')
+        Fluxxor.StoreWatchMixin('AbsenceStore', 'RangeStore')
     ],
 
     componentDidMount() {
         // Load initial data
         // TODO: No support for range or filtering employees yet. To come.
-        this.getFlux().actions.loadAbsenceDays();
+        var range = this.state.range;
+        this.getFlux().actions.loadAbsenceDays(null, range.from, range.to);
     },
 
     getStateFromFlux() {
@@ -22,25 +23,25 @@ var MonthCalendarList = React.createClass({
         var sorted = allAbsenceDays.length !== 0 ?
             this._splitByMonth(allAbsenceDays) : [];
 
+
+        var range = this.getFlux().store('RangeStore').range
+
         return {
-            absenceDays: sorted
+            absenceDays: sorted,
+            range
         }
     },
 
     render() {
         // TODO: Lots of hardcoding.
-        var curDate = new Date();
+        //var now = this.state.range.now;
         var months = [];
-        for (let i = 0; i <= 12; i++) {
-            let month = new Date(
-                    curDate.getFullYear(),
-                    curDate.getMonth() + i,
-                    curDate.getDate()
-            );
-
+        for (let m = new Date(this.state.range.from.getTime());
+             m.getTime() < this.state.range.to.getTime();
+             m = new Date(m.getFullYear(), m.getMonth()+1, 1)) {
             // Give each month the absence days within it.
-            let yearKey = month.getFullYear().toString();
-            let monthKey = month.getMonth().toString();
+            let yearKey = m.getFullYear().toString();
+            let monthKey = m.getMonth().toString();
 
             let absenceDays;
             if (this.state.absenceDays[yearKey]
@@ -50,7 +51,7 @@ var MonthCalendarList = React.createClass({
                 absenceDays = {};
             }
 
-            months.push(<MonthCalendar month={month} absenceDays={absenceDays}/>);
+            months.push(<MonthCalendar month={m} absenceDays={absenceDays}/>);
         }
 
         return (
