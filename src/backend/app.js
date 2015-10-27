@@ -4,7 +4,7 @@ var app = express();
 
 app.get('/', function (req, res) {
     // TODO: This is pretty ad-hoc...
-    res.send('<!doctype html><div id="app"></div><script src="static/js/app.bundle.js"></script>');
+    res.send('<!doctype html><link rel="stylesheet" type="text/css" href="static/css/styles.css"/><div id="app"></div><script src="static/js/app.bundle.js"></script>');
 });
 
 app.use('/api', require('./api'));
