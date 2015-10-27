@@ -5,12 +5,10 @@ import { Router, Route, IndexRoute } from 'react-router'
 
 var AbsenceTypeStore = require('./stores/absenceTypeStore.js');
 var AbsenceStore = require('./stores/absenceStore.js');
-var RangeStore = require('./stores/rangeStore.js');
 
 var stores = {
     AbsenceTypeStore: new AbsenceTypeStore(),
-    AbsenceStore: new AbsenceStore(),
-    RangeStore: new RangeStore()
+    AbsenceStore: new AbsenceStore()
 }
 
 var actions = require('./actions.js');

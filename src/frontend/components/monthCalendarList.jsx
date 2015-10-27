@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Fluxxor = require('fluxxor');
 
 var MonthCalendar = require('./monthCalendar.jsx');
@@ -7,14 +8,81 @@ var AbsenceTypeSelector = require('./absenceTypeSelector.jsx');
 var MonthCalendarList = React.createClass({
     mixins: [
         Fluxxor.FluxMixin(React),
-        Fluxxor.StoreWatchMixin('AbsenceStore', 'RangeStore')
+        Fluxxor.StoreWatchMixin('AbsenceStore')
     ],
 
     componentDidMount() {
         // Load initial data
         // TODO: No support for range or filtering employees yet. To come.
-        var range = this.state.range;
-        this.getFlux().actions.loadAbsenceDays(null, range.from, range.to);
+        this.getFlux().actions.loadAbsenceDays(null, this.state.from, this.state.to);
+
+        var domNode = ReactDOM.findDOMNode(this);
+
+        this.oldScrollHeight = domNode.scrollHeight;
+        domNode.scrollTop = this._initialScrollTop();
+        domNode.addEventListener('scroll', this.handleScroll);
+    },
+
+    componentWillUnmount() {
+        ReactDOM.findDOMNode(this).removeEventListener('scroll', this.handleScroll);
+    },
+
+    handleScroll(event) {
+        var domNode = ReactDOM.findDOMNode(this);
+
+        // Top:
+        if (domNode.scrollTop < 100) {
+            var from = new Date(
+                    this.state.from.getFullYear(),
+                    this.state.from.getMonth()-12,
+                    1
+            );
+
+            //this.setState({from: from, to: this.state.from});
+            this.setState({from: from, add: 'top'});
+            this.getFlux().actions.loadAbsenceDays(null, this.state.from, this.state.to);
+        }
+
+        // Bottom:
+        var nodeHeight = domNode.getBoundingClientRect().height;
+        if (domNode.scrollTop + nodeHeight > domNode.scrollHeight - 100) {
+            var to = new Date(
+                    this.state.to.getFullYear(),
+                    this.state.to.getMonth()+13,
+                    0
+            );
+
+            //this.setState({from: this.state.to, to: to});
+            this.setState({to: to, add: 'bottom'});
+            this.getFlux().actions.loadAbsenceDays(null, this.state.from, this.state.to);
+        }
+
+    },
+
+    componentDidUpdate() {
+        var domNode = ReactDOM.findDOMNode(this);
+        if (this.state.add === 'top') {
+            domNode.scrollTop = (domNode.scrollHeight - this.oldScrollHeight)
+                    + domNode.scrollTop;
+        }
+
+        this.oldScrollHeight = domNode.scrollHeight;
+    },
+
+    getInitialState() {
+        var now = new Date();
+        var from = new Date(
+                now.getFullYear(),
+                now.getMonth()-12,
+                1
+        );
+        var to = new Date(
+                now.getFullYear(),
+                now.getMonth()+13,
+                0
+        );
+
+        return {now, from, to};
     },
 
     getStateFromFlux() {
@@ -23,21 +91,16 @@ var MonthCalendarList = React.createClass({
         var sorted = allAbsenceDays.length !== 0 ?
             this._splitByMonth(allAbsenceDays) : [];
 
-
-        var range = this.getFlux().store('RangeStore').range
-
         return {
             absenceDays: sorted,
-            range
+            add: 'none'
         }
     },
 
     render() {
-        // TODO: Lots of hardcoding.
-        //var now = this.state.range.now;
         var months = [];
-        for (let m = new Date(this.state.range.from.getTime());
-             m.getTime() < this.state.range.to.getTime();
+        for (let m = new Date(this.state.from.getTime());
+             m.getTime() < this.state.to.getTime();
              m = new Date(m.getFullYear(), m.getMonth()+1, 1)) {
             // Give each month the absence days within it.
             let yearKey = m.getFullYear().toString();
@@ -51,15 +114,29 @@ var MonthCalendarList = React.createClass({
                 absenceDays = {};
             }
 
-            months.push(<MonthCalendar month={m} absenceDays={absenceDays}/>);
+            let ref;
+            if (this.state.now.getFullYear() == m.getFullYear()
+                    && this.state.now.getMonth() == m.getMonth()) {
+                ref = "thisMonth";
+            }
+            months.push(<MonthCalendar month={m} absenceDays={absenceDays} ref={ref}/>);
         }
 
         return (
-            <div className="month-list">
-                <AbsenceTypeSelector/>
+            <div id="month-list">
                 {months}
             </div>
         );
+    },
+
+    _initialScrollTop() {
+        var monthComponent = this.refs.thisMonth;
+        if (!monthComponent) return 0;
+
+        var domNode = ReactDOM.findDOMNode(monthComponent);
+        if (!domNode) return 0;
+
+        return domNode.offsetTop;
     },
 
     // TODO: Move this processing to the backend?

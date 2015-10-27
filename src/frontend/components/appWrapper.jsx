@@ -1,6 +1,8 @@
 var React = require('react');
 var Fluxxor = require('fluxxor');
 
+var AbsenceTypeSelector = require('./absenceTypeSelector.jsx');
+
 var AppWrapper = React.createClass({
     mixins: [
         Fluxxor.FluxMixin(React),
@@ -9,7 +11,10 @@ var AppWrapper = React.createClass({
     render() {
         return (
             <div>
-                <header><h1>Fraværskalender</h1></header>
+                <div id='header'>
+                    <header><h1>Fraværskalender</h1></header>
+                    <AbsenceTypeSelector/>
+                </div>
                 {this.props.children}
             </div>
         );
