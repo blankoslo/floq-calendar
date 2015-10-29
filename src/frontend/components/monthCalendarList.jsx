@@ -13,8 +13,7 @@ var MonthCalendarList = React.createClass({
 
     componentDidMount() {
         // Load initial data
-        // TODO: No support for range or filtering employees yet. To come.
-        this.getFlux().actions.loadAbsenceDays(null, this.state.from, this.state.to);
+        this._loadAbsenceDays();
 
         var domNode = ReactDOM.findDOMNode(this);
 
@@ -40,7 +39,7 @@ var MonthCalendarList = React.createClass({
 
             //this.setState({from: from, to: this.state.from});
             this.setState({from: from, add: 'top'});
-            this.getFlux().actions.loadAbsenceDays(null, this.state.from, this.state.to);
+            this._loadAbsenceDays();
         }
 
         // Bottom:
@@ -54,7 +53,7 @@ var MonthCalendarList = React.createClass({
 
             //this.setState({from: this.state.to, to: to});
             this.setState({to: to, add: 'bottom'});
-            this.getFlux().actions.loadAbsenceDays(null, this.state.from, this.state.to);
+            this._loadAbsenceDays();
         }
 
     },
@@ -127,6 +126,12 @@ var MonthCalendarList = React.createClass({
                 {months}
             </div>
         );
+    },
+
+    _loadAbsenceDays() {
+        var employee = this.props.params.employeeId;
+        var from = this.state.from, to = this.state.to;
+        this.getFlux().actions.loadAbsenceDays(employee, from, to);
     },
 
     _initialScrollTop() {
