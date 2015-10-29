@@ -2,11 +2,31 @@ var express = require('express');
 var bodyParser = require('body-parser');
 
 var db = require('./db.js');
+var authenticate = require('./authenticate.js');
 
 var api = express();
 
+// Makes sure token is correct.
+api.use(authenticate());
 // Parses all request-bodies to JSON.
 api.use(bodyParser.json());
+
+// TODO: This should be handled by the 'employees' API!
+api.get('/employees/loggedin', function(req, res) {
+    var success = function(qRes) {
+        res.json({success: true, data: qRes.rows[0]});
+    }
+
+    var failure = function(err) {
+        console.log('Unable to find employee:', err);
+        res.status(500).json({success: false, data: err});
+    }
+
+    var email = req.googleuser.email;
+    query = 'SELECT * FROM employees WHERE email = $1'
+    db.singleQuery(query, [email])
+        .then(success, failure);
+});
 
 api.get('/absence_types', function(req, res) {
     var success = function(qRes) {

@@ -8,7 +8,7 @@ var AbsenceTypeSelector = React.createClass({
     ],
 
     componentDidMount() {
-        this.getFlux().actions.loadAbsenceTypes(); 
+        this.getFlux().actions.loadAbsenceTypes();
     },
 
     getStateFromFlux() {

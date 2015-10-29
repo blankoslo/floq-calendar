@@ -1,7 +1,7 @@
 var utils = require('./utils.js');
 
 var apiClient = function(rootUri) {
-    function xhr(method, url, data) {//, token) {
+    function xhr(method, url, data, token) {
         const isSuccess = n => n >= 200 && n < 400;
         return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
@@ -21,7 +21,6 @@ var apiClient = function(rootUri) {
             }
             req.onerror = () => reject(req);
             if (data && method == 'get') {
-                console.log(data);
                 url += '?' + Object.keys(data)
                         .filter((key) => data[key] !== null)
                         .map((key) => {
@@ -33,50 +32,55 @@ var apiClient = function(rootUri) {
             if (data && !(method == 'get')) {
                 req.setRequestHeader('Content-Type', 'application/json');
             }
-            //req.setRequestHeader('Authorization', token);
+            req.setRequestHeader('Authorization', token);
             req.send(data ? JSON.stringify(data) : null);
         }); 
     };
 
-    const xhrGet = (url, data) => xhr('get', url, data);
-    const xhrPost = (url, data) => xhr('post', url, data);
-    const xhrPut = (url, data) => xhr('put', url, data);
-    const xhrDelete = (url, data) => xhr('delete', url, data);
+    const xhrGet = (url, data, token) => xhr('get', url, data, token);
+    const xhrPost = (url, data, token) => xhr('post', url, data, token);
+    const xhrPut = (url, data, token) => xhr('put', url, data, token);
+    const xhrDelete = (url, data, token) => xhr('delete', url, data, token);
 
-    function loadAbsenceTypes() {
-        return xhrGet('/absence_types', null);
+    function getLoggedInEmployee(token) {
+        return xhrGet('/employees/loggedin', null, token);
+    }
+
+    function loadAbsenceTypes(token) {
+        return xhrGet('/absence_types', null, token);
     };
 
     // TODO: Does not support filtering on employee or date range yet.
-    function loadAbsenceDays(employee, from, to) {
+    function loadAbsenceDays(employee, from, to, token) {
         return xhrGet('/absence_days', {
             employee,
             from: utils.dateToISO8601Date(from),
             to: utils.dateToISO8601Date(to)
-        });
+        }, token);
     };
 
-    function createAbsenceDay(type, date) {
+    function createAbsenceDay(type, date, token) {
         return xhrPost('/absence_days', {
             // TODO: Don't hardcode
             employee: 1,
             type: type,
             date: utils.dateToISO8601Date(date)
-        });
+        }, token);
     };
 
-    function updateAbsenceDay(selected, absenceDay) {
+    function updateAbsenceDay(selected, absenceDay, token) {
         absenceDay.type = selected;
-        return xhrPut('/absence_days', absenceDay);
+        return xhrPut('/absence_days', absenceDay, token);
     };
 
-    function deleteAbsenceDay(absenceDay) {
+    function deleteAbsenceDay(absenceDay, token) {
         return xhrDelete('/absence_days', {
             id: Array.isArray(absenceDay.id) ? absenceDay.id : [absenceDay.id]
-        });
+        }, token);
     };
 
     return {
+        getLoggedInEmployee,
         loadAbsenceTypes,
         loadAbsenceDays,
         createAbsenceDay,

@@ -2,47 +2,71 @@ var constants = require('./constants.js');
 
 var apiClient = require('./apiClient.js')('/api');
 
-var actions = {
-    loadAbsenceTypes() {
-        apiClient.loadAbsenceTypes().then(
-            (res) => this.dispatch(constants.ABSENCE_TYPES_LOAD_SUCCEEDED, res),
-            (err) => console.log('TODO: handle this error:', err)
-        );
-    },
+var actionsClosure = function(history) {
+    var actions = {
+        googleSigninSucceeded(token) {
+            this.dispatch(constants.GOOGLE_SIGN_IN_SUCCEEDED, token);
+        },
 
-    absenceTypeChange(type) {
-        this.dispatch(constants.ABSENCE_TYPE_CHANGED, type);
-    },
+        getLoggedInEmployee() {
+            var token = this.flux.store('UserStore').token;
+            apiClient.getLoggedInEmployee(token).then(
+                (res) => {
+                    this.dispatch(constants.GET_LOGGED_IN_EMPLOYEE_SUCCEEDED, res);
+                    history.pushState(null, `/calendar/${res.id}`);
+                },
+                (err) => console.log('TODO: handle this error:', err)
+            );
+        },
 
-    loadAbsenceDays(employee, from, to) {
-        // Employee (id) is not mandatory. If no employee is supplied,
-        // absence_days of all employees are fetched.
-        apiClient.loadAbsenceDays(employee, from, to).then(
-            (res) => this.dispatch(constants.ABSENCE_LOAD_SUCCEEDED, res),
-            (err) => console.log('TODO: handle this error:', err)
-        );
-    },
+        loadAbsenceTypes() {
+            var token = this.flux.store('UserStore').token;
+            apiClient.loadAbsenceTypes(token).then(
+                (res) => this.dispatch(constants.ABSENCE_TYPES_LOAD_SUCCEEDED, res),
+                (err) => console.log('TODO: handle this error:', err)
+            );
+        },
 
-    createAbsenceDay(selected, date) {
-        apiClient.createAbsenceDay(selected, date).then(
-            (res) => this.dispatch(constants.ABSENCE_CREATE_SUCCEEDED, res),
-            (err) => console.log('TODO: handle this error:', err)
-        );
-    },
+        absenceTypeChange(type) {
+            this.dispatch(constants.ABSENCE_TYPE_CHANGED, type);
+        },
 
-    updateAbsenceDay(selected, absenceDay) {
-        apiClient.updateAbsenceDay(selected, absenceDay).then(
-            (res) => this.dispatch(constants.ABSENCE_UPDATE_SUCCEEDED, res),
-            (err) => console.log('TODO: handle this error:', err)
-        );
-    },
+        loadAbsenceDays(employee, from, to) {
+            // Employee (id) is not mandatory. If no employee is supplied,
+            // absence_days of all employees are fetched.
+            var token = this.flux.store('UserStore').token;
+            apiClient.loadAbsenceDays(employee, from, to, token).then(
+                (res) => this.dispatch(constants.ABSENCE_LOAD_SUCCEEDED, res),
+                (err) => console.log('TODO: handle this error:', err)
+            );
+        },
 
-    deleteAbsenceDay(absenceDay) {
-        apiClient.deleteAbsenceDay(absenceDay).then(
-            (res) => this.dispatch(constants.ABSENCE_DELETE_SUCCEEDED, res),
-            (err) => console.log('TODO: handle this error:', err)
-        );
+        createAbsenceDay(selected, date) {
+            var token = this.flux.store('UserStore').token;
+            apiClient.createAbsenceDay(selected, date, token).then(
+                (res) => this.dispatch(constants.ABSENCE_CREATE_SUCCEEDED, res),
+                (err) => console.log('TODO: handle this error:', err)
+            );
+        },
+
+        updateAbsenceDay(selected, absenceDay) {
+            var token = this.flux.store('UserStore').token;
+            apiClient.updateAbsenceDay(selected, absenceDay, token).then(
+                (res) => this.dispatch(constants.ABSENCE_UPDATE_SUCCEEDED, res),
+                (err) => console.log('TODO: handle this error:', err)
+            );
+        },
+
+        deleteAbsenceDay(absenceDay) {
+            var token = this.flux.store('UserStore').token;
+            apiClient.deleteAbsenceDay(absenceDay, token).then(
+                (res) => this.dispatch(constants.ABSENCE_DELETE_SUCCEEDED, res),
+                (err) => console.log('TODO: handle this error:', err)
+            );
+        }
     }
+
+    return actions;
 };
 
-module.exports = actions;
+module.exports = actionsClosure;

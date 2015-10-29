@@ -1,5 +1,17 @@
+body {
+    margin: 0;
+}
+
 #header {
     background: red;
+}
+
+#header h1 {
+    margin: 0;
+}
+
+#googlebutton {
+    float: right;
 }
 
 #month-list {

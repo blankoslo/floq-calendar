@@ -1,7 +1,7 @@
 var React = require('react');
 var Fluxxor = require('fluxxor');
 
-var AbsenceTypeSelector = require('./absenceTypeSelector.jsx');
+var GoogleSignIn = require('./googleSignIn.jsx');
 
 var AppWrapper = React.createClass({
     mixins: [
@@ -12,8 +12,10 @@ var AppWrapper = React.createClass({
         return (
             <div>
                 <div id='header'>
-                    <header><h1>Fraværskalender</h1></header>
-                    <AbsenceTypeSelector/>
+                    <header>
+                        <h1>Blank Fraværskalender</h1>
+                        <GoogleSignIn/>
+                    </header>
                 </div>
                 {this.props.children}
             </div>
