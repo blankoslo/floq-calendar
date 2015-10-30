@@ -20,8 +20,6 @@ var UserStore = Fluxxor.createStore({
 
     onEmployeeLoaded(employee) {
         this.employee = employee;
-
-        console.log('sweet')
         this.emit('change');
     }
 });

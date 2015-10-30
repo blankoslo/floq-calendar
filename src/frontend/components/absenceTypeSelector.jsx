@@ -16,8 +16,8 @@ var AbsenceTypeSelector = React.createClass({
         var selected = this.getFlux().store('AbsenceTypeStore').selected;
 
         return { 
-            absenceTypes: absenceTypes,
-            selected: selected
+            absenceTypes,
+            selected
         };
     },
 
