@@ -13,7 +13,7 @@ var DateCell = React.createClass({
         let absenceDay = this.props.absenceDay;
 
         if (!absenceDay) {
-            this.getFlux().actions.createAbsenceDay(selected, this.props.date);
+            this.getFlux().actions.createAbsenceDay(this.props.employeeId, selected, this.props.date);
             return;
         }
 

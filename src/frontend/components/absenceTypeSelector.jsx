@@ -32,7 +32,7 @@ var AbsenceTypeSelector = React.createClass({
         });
 
         return (
-            <select selected={this.state.selected} onChange={this.handleChange}>
+            <select value={this.state.selected} onChange={this.handleChange}>
                 {options}
             </select>
         );    

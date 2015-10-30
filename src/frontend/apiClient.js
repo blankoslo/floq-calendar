@@ -44,7 +44,11 @@ var apiClient = function(rootUri) {
 
     function getLoggedInEmployee(token) {
         return xhrGet('/employees/loggedin', null, token);
-    }
+    };
+
+    function loadEmployees(token) {
+        return xhrGet('/employees', null, token);
+    };
 
     function loadAbsenceTypes(token) {
         return xhrGet('/absence_types', null, token);
@@ -59,11 +63,10 @@ var apiClient = function(rootUri) {
         }, token);
     };
 
-    function createAbsenceDay(type, date, token) {
+    function createAbsenceDay(employee, type, date, token) {
         return xhrPost('/absence_days', {
-            // TODO: Don't hardcode
-            employee: 1,
-            type: type,
+            employee,
+            type,
             date: utils.dateToISO8601Date(date)
         }, token);
     };
@@ -81,6 +84,7 @@ var apiClient = function(rootUri) {
 
     return {
         getLoggedInEmployee,
+        loadEmployees,
         loadAbsenceTypes,
         loadAbsenceDays,
         createAbsenceDay,

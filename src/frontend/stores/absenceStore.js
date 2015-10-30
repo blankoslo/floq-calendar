@@ -4,9 +4,11 @@ var Fluxxor = require('fluxxor');
 
 var constants = require('./../constants.js');
 
+var utils = require('./../utils.js');
+
 var AbsenceStore = Fluxxor.createStore({
     initialize() {
-        this.absenceDays = [];
+        this.absenceDays = {};
 
         // TODO: Handle CUD and loading/failure etc.
         this.bindActions(
@@ -18,47 +20,59 @@ var AbsenceStore = Fluxxor.createStore({
     },
 
     onAbsenceLoaded(absenceDays) {
-        // TODO: Handle multiple employees differently?
-        this.absenceDays = absenceDays;
+        if (absenceDays.length == 0) return;
+        absenceDays.forEach(this._addAbsenceDay);
         this.emit('change');
     },
 
     onAbsenceCreated(absenceDays) {
-        if (Array.isArray(absenceDays)) {
-            absenceDays.forEach((day) => this.absenceDays.push(day));
-        } else {
-            this.absenceDays.push(absenceDays);
-        }
+        utils.forEachIfArray(absenceDays, this._addAbsenceDay);
 
         this.emit('change');
     },
 
-    onAbsenceUpdated(absenceDay) {
-        for (let i = 0; i < this.absenceDays.length; i++) {
-            if (this.absenceDays[i].id == absenceDay.id) {
-                this.absenceDays[i] = absenceDay;
-                break;
+    onAbsenceUpdated(absenceDays) {
+        utils.forEachIfArray(absenceDays, this._updateAbsenceDay);
+
+        this.emit('change');
+    },
+
+    onAbsenceDeleted(absenceDayIds) {
+        utils.forEachIfArray(absenceDayIds, this._deleteAbsenceDay);
+
+        this.emit('change');
+    },
+
+    _addAbsenceDay(absenceDay) {
+        var employee = absenceDay.employee.toString();
+
+        if (!this.absenceDays[employee]) this.absenceDays[employee] = [];
+
+        this.absenceDays[employee].push(absenceDay);
+    },
+
+    _updateAbsenceDay(absenceDay) {
+        var employee = absenceDay.employee.toString();
+
+        if (!this.absenceDays[employee]) {
+            console.error("Can't update nonexistant absence!");
+            return;
+        }
+
+        this.absenceDays[employee].forEach((day, i) => {
+            if (day.id === absenceDay.id) {
+                this.absenceDays[employee][i] = absenceDay;
             }
-        }
-
-        this.emit('change');
+        });
     },
 
-    // TODO: This is pretty hacky and bad...
-    onAbsenceDeleted(ids) {
-        if (Array.isArray(ids)) {
-            this.absenceDays = this.absenceDays.filter((day) => {
-                for (let i = 0; i < ids.length; i++) {
-                    if (ids[i].id === day.id) return false;
-                }
-
-                return true;
+    _deleteAbsenceDay(absenceDay) {
+        Object.keys(this.absenceDays).forEach((employeeId) => {
+            this.absenceDays[employeeId] =
+                this.absenceDays[employeeId].filter((currDay) => {
+                return !(absenceDay.id == currDay.id);
             });
-        } else {
-            console.error("DELETE on empty store, shouldn't be possible!");
-        }
-
-        this.emit('change');
+        });
     }
 });
 

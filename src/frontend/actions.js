@@ -31,6 +31,18 @@ var actionsClosure = function(history) {
             this.dispatch(constants.ABSENCE_TYPE_CHANGED, type);
         },
 
+        loadEmployees() {
+            var token = this.flux.store('UserStore').token;
+            apiClient.loadEmployees(token).then(
+                (res) => this.dispatch(constants.EMPLOYEE_LOAD_SUCCEEDED, res),
+                (err) => console.log('TODO: handle this error:', err)
+            );
+        },
+
+        newEmployeeSelected(employee) {
+            history.pushState(null, `/calendar/${employee}`);
+        },
+
         loadAbsenceDays(employee, from, to) {
             // Employee (id) is not mandatory. If no employee is supplied,
             // absence_days of all employees are fetched.
@@ -41,9 +53,9 @@ var actionsClosure = function(history) {
             );
         },
 
-        createAbsenceDay(selected, date) {
+        createAbsenceDay(employee, type, date) {
             var token = this.flux.store('UserStore').token;
-            apiClient.createAbsenceDay(selected, date, token).then(
+            apiClient.createAbsenceDay(employee, type, date, token).then(
                 (res) => this.dispatch(constants.ABSENCE_CREATE_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
             );

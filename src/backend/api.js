@@ -28,6 +28,21 @@ api.get('/employees/loggedin', function(req, res) {
         .then(success, failure);
 });
 
+api.get('/employees', function(req, res) {
+    var success = function(qRes) {
+        res.json({success: true, data: qRes.rows});
+    }
+
+    var failure = function(err) {
+        console.log('Unable to query employees:', err);
+        res.status(500).json({success: false, data: err});
+    }
+
+    db.singleQuery(
+            'SELECT id, first_name, last_name FROM employees ORDER BY first_name')
+                .then(success, failure);
+});
+
 api.get('/absence_types', function(req, res) {
     var success = function(qRes) {
         res.json({success: true, data: qRes.rows});
@@ -79,7 +94,6 @@ api.post('/absence_days', function(req, res) {
     res.sendStatus(400);
     console.log('Received bad request.')
 });
-
 
 api.get('/absence_days', function(req, res) {
     // TODO: `success` and `failure` are equal in all calls.

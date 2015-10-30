@@ -66,6 +66,10 @@ var MonthCalendarList = React.createClass({
         }
 
         this.oldScrollHeight = domNode.scrollHeight;
+
+        if (!this.state.absenceDays[this.props.employeeId]) {
+            this._loadAbsenceDays();
+        }
     },
 
     getInitialState() {
@@ -85,18 +89,18 @@ var MonthCalendarList = React.createClass({
     },
 
     getStateFromFlux() {
-        var allAbsenceDays = this.getFlux().store('AbsenceStore').absenceDays;
-
-        var sorted = allAbsenceDays.length !== 0 ?
-            this._splitByMonth(allAbsenceDays) : [];
+        var absenceDays = this.getFlux().store('AbsenceStore').absenceDays;
 
         return {
-            absenceDays: sorted,
+            absenceDays,
             add: 'none'
         }
     },
 
     render() {
+        var absenceDays = this.state.absenceDays[this.props.employeeId] ?
+                this._splitByMonth(this.state.absenceDays[this.props.employeeId])
+                : {};
         var months = [];
         for (let m = new Date(this.state.from.getTime());
              m.getTime() < this.state.to.getTime();
@@ -105,12 +109,12 @@ var MonthCalendarList = React.createClass({
             let yearKey = m.getFullYear().toString();
             let monthKey = m.getMonth().toString();
 
-            let absenceDays;
-            if (this.state.absenceDays[yearKey]
-                    && this.state.absenceDays[yearKey][monthKey]) {
-                absenceDays = this.state.absenceDays[yearKey][monthKey];
+            let monthAbsenceDays;
+            if (absenceDays[yearKey]
+                    && absenceDays[yearKey][monthKey]) {
+                monthAbsenceDays = absenceDays[yearKey][monthKey];
             } else {
-                absenceDays = {};
+                monthAbsenceDays = {};
             }
 
             let ref;
@@ -118,7 +122,12 @@ var MonthCalendarList = React.createClass({
                     && this.state.now.getMonth() == m.getMonth()) {
                 ref = "thisMonth";
             }
-            months.push(<MonthCalendar month={m} absenceDays={absenceDays} ref={ref}/>);
+            months.push(<MonthCalendar
+                            month={m}
+                            absenceDays={monthAbsenceDays}
+                            ref={ref}
+                            employeeId={this.props.employeeId}
+                        />);
         }
 
         return (
@@ -129,7 +138,7 @@ var MonthCalendarList = React.createClass({
     },
 
     _loadAbsenceDays() {
-        var employee = this.props.params.employeeId;
+        var employee = this.props.employeeId;
         var from = this.state.from, to = this.state.to;
         this.getFlux().actions.loadAbsenceDays(employee, from, to);
     },
