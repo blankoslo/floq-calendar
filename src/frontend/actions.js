@@ -16,7 +16,10 @@ var actionsClosure = function(history) {
                     this.dispatch(constants.GET_LOGGED_IN_EMPLOYEE_SUCCEEDED, res);
                     history.pushState(null, `/calendar/${res.id}`);
                 },
-                (err) => console.log('TODO: handle this error:', err)
+                (err) => {
+                    history.pushState(null, `/`);
+                    console.log('TODO: handle this error:', err);
+                }
             );
         },
 
