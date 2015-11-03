@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Fluxxor = require('fluxxor');
 
 var AllCalendarHead = require('./allCalendarHead.jsx');
@@ -15,6 +16,12 @@ var AllCalendar = React.createClass({
         this.getFlux().actions.loadAbsenceDays(
                 null, this.state.from, this.state.to
         );
+    },
+
+    componentDidMount() {
+        var domNode = ReactDOM.findDOMNode(this.refs.scrollable);
+
+        domNode.scrollLeft = this._initialScrollLeft();
     },
 
     getInitialState() {
@@ -49,9 +56,9 @@ var AllCalendar = React.createClass({
         return (
             <div id='all-calendar'>
                <div className='all-calendar-outer'>
-                   <div className='all-calendar-inner'>
+                   <div className='all-calendar-inner' ref='scrollable'>
                        <table id='all-calendar-table'>
-                           <AllCalendarHead range={range}/>
+                           <AllCalendarHead range={range} now={this.state.now} ref='head'/>
                            <tbody>
                                {employeeRowCalendars}
                            </tbody>
@@ -60,6 +67,16 @@ var AllCalendar = React.createClass({
                </div>
             </div>
         );
+    },
+
+    _initialScrollLeft() {
+        var monthComponent = this.refs.head.getThisMonth();
+        if (!monthComponent) return 0;
+
+        var domNode = ReactDOM.findDOMNode(monthComponent);
+        if (!domNode) return 0;
+
+        return domNode.offsetLeft;
     }
 });
 

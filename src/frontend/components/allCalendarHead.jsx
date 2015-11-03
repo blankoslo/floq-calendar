@@ -12,8 +12,14 @@ var AllCalendarHead = React.createClass({
             days.push(<th>{date}</th>);
             
             if (date == 1) {
+                var now = this.props.now;
+                let ref;
+                if (d.getYear() == now.getYear() && d.getMonth() == now.getMonth()) {
+                    ref = 'thisMonth';
+                }
                 var span = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
                 months.push(<th 
+                    ref={ref}
                     className='month-header'
                     colSpan={span}>
                         {monthNames[d.getMonth()]}, {d.getFullYear()}</th>);
@@ -26,6 +32,10 @@ var AllCalendarHead = React.createClass({
                 <tr><th className='employee-name'></th>{days}</tr>             
             </thead>
         );
+    },
+
+    getThisMonth() {
+        return this.refs.thisMonth;
     }
 });
 
