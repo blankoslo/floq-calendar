@@ -18,9 +18,6 @@ var EmployeeRowCalendar = React.createClass({
     render() {
         var employee = this.props.employee;
 
-        console.log("abs", this.state.absenceDays);
-
-        console.log('emp', employee);
         var employeeId = employee.id.toString();
 
         var absenceDays = this.state.absenceDays[employeeId] ?
