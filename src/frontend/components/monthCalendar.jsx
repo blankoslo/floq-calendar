@@ -1,7 +1,6 @@
 var React = require('react');
 
-var monthNames = ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli',
-    'August', 'September', 'Oktober', 'November', 'Desember'];
+var monthNames = require('./../constants.js').MONTH_NAMES;
 var calHeader = [<th>ma</th>, <th>ti</th>, <th>on</th>, <th>to</th>,
     <th>fr</th>, <th>lø</th>, <th>sø</th>];
 

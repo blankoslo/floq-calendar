@@ -15,6 +15,9 @@ var constants = {
     SCROLLED_TO_TOP: 'SCROLLED_TO_TOP',
     SCROLLED_TO_BOTTOM: 'SCROLLED_TO_BOTTOM',
 
+    MONTH_NAMES: ['Januar', 'Februar', 'Mars', 'April', 'Mai', 'Juni', 'Juli',
+    'August', 'September', 'Oktober', 'November', 'Desember'],
+
     ABSENCE_TYPE_COLORS: {
         '1': 'red',
         '2': 'green'

@@ -33,15 +33,22 @@ body {
 }
 
 #all-calendar-table {
-    table-layout: fixed; /* maybe remove for gaps */
+    /*table-layout: fixed; /* maybe remove for gaps */
     width: 100%;
 }
 
 #all-calendar-table td, th {
-    vertical-align: top;
+    /*vertical-align: top;*/
     border-top: 1px solid #ccc;
-    padding: 10px;
+    padding: 5px;
+}
+
+#all-calendar-table th {
     width: 100px;
+}
+
+#all-calendar-table td {
+    width: 10px;
 }
 
 .employee-name {
@@ -49,6 +56,10 @@ body {
     left: 0;
     width: 100px;
 /*    background: white;*/
+}
+
+.month-header {
+    text-align: left;
 }
 
 .all-calendar-outer {
