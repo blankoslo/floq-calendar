@@ -6,7 +6,7 @@
     "preinstall": "cd src/frontend && npm install",
     "install": "cd src/backend && npm install",
     "start": "node src/backend/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cd src/frontend && npm test"
   },
   "author": "",
   "license": "Proprietary"
