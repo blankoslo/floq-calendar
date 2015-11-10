@@ -15,8 +15,8 @@ var stores = {
     AbsenceStore: new AbsenceStore()
 }
 
-import createBrowserHistory from 'history/lib/createBrowserHistory'
-var history = createBrowserHistory();
+import createHistory from 'history/lib/createHashHistory'
+var history = createHistory();
 
 var actions = require('./actions.js')(history);
 
@@ -43,6 +43,3 @@ ReactDOM.render((
         </Route>
     </Router>
 ), document.getElementById('app'));
-
-window.googleLoaded = () => window.dispatchEvent(new Event('googleloaded'));
-

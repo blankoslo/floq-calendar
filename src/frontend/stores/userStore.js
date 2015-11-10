@@ -5,17 +5,13 @@ var constants = require('./../constants.js');
 var UserStore = Fluxxor.createStore({
     initialize() {
         this.employee = {};
-        this.token = null;
+        // TODO: HACK! Supplied by frontpage app.
+        this.token = window.id_token;
+        console.log("userstoreinit", this.token);
 
         this.bindActions(
-            constants.GOOGLE_SIGN_IN_SUCCEEDED, this.onGoogleSignin,
             constants.GET_LOGGED_IN_EMPLOYEE_SUCCEEDED, this.onEmployeeLoaded
         );
-    },
-
-    onGoogleSignin(token) {
-        this.token = token;
-        this.emit('change');
     },
 
     onEmployeeLoaded(employee) {

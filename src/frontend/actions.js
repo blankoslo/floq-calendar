@@ -1,21 +1,17 @@
 var constants = require('./constants.js');
 
-var apiClient = require('./apiClient.js')('/api');
+var apiClient = require('./apiClient.js')('http://localhost:3001/api');
 
 // TODO: This is a pretty hacky way to do history transitions.
 var actionsClosure = function(history) {
     var actions = {
-        googleSigninSucceeded(token) {
-            this.dispatch(constants.GOOGLE_SIGN_IN_SUCCEEDED, token);
-        },
-
         getLoggedInEmployee() {
             var token = this.flux.store('UserStore').token;
             apiClient.getLoggedInEmployee(token).then(
                 (res) => {
                     this.dispatch(constants.GET_LOGGED_IN_EMPLOYEE_SUCCEEDED, res);
-                    //history.pushState(null, `/calendar/${res.id}`);
-                    history.pushState(null, `/calendar`);
+                    history.pushState(null, `/calendar/${res.id}`);
+                    //history.pushState(null, `/calendar`);
                 },
                 (err) => {
                     history.pushState(null, `/`);

@@ -15,19 +15,17 @@ var MonthCalendarList = React.createClass({
         // Load initial data
         this._loadAbsenceDays();
 
-        var domNode = ReactDOM.findDOMNode(this);
-
-        this.oldScrollHeight = domNode.scrollHeight;
-        domNode.scrollTop = this._initialScrollTop();
-        domNode.addEventListener('scroll', this.handleScroll);
+        this.oldScrollHeight = document.body.scrollHeight;
+        document.body.scrollTop = this._initialScrollTop();
+        window.addEventListener('scroll', this.handleScroll);
     },
 
     componentWillUnmount() {
-        ReactDOM.findDOMNode(this).removeEventListener('scroll', this.handleScroll);
+        window.removeEventListener('scroll', this.handleScroll);
     },
 
     handleScroll(event) {
-        var domNode = ReactDOM.findDOMNode(this);
+        var domNode = document.body;
 
         // Top:
         if (domNode.scrollTop < 100) {
@@ -59,7 +57,7 @@ var MonthCalendarList = React.createClass({
     },
 
     componentDidUpdate() {
-        var domNode = ReactDOM.findDOMNode(this);
+        var domNode = document.body;
         if (this.state.add === 'top') {
             domNode.scrollTop = (domNode.scrollHeight - this.oldScrollHeight)
                     + domNode.scrollTop;
@@ -150,7 +148,8 @@ var MonthCalendarList = React.createClass({
         var domNode = ReactDOM.findDOMNode(monthComponent);
         if (!domNode) return 0;
 
-        return domNode.offsetTop;
+        // TODO: Ultrahack to set correct offset with fixed headers. FIXME!
+        return domNode.offsetTop - 120;
     },
 
     // TODO: Move this processing to the backend?
