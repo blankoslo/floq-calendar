@@ -1,5 +1,6 @@
 var React = require('react');
 var Fluxxor = require('fluxxor');
+import { Link } from 'react-router';
 
 var constants = require('./../constants.js');
 
@@ -44,7 +45,7 @@ var EmployeeRowCalendar = React.createClass({
 
         return (
             <tr>
-                <th className='employee-name'>{employee.first_name} {employee.last_name}</th>
+                <th className='employee-name'><Link to={`/calendar/${employee.id}`}>{employee.first_name} {employee.last_name}</Link></th>
                 {days}
             </tr>
         );
