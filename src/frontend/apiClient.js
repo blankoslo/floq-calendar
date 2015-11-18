@@ -2,7 +2,6 @@ var utils = require('./utils.js');
 
 var apiClient = function(rootUri) {
     function xhr(method, url, data, token) {
-        const isSuccess = n => n >= 200 && n < 400;
         return new Promise((resolve, reject) => {
             const req = new XMLHttpRequest();
             req.onload = () => {
