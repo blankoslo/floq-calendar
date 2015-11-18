@@ -104,18 +104,16 @@ var AllCalendar = React.createClass({
         });
 
         return (
-            <div id='all-calendar'>
-               <div className='all-calendar-outer'>
-                   <div className='all-calendar-inner' ref='scrollable'>
-                       <table id='all-calendar-table'>
-                           <AllCalendarHead range={range} now={this.state.now} ref='head'/>
-                           <tbody>
-                               {employeeRowCalendars}
-                           </tbody>
-                       </table>
-                   </div>
+           <div className='all-calendar-outer'>
+               <div className='all-calendar-inner' ref='scrollable'>
+                   <table id='all-calendar-table'>
+                       <AllCalendarHead range={range} now={this.state.now} ref='head'/>
+                       <tbody>
+                           {employeeRowCalendars}
+                       </tbody>
+                   </table>
                </div>
-            </div>
+           </div>
         );
     },
 

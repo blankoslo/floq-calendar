@@ -8,15 +8,13 @@ var AppWrapper = React.createClass({
         Fluxxor.FluxMixin(React),
     ],
 
+    componentWillMount() {
+        this.getFlux().actions.getLoggedInEmployee();
+    },
+
     render() {
         return (
             <div>
-                <div id='header'>
-                    <header>
-                        <h1>Blank Fraværskalender</h1>
-                        <GoogleSignIn/>
-                    </header>
-                </div>
                 {this.props.children}
             </div>
         );

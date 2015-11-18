@@ -9,8 +9,10 @@ var EmployeeCalendar = React.createClass({
         var employeeId = parseInt(this.props.params.employeeId);
         return (
             <div>
-                <AbsenceTypeSelector/>
-                <EmployeeSelector selected={employeeId}/>
+                <div className='selectors'>
+                    <AbsenceTypeSelector/>
+                    <EmployeeSelector selected={employeeId}/>
+                </div>
                 <MonthCalendarList employeeId={employeeId}/>
             </div>
         );
