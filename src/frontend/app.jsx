@@ -13,6 +13,7 @@ var stores = {
     AbsenceStore: new AbsenceStore()
 }
 
+// TODO: Consider how to do history well.
 import createHistory from 'history/lib/createHashHistory'
 var history = createHistory();
 
