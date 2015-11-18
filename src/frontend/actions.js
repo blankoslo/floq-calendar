@@ -10,8 +10,8 @@ var actionsClosure = function(history) {
             apiClient.getLoggedInEmployee(token).then(
                 (res) => {
                     this.dispatch(constants.GET_LOGGED_IN_EMPLOYEE_SUCCEEDED, res);
-                    history.pushState(null, `/calendar/${res.id}`);
-                    //history.pushState(null, `/calendar`);
+                    //history.pushState(null, `/calendar/${res.id}`);
+                    history.pushState(null, `/calendar`);
                 },
                 (err) => {
                     history.pushState(null, `/`);
