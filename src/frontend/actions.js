@@ -1,6 +1,6 @@
 var constants = require('./constants.js');
 
-var apiClient = require('./apiClient.js')('http://localhost:3001/api');
+var apiClient = require('./apiClient.js')(window.config.apiUri);
 
 // TODO: This is a pretty hacky way to do history transitions.
 var actionsClosure = function(history) {
