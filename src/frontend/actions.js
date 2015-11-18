@@ -6,7 +6,7 @@ var apiClient = require('./apiClient.js')('http://localhost:3001/api');
 var actionsClosure = function(history) {
     var actions = {
         getLoggedInEmployee() {
-            var token = this.flux.store('UserStore').token;
+            var token = window.id_token;
             apiClient.getLoggedInEmployee(token).then(
                 (res) => {
                     this.dispatch(constants.GET_LOGGED_IN_EMPLOYEE_SUCCEEDED, res);
@@ -21,7 +21,7 @@ var actionsClosure = function(history) {
         },
 
         loadAbsenceTypes() {
-            var token = this.flux.store('UserStore').token;
+            var token = window.id_token;
             apiClient.loadAbsenceTypes(token).then(
                 (res) => this.dispatch(constants.ABSENCE_TYPES_LOAD_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -33,7 +33,7 @@ var actionsClosure = function(history) {
         },
 
         loadEmployees() {
-            var token = this.flux.store('UserStore').token;
+            var token = window.id_token;
             apiClient.loadEmployees(token).then(
                 (res) => this.dispatch(constants.EMPLOYEE_LOAD_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -47,7 +47,7 @@ var actionsClosure = function(history) {
         loadAbsenceDays(employee, from, to) {
             // Employee (id) is not mandatory. If no employee is supplied,
             // absence_days of all employees are fetched.
-            var token = this.flux.store('UserStore').token;
+            var token = window.id_token;
             apiClient.loadAbsenceDays(employee, from, to, token).then(
                 (res) => this.dispatch(constants.ABSENCE_LOAD_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -55,7 +55,7 @@ var actionsClosure = function(history) {
         },
 
         createAbsenceDay(employee, type, date) {
-            var token = this.flux.store('UserStore').token;
+            var token = window.id_token;
             apiClient.createAbsenceDay(employee, type, date, token).then(
                 (res) => this.dispatch(constants.ABSENCE_CREATE_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -63,7 +63,7 @@ var actionsClosure = function(history) {
         },
 
         updateAbsenceDay(selected, absenceDay) {
-            var token = this.flux.store('UserStore').token;
+            var token = window.id_token;
             apiClient.updateAbsenceDay(selected, absenceDay, token).then(
                 (res) => this.dispatch(constants.ABSENCE_UPDATE_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -71,7 +71,7 @@ var actionsClosure = function(history) {
         },
 
         deleteAbsenceDay(absenceDay) {
-            var token = this.flux.store('UserStore').token;
+            var token = window.id_token;
             apiClient.deleteAbsenceDay(absenceDay, token).then(
                 (res) => this.dispatch(constants.ABSENCE_DELETE_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
