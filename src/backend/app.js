@@ -10,9 +10,7 @@ app.get('/', function (req, res) {
 app.use('/api', require('./api'));
 app.use('/static', express.static('src/frontend/dist/'));
 
-var port = process.env.PORT || 3000;
-
-var server = app.listen(port, function () {
+var server = app.listen(process.env.PORT || 3001, function () {
     var host = server.address().address;
     var port = server.address().port;
 

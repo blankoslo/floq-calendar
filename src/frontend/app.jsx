@@ -3,20 +3,19 @@ var ReactDOM = require('react-dom');
 var Fluxxor = require('fluxxor');
 import { Router, Route, IndexRoute } from 'react-router'
 
-var UserStore = require('./stores/userStore.js');
 var EmployeeStore = require('./stores/employeeStore.js');
 var AbsenceTypeStore = require('./stores/absenceTypeStore.js');
 var AbsenceStore = require('./stores/absenceStore.js');
 
 var stores = {
-    UserStore: new UserStore(),
     EmployeeStore: new EmployeeStore(),
     AbsenceTypeStore: new AbsenceTypeStore(),
     AbsenceStore: new AbsenceStore()
 }
 
-import createBrowserHistory from 'history/lib/createBrowserHistory'
-var history = createBrowserHistory();
+// TODO: Consider how to do history well.
+import createHistory from 'history/lib/createHashHistory'
+var history = createHistory();
 
 var actions = require('./actions.js')(history);
 
@@ -43,6 +42,3 @@ ReactDOM.render((
         </Route>
     </Router>
 ), document.getElementById('app'));
-
-window.googleLoaded = () => window.dispatchEvent(new Event('googleloaded'));
-
