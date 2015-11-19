@@ -8,7 +8,7 @@ app.get('/', function (req, res) {
 });
 
 app.use('/api', require('./api'));
-app.use('/static', express.static('../frontend/dist/'));
+app.use('/static', express.static('src/frontend/dist/'));
 
 var server = app.listen(process.env.PORT || 3001, function () {
     var host = server.address().address;

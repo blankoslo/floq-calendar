@@ -1,3 +1,5 @@
 *.swo
 *.swp
 src/backend/node_modules
+src/frontend/node_modules
+src/frontend/dist/js
