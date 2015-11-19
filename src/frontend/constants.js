@@ -19,8 +19,8 @@ var constants = {
     'August', 'September', 'Oktober', 'November', 'Desember'],
 
     ABSENCE_TYPE_COLORS: {
-        '1': 'red',
-        '2': 'green'
+        '1': '#f8485e',
+        '2': '#59cbe8'
     }
 };
 
