@@ -32,15 +32,13 @@ var EmployeeRowCalendar = React.createClass({
             let monthKey = d.getMonth().toString();
             let dateKey = d.getDate().toString();
 
-            let print = ' ';
             let style = {}
             if (absenceDays[yearKey] && absenceDays[yearKey][monthKey]
                     && absenceDays[yearKey][monthKey][dateKey]) {
-                print = 'I';
                 var type = absenceDays[yearKey][monthKey][dateKey].type;
-                style.color = constants.ABSENCE_TYPE_COLORS[type];
+                style['background-color'] = constants.ABSENCE_TYPE_COLORS[type];
             }
-            days.push(<td style={style}>{print}</td>);
+            days.push(<td style={style}> </td>);
         }
 
         return (
