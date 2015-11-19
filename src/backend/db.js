@@ -3,7 +3,7 @@ var Promise = require('promise');
 var pg = require('pg');
 // TODO: This is the dev-server details. We don't care if this gets fucked up,
 // but shouldn't be in git. Use env-variables.
-var cs = 'postgres://qqpzgylo:xVINSxGAIrwBxAMAsn6Ts1U63FZ7aQJY@horton.elephantsql.com:5432/qqpzgylo';
+var cs = process.env.DATABASE_URL || 'postgres://qqpzgylo:xVINSxGAIrwBxAMAsn6Ts1U63FZ7aQJY@horton.elephantsql.com:5432/qqpzgylo';
 
 module.exports = {
     singleQuery: function(query, input) {
