@@ -13,8 +13,7 @@ var stores = {
     AbsenceStore: new AbsenceStore()
 }
 
-// TODO: Consider how to do history well.
-import createHistory from 'history/lib/createHashHistory'
+import createHistory from 'history/lib/createBrowserHistory'
 var history = createHistory();
 
 var actions = require('./actions.js')(history);
