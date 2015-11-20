@@ -5,12 +5,8 @@ var GoogleSignIn = require('./googleSignIn.jsx');
 
 var AppWrapper = React.createClass({
     mixins: [
-        Fluxxor.FluxMixin(React),
+        Fluxxor.FluxMixin(React)
     ],
-
-    componentWillMount() {
-        this.getFlux().actions.getLoggedInEmployee();
-    },
 
     render() {
         return (

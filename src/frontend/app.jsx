@@ -26,6 +26,7 @@ flux.on('dispatch', function(type, payload) {
 });
 
 var AppWrapper = require('./components/appWrapper.jsx');
+var LinkPage = require('./components/linkPage.jsx');
 var AllCalendar = require('./components/allCalendar.jsx');
 var EmployeeCalendar = require('./components/employeeCalendar.jsx');
 
@@ -35,8 +36,9 @@ function createFluxComponent(Component, props) {
 
 ReactDOM.render((
     <Router history={history} createElement={createFluxComponent}>
-        <Route path="/" component={AppWrapper}>
-            <Route path="/calendar" component={AllCalendar}/>
+        <Route path="/calendar" component={AppWrapper}>
+            <IndexRoute component={LinkPage}/>
+            <Route path="/calendar/all" component={AllCalendar}/>
             <Route path="/calendar/:employeeId" component={EmployeeCalendar}/>
         </Route>
     </Router>
