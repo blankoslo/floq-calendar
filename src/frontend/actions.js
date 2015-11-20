@@ -8,15 +8,8 @@ var actionsClosure = function(history) {
         getLoggedInEmployee() {
             var token = window.id_token;
             apiClient.getLoggedInEmployee(token).then(
-                (res) => {
-                    this.dispatch(constants.GET_LOGGED_IN_EMPLOYEE_SUCCEEDED, res);
-                    //history.pushState(null, `/calendar/${res.id}`);
-                    history.pushState(null, `/calendar`);
-                },
-                (err) => {
-                    history.pushState(null, `/`);
-                    console.log('TODO: handle this error:', err);
-                }
+                (res) => this.dispatch(constants.GET_LOGGED_IN_EMPLOYEE_SUCCEEDED, res),
+                (err) => console.log('TODO: handle this error:', err)
             );
         },
 
