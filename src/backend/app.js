@@ -2,7 +2,7 @@ var express = require('express');
 
 var app = express();
 
-app.use(require('./herokuHttpsRedirect.js'));
+app.use(require('common').herokuHttpsRedirect);
 
 app.get('/', function (req, res) {
     // TODO: This is pretty ad-hoc...

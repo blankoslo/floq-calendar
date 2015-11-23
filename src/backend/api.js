@@ -3,7 +3,8 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 
 var db = require('./db.js');
-var authenticate = require('./authenticate.js');
+
+var common = require('common');
 
 var api = express();
 
@@ -12,7 +13,23 @@ api.use(cors());
 api.options('*', cors());
 
 // Makes sure token is correct.
-api.use(authenticate());
+function authWrapper(req, res, next) {
+    common.authenticate(req.headers.authorization)
+        .then(
+            (data) => {
+                req.googleuser = data;
+                next();
+            },
+            (err) => {
+                res.status(401).json({
+                    success: false,
+                    data: err
+                });
+            }
+        )
+}
+api.use(authWrapper);
+
 // Parses all request-bodies to JSON.
 api.use(bodyParser.json());
 
