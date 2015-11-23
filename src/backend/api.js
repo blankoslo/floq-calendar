@@ -3,7 +3,6 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 
 var db = require('./db.js');
-var authenticate = require('./authenticate.js');
 
 var api = express();
 
@@ -12,7 +11,7 @@ api.use(cors());
 api.options('*', cors());
 
 // Makes sure token is correct.
-api.use(authenticate());
+api.use(require('common').authenticate);
 // Parses all request-bodies to JSON.
 api.use(bodyParser.json());
 
