@@ -2,9 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
-var db = require('./db.js');
-
 var common = require('common');
+var db = common.pgsql;
 
 var api = express();
 
@@ -13,22 +12,7 @@ api.use(cors());
 api.options('*', cors());
 
 // Makes sure token is correct.
-function authWrapper(req, res, next) {
-    common.authenticate(req.headers.authorization)
-        .then(
-            (data) => {
-                req.googleuser = data;
-                next();
-            },
-            (err) => {
-                res.status(401).json({
-                    success: false,
-                    data: err
-                });
-            }
-        )
-}
-api.use(authWrapper);
+api.use(common.auth.middleware);
 
 // Parses all request-bodies to JSON.
 api.use(bodyParser.json());
