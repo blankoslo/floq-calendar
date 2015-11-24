@@ -2,9 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var cors = require('cors');
 
-var db = require('./db.js');
-
 var common = require('common');
+var db = common.pgsql;
 
 var api = express();
 
