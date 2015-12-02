@@ -11,9 +11,10 @@ var MonthCalendar = React.createClass({
         var now = this.props.month;
 
         return (
-            <div className="month">
-                <h3>{monthNames[now.getMonth()]}, {now.getFullYear()}</h3>
-                <table className="month-table">
+            <div className="mdl-cell mdl-cell--4-col">
+                <h5>{monthNames[now.getMonth()]}, {now.getFullYear()}</h5>
+                <table className="month-cal-table">
+                    <colgroup span="7" className='day-col'/>
                     <thead><tr>{calHeader}</tr></thead>
                     <tbody>{this._generateRows(now)}</tbody>
                 </table>
