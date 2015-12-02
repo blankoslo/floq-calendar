@@ -44,7 +44,8 @@ var DateCell = React.createClass({
         if (!this.props.absenceDay) return {};
 
         return {
-            color: constants.ABSENCE_TYPE_COLORS[this.props.absenceDay.type]
+            color: 'white',
+            backgroundColor: constants.ABSENCE_TYPE_COLORS[this.props.absenceDay.type]
         }
     }
 });

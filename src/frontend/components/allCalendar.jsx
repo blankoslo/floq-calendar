@@ -18,12 +18,12 @@ var AllCalendar = React.createClass({
 
     componentDidMount() {
         var scrollable = ReactDOM.findDOMNode(this.refs.scrollable);
-
-        scrollable.scrollLeft = this._initialScrollLeft();
-
-        scrollable.addEventListener('scroll', this.handleScroll);
-
         this.oldScrollWidth = scrollable.scrollWidth;
+
+        setTimeout(() => {
+            scrollable.scrollLeft = this._initialScrollLeft()
+            scrollable.addEventListener('scroll', this.handleScroll);
+        });
     },
 
     componentWillUnmount() {
@@ -104,9 +104,9 @@ var AllCalendar = React.createClass({
         });
 
         return (
-           <div className='all-calendar-outer'>
-               <div className='all-calendar-inner' ref='scrollable'>
-                   <table id='all-calendar-table'>
+           <div className='side-scroll-table-outer' style={{paddingTop: '10px'}}>
+               <div className='side-scroll-table-inner' ref='scrollable'>
+                   <table id='side-scroll-table'>
                        <AllCalendarHead range={range} now={this.state.now} ref='head'/>
                        <tbody>
                            {employeeRowCalendars}

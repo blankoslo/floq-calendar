@@ -15,17 +15,20 @@ var MonthCalendarList = React.createClass({
         // Load initial data
         this._loadAbsenceDays();
 
-        this.oldScrollHeight = document.body.scrollHeight;
-        document.body.scrollTop = this._initialScrollTop();
-        window.addEventListener('scroll', this.handleScroll);
+        this.scrollable = document.getElementsByTagName('main')[0];
+        this.oldScrollHeight = this.scrollable.scrollHeight;
+        setTimeout(() => {
+            this.scrollable.scrollTop = this._initialScrollTop();
+            this.scrollable.addEventListener('scroll', this.handleScroll);
+        });
     },
 
     componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
+        this.scrollable.removeEventListener('scroll', this.handleScroll);
     },
 
     handleScroll(event) {
-        var domNode = document.body;
+        var domNode = this.scrollable;
 
         // Top:
         if (domNode.scrollTop < 100) {
@@ -57,7 +60,7 @@ var MonthCalendarList = React.createClass({
     },
 
     componentDidUpdate() {
-        var domNode = document.body;
+        var domNode = this.scrollable;
         if (this.state.add === 'top') {
             domNode.scrollTop = (domNode.scrollHeight - this.oldScrollHeight)
                     + domNode.scrollTop;
@@ -129,7 +132,7 @@ var MonthCalendarList = React.createClass({
         }
 
         return (
-            <div id="month-list">
+            <div className='mdl-grid'>
                 {months}
             </div>
         );
@@ -149,7 +152,7 @@ var MonthCalendarList = React.createClass({
         if (!domNode) return 0;
 
         // TODO: Ultrahack to set correct offset with fixed headers. FIXME!
-        return domNode.offsetTop - 120;
+        return domNode.offsetTop - 100;
     },
 
     // TODO: Move this processing to the backend?

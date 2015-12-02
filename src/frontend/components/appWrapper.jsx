@@ -1,8 +1,6 @@
 var React = require('react');
 var Fluxxor = require('fluxxor');
 
-var GoogleSignIn = require('./googleSignIn.jsx');
-
 var AppWrapper = React.createClass({
     mixins: [
         Fluxxor.FluxMixin(React)
@@ -10,7 +8,7 @@ var AppWrapper = React.createClass({
 
     render() {
         return (
-            <div>
+            <div className='content-box'>
                 {this.props.children}
             </div>
         );
