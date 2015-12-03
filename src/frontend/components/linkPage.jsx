@@ -22,15 +22,15 @@ var LinkPage = React.createClass({
         var myCalendarLink;
 
         if (this.state.loggedInEmployee) {
-            myCalendarLink = <li><Link className="appbutton bgred" to={`/calendar/${this.state.loggedInEmployee.id}/`}>Min kalender</Link></li>;
+            myCalendarLink = <li><Link to={`/calendar/${this.state.loggedInEmployee.id}/`}>Min kalender</Link></li>;
         }
 
         return (
-            <div>
+            <div className='content-box'>
                 <h4>Gå til</h4>
                 <ul>
                     <li>
-                        <Link className="appbutton bgred" to={`/calendar/all`}>Felleskalender</Link>
+                        <Link to={`/calendar/all`}>Felleskalender</Link>
                     </li>
                     {myCalendarLink}
                 </ul>
