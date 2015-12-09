@@ -6,7 +6,7 @@ var apiClient = require('./apiClient.js')(window.config.apiUri);
 var actionsClosure = function(history) {
     var actions = {
         getLoggedInEmployee() {
-            var token = window.id_token;
+            var token = window.apiToken;
             apiClient.getLoggedInEmployee(token).then(
                 (res) => this.dispatch(constants.GET_LOGGED_IN_EMPLOYEE_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -14,7 +14,7 @@ var actionsClosure = function(history) {
         },
 
         loadAbsenceTypes() {
-            var token = window.id_token;
+            var token = window.apiToken;
             apiClient.loadAbsenceTypes(token).then(
                 (res) => this.dispatch(constants.ABSENCE_TYPES_LOAD_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -26,7 +26,7 @@ var actionsClosure = function(history) {
         },
 
         loadEmployees() {
-            var token = window.id_token;
+            var token = window.apiToken;
             apiClient.loadEmployees(token).then(
                 (res) => this.dispatch(constants.EMPLOYEE_LOAD_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -40,7 +40,7 @@ var actionsClosure = function(history) {
         loadAbsenceDays(employee, from, to) {
             // Employee (id) is not mandatory. If no employee is supplied,
             // absence_days of all employees are fetched.
-            var token = window.id_token;
+            var token = window.apiToken;
             apiClient.loadAbsenceDays(employee, from, to, token).then(
                 (res) => this.dispatch(constants.ABSENCE_LOAD_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -48,7 +48,7 @@ var actionsClosure = function(history) {
         },
 
         createAbsenceDay(employee, type, date) {
-            var token = window.id_token;
+            var token = window.apiToken;
             apiClient.createAbsenceDay(employee, type, date, token).then(
                 (res) => this.dispatch(constants.ABSENCE_CREATE_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -56,7 +56,7 @@ var actionsClosure = function(history) {
         },
 
         updateAbsenceDay(selected, absenceDay) {
-            var token = window.id_token;
+            var token = window.apiToken;
             apiClient.updateAbsenceDay(selected, absenceDay, token).then(
                 (res) => this.dispatch(constants.ABSENCE_UPDATE_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
@@ -64,7 +64,7 @@ var actionsClosure = function(history) {
         },
 
         deleteAbsenceDay(absenceDay) {
-            var token = window.id_token;
+            var token = window.apiToken;
             apiClient.deleteAbsenceDay(absenceDay, token).then(
                 (res) => this.dispatch(constants.ABSENCE_DELETE_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
