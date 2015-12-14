@@ -28,7 +28,7 @@ api.get('/employees/loggedin', function(req, res) {
         res.status(500).json({success: false, data: err});
     }
 
-    var email = req.googleuser.email;
+    var email = req.tokenData.email;
     query = 'SELECT * FROM employees WHERE email = $1'
     db.singleQuery(query, [email])
         .then(success, failure);
