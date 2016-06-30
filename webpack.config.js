@@ -2,7 +2,7 @@ var webpack = require("webpack");
 
 module.exports = {
   cache: true,
-  entry: "./app.jsx",
+  entry: ".src/frontend/app.jsx",
   output: {
     path: __dirname + "/dist/js",
     filename: "app.bundle.js"
