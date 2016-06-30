@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "test": "webpack",
-    "install": "webpack"
+    "install": "webpack",
+    "dist": "webpack"
   },
   "author": "",
   "license": "UNLICENSED",
