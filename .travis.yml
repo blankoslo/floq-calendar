@@ -18,6 +18,7 @@ deploy:
     local-dir: dist
     upload-dir: calendar
     skip-cleanup: true
+    acl: public-read
     on:
       repo: blankoslo/floq-calendar
       branch: develop
@@ -29,6 +30,7 @@ deploy:
     local-dir: dist
     upload-dir: calendar
     skip-cleanup: true
+    acl: public-read
     on:
       repo: blankoslo/floq-calendar
       branch: master
