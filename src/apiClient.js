@@ -9,14 +9,9 @@ var apiClient = function(rootUri) {
                     reject(req)
                     return;
                 };
-                
-                var res = JSON.parse(req.responseText);
-                if (!res.success) {
-                    reject(res);
-                    return
-                }
 
-                resolve(res.data);
+                var res = req.responseText ? JSON.parse(req.responseText) : {};
+                resolve(res);
             }
             req.onerror = () => reject(req);
             if (data && method == 'get') {
@@ -32,6 +27,7 @@ var apiClient = function(rootUri) {
                 req.setRequestHeader('Content-Type', 'application/json');
             }
             req.setRequestHeader('Authorization', `Bearer ${token}`);
+            req.setRequestHeader('Prefer', 'return=representation');
             req.send(data ? JSON.stringify(data) : null);
         });
     };
@@ -39,6 +35,7 @@ var apiClient = function(rootUri) {
     const xhrGet = (url, data, token) => xhr('get', url, data, token);
     const xhrPost = (url, data, token) => xhr('post', url, data, token);
     const xhrPut = (url, data, token) => xhr('put', url, data, token);
+    const xhrPatch = (url, data, token) => xhr('PATCH', url, data, token);
     const xhrDelete = (url, data, token) => xhr('delete', url, data, token);
 
     function getLoggedInEmployee(mail, token) {
@@ -50,35 +47,36 @@ var apiClient = function(rootUri) {
     };
 
     function loadAbsenceTypes(token) {
-        return xhrGet('/absence_types', null, token);
+        return xhrGet('/projects', null, token);
     };
 
-    // TODO: Does not support filtering on employee or date range yet.
     function loadAbsenceDays(employee, from, to, token) {
-        return xhrGet('/absence_days', {
-            employee,
-            from: utils.dateToISO8601Date(from),
-            to: utils.dateToISO8601Date(to)
-        }, token);
+
+        var requestPath = `/staffing?select=employee,project{id,name,billable}, date&date=gte.${utils.dateToISO8601Date(from)} &date=lte.${utils.dateToISO8601Date(to)}`;
+
+        if(employee) requestPath += `&employee=eq.${employee}`;
+
+        return xhrGet(requestPath, null, token);
     };
 
     function createAbsenceDay(employee, type, date, token) {
-        return xhrPost('/absence_days', {
-            employee,
-            type,
-            date: utils.dateToISO8601Date(date)
-        }, token);
+        return xhrPost('/staffing?select=employee,project{id,name,billable},date',
+            {'employee': employee, 'project' : type, 'date' : utils.dateToISO8601Date(date)  }
+            , token);
     };
 
-    function updateAbsenceDay(selected, absenceDay, token) {
-        absenceDay.type = selected;
-        return xhrPut('/absence_days', absenceDay, token);
+    function updateAbsenceDay(selectedProjectId, absenceDay, token) {
+        var employeeId = absenceDay.employee;
+        var date = absenceDay.date;
+
+        return xhrPatch(`/staffing?select=employee,project{id,name,billable}, date&employee=eq.${employeeId}&date=eq.${date}`, {'project' : selectedProjectId}, token);
     };
 
     function deleteAbsenceDay(absenceDay, token) {
-        return xhrDelete('/absence_days', {
-            id: Array.isArray(absenceDay.id) ? absenceDay.id : [absenceDay.id]
-        }, token);
+        var employeeId = absenceDay.employee;
+        var date = absenceDay.date;
+
+        return xhrDelete(`/staffing?employee=eq.${employeeId}&date=eq.${date}`, {}, token);
     };
 
     return {

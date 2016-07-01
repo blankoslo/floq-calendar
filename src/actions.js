@@ -21,8 +21,8 @@ var actionsClosure = function(history) {
             );
         },
 
-        absenceTypeChange(type) {
-            this.dispatch(constants.ABSENCE_TYPE_CHANGED, type);
+        absenceTypeChange(typeId) {
+            this.dispatch(constants.ABSENCE_TYPE_CHANGED, typeId);
         },
 
         loadEmployees() {
@@ -66,7 +66,7 @@ var actionsClosure = function(history) {
         deleteAbsenceDay(absenceDay) {
             var token = window.apiToken;
             apiClient.deleteAbsenceDay(absenceDay, token).then(
-                (res) => this.dispatch(constants.ABSENCE_DELETE_SUCCEEDED, res),
+                (res) => this.dispatch(constants.ABSENCE_DELETE_SUCCEEDED, absenceDay),
                 (err) => console.log('TODO: handle this error:', err)
             );
         }

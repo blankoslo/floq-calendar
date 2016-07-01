@@ -15,7 +15,7 @@ var AbsenceTypeSelector = React.createClass({
         var absenceTypes = this.getFlux().store('AbsenceTypeStore').absenceTypes;
         var selected = this.getFlux().store('AbsenceTypeStore').selected;
 
-        return { 
+        return {
             absenceTypes,
             selected
         };
@@ -28,14 +28,14 @@ var AbsenceTypeSelector = React.createClass({
     render() {
         var options = [];
         this.state.absenceTypes.forEach((type) => {
-            options.push(<option value={type.id}>{type.type}</option>);        
+            options.push(<option key={"absence" + type.id} value={type.id}>{type.name}</option>);       
         });
 
         return (
             <select value={this.state.selected} onChange={this.handleChange}>
                 {options}
             </select>
-        );    
+        );
     }
 });
 

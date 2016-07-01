@@ -47,10 +47,10 @@ var MonthCalendar = React.createClass({
 
                 let fullDate = date !== null ?
                     new Date(now.getFullYear(), now.getMonth(), date) : null;
-                days.push(<DateCell absenceDay={absenceDay} date={fullDate} employeeId={this.props.employeeId}/>);
+                days.push(<DateCell key={"datecell" + fullDate + w + d + this.props.employeeId} absenceDay={absenceDay} date={fullDate} employeeId={this.props.employeeId} day={d}/>);
             }
 
-            weeks.push(<tr className="week">{days}</tr>);
+            weeks.push(<tr key={"week" + w} className="week">{days}</tr>);
         }
 
         return weeks;

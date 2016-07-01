@@ -25,14 +25,14 @@ var EmployeeSelector = React.createClass({
     render() {
         var options = [];
         this.state.employees.forEach((employee) => {
-            options.push(<option value={employee.id}>{employee.first_name} {employee.last_name}</option>);        
+            options.push(<option key={"employees" + employee.id} value={employee.id}>{employee.first_name} {employee.last_name}</option>);
         });
 
         return (
             <select value={this.props.selected} onChange={this.handleChange}>
                 {options}
             </select>
-        );    
+        );
     }
 });
 
