@@ -5,6 +5,7 @@ var constants = require('./../constants.js');
 var AbsenceTypeStore = Fluxxor.createStore({
     initialize() {
         this.absenceTypes = [];
+        this.selected = null;
 
         // TODO: Handle CUD and loading/failure etc.
         this.bindActions(
@@ -20,9 +21,9 @@ var AbsenceTypeStore = Fluxxor.createStore({
         this.emit('change');
     },
 
-    onAbsenceTypeChange(type) {
+    onAbsenceTypeChange(typeId) {
         // The "value"-field of a <select> is a string, so we must cast.
-        this.selected = parseInt(type);
+        this.selected = typeId;
         this.emit('change');
     }
 });

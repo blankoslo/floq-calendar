@@ -27,24 +27,21 @@ var AbsenceStore = Fluxxor.createStore({
 
     onAbsenceCreated(absenceDays) {
         utils.forEachIfArray(absenceDays, this._addAbsenceDay);
-
         this.emit('change');
     },
 
     onAbsenceUpdated(absenceDays) {
         utils.forEachIfArray(absenceDays, this._updateAbsenceDay);
-
         this.emit('change');
     },
 
     onAbsenceDeleted(absenceDayIds) {
         utils.forEachIfArray(absenceDayIds, this._deleteAbsenceDay);
-
         this.emit('change');
     },
 
     _addAbsenceDay(absenceDay) {
-        var employee = absenceDay.employee.toString();
+        var employee = absenceDay.employee;
 
         if (!this.absenceDays[employee]) this.absenceDays[employee] = [];
 
@@ -52,7 +49,7 @@ var AbsenceStore = Fluxxor.createStore({
     },
 
     _updateAbsenceDay(absenceDay) {
-        var employee = absenceDay.employee.toString();
+        var employee = absenceDay.employee;
 
         if (!this.absenceDays[employee]) {
             console.error("Can't update nonexistant absence!");
@@ -60,19 +57,21 @@ var AbsenceStore = Fluxxor.createStore({
         }
 
         this.absenceDays[employee].forEach((day, i) => {
-            if (day.id === absenceDay.id) {
+            if (day.date === absenceDay.date) {
                 this.absenceDays[employee][i] = absenceDay;
             }
         });
     },
 
     _deleteAbsenceDay(absenceDay) {
-        Object.keys(this.absenceDays).forEach((employeeId) => {
-            this.absenceDays[employeeId] =
-                this.absenceDays[employeeId].filter((currDay) => {
-                return !(absenceDay.id == currDay.id);
+        Object.keys(this.absenceDays).forEach((employee) => {
+            this.absenceDays[employee] =
+                this.absenceDays[employee].filter((currDay) => {
+                return !(absenceDay.project.id === currDay.project.id &&
+                         absenceDay.date === currDay.date);
             });
         });
+
     }
 });
 

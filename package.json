@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "",
   "scripts": {
-    "test": "webpack",
-    "install": "webpack",
-    "dist": "webpack"
+    "start": "webpack-dev-server",
+    "dist": "webpack",
+    "watch": "webpack --watch"    
   },
   "author": "",
   "license": "UNLICENSED",
@@ -18,5 +18,8 @@
     "react-dom": "^0.14.0",
     "react-router": "^1.0.0-rc1",
     "webpack": "^1.12.2"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "^1.14.1"
   }
 }

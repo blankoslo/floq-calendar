@@ -5,9 +5,9 @@ var apiClient = require('./apiClient.js')(window.config.apiUri);
 // TODO: This is a pretty hacky way to do history transitions.
 var actionsClosure = function(history) {
     var actions = {
-        getLoggedInEmployee() {
+        getLoggedInEmployee(mail) {
             var token = window.apiToken;
-            apiClient.getLoggedInEmployee(token).then(
+            apiClient.getLoggedInEmployee(mail, token).then(
                 (res) => this.dispatch(constants.GET_LOGGED_IN_EMPLOYEE_SUCCEEDED, res),
                 (err) => console.log('TODO: handle this error:', err)
             );
@@ -21,8 +21,8 @@ var actionsClosure = function(history) {
             );
         },
 
-        absenceTypeChange(type) {
-            this.dispatch(constants.ABSENCE_TYPE_CHANGED, type);
+        absenceTypeChange(typeId) {
+            this.dispatch(constants.ABSENCE_TYPE_CHANGED, typeId);
         },
 
         loadEmployees() {
@@ -66,7 +66,7 @@ var actionsClosure = function(history) {
         deleteAbsenceDay(absenceDay) {
             var token = window.apiToken;
             apiClient.deleteAbsenceDay(absenceDay, token).then(
-                (res) => this.dispatch(constants.ABSENCE_DELETE_SUCCEEDED, res),
+                (res) => this.dispatch(constants.ABSENCE_DELETE_SUCCEEDED, absenceDay),
                 (err) => console.log('TODO: handle this error:', err)
             );
         }

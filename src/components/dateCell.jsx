@@ -17,7 +17,7 @@ var DateCell = React.createClass({
             return;
         }
 
-        if (!(absenceDay.type == selected)) {
+        if (!(absenceDay.project.id == selected)) {
             this.getFlux().actions.updateAbsenceDay(selected, this.props.absenceDay);
             return;
         }
@@ -28,25 +28,29 @@ var DateCell = React.createClass({
 
     render() {
        var date = this.props.date;
+       var name = this.props.absenceDay ? this.props.absenceDay.project.name : "";
 
        return (
            <td
                onClick={this.handleClick}
                className="day"
                style={this._generateStyles()}
+               title={name}
            >
                {date ? date.getDate() : null}
            </td>
-       );  
+       );
     },
 
     _generateStyles() {
-        if (!this.props.absenceDay) return {};
-
-        return {
-            color: 'white',
-            backgroundColor: constants.ABSENCE_TYPE_COLORS[this.props.absenceDay.type]
-        }
+        if (this.props.absenceDay) {
+            return {
+                color: 'white',
+                backgroundColor: constants.ABSENCE_TYPE_COLORS[this.props.absenceDay.project.billable]
+            }
+        } else if (this.props.day === 5 || this.props.day === 6) {
+            return {backgroundColor: constants.ABSENCE_TYPE_COLORS["weekend"]}
+        } else return {}
     }
 });
 
