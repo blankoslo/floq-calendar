@@ -31,9 +31,9 @@ var apiClient = function(rootUri) {
             if (data && !(method == 'get')) {
                 req.setRequestHeader('Content-Type', 'application/json');
             }
-            req.setRequestHeader('Authorization', token);
+            req.setRequestHeader('Authorization', `Bearer ${token}`);
             req.send(data ? JSON.stringify(data) : null);
-        }); 
+        });
     };
 
     const xhrGet = (url, data, token) => xhr('get', url, data, token);
@@ -41,8 +41,8 @@ var apiClient = function(rootUri) {
     const xhrPut = (url, data, token) => xhr('put', url, data, token);
     const xhrDelete = (url, data, token) => xhr('delete', url, data, token);
 
-    function getLoggedInEmployee(token) {
-        return xhrGet('/employees/loggedin', null, token);
+    function getLoggedInEmployee(mail, token) {
+        return xhrGet(`/employees?email=ilike.${mail}`, null, token);
     };
 
     function loadEmployees(token) {
