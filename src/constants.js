@@ -19,8 +19,10 @@ var constants = {
     'August', 'September', 'Oktober', 'November', 'Desember'],
 
     ABSENCE_TYPE_COLORS: {
-        '1': '#f8485e',
-        '2': '#59cbe8'
+        'billable': '#59cbe8',
+        'nonbillable': '#fdd757',
+        'unavailable': '#f8485e',
+        'weekend': '#eeeeee'
     }
 };
 

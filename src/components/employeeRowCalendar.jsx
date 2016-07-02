@@ -35,10 +35,12 @@ var EmployeeRowCalendar = React.createClass({
             let style = {}
             if (absenceDays[yearKey] && absenceDays[yearKey][monthKey]
                     && absenceDays[yearKey][monthKey][dateKey]) {
-                var type = absenceDays[yearKey][monthKey][dateKey].type;
-                style.backgroundColor = constants.ABSENCE_TYPE_COLORS[type];
+                var billable = absenceDays[yearKey][monthKey][dateKey].project.billable;
+                style.backgroundColor = constants.ABSENCE_TYPE_COLORS[billable];
+            } else if(d.getDay() === 5 || d.getDay() === 6) {
+                style.backgroundColor = constants.ABSENCE_TYPE_COLORS["weekend"]
             }
-            days.push(<td style={style}><div className='side-scroll-table-cell'></div></td>);
+            days.push(<td key={"days" + d + employeeId} style={style}><div className='side-scroll-table-cell'></div></td>);
         }
 
         return (

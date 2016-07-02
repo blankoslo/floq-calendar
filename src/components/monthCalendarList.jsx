@@ -124,6 +124,7 @@ var MonthCalendarList = React.createClass({
                 ref = "thisMonth";
             }
             months.push(<MonthCalendar
+                            key={"monthcal"+yearKey+monthKey}
                             month={m}
                             absenceDays={monthAbsenceDays}
                             ref={ref}

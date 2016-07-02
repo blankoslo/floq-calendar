@@ -1,8 +1,13 @@
 var webpack = require("webpack");
 
+const port = process.env.PORT || 8080;
+
 module.exports = {
   cache: true,
-  entry: "./app.jsx",
+  entry: [
+    `webpack-dev-server/client?http://localhost:${port}`,
+    './src/app.jsx'
+  ],
   output: {
     path: __dirname + "/dist/js",
     filename: "app.bundle.js"

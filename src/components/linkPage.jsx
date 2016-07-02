@@ -9,7 +9,7 @@ var LinkPage = React.createClass({
     ],
 
     componentWillMount() {
-        this.getFlux().actions.getLoggedInEmployee();
+        this.getFlux().actions.getLoggedInEmployee(window.userEmail);
     },
 
     getStateFromFlux() {

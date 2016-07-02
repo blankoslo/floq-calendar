@@ -93,14 +93,13 @@ var AllCalendar = React.createClass({
 
     getStateFromFlux() {
         var employees = this.getFlux().store('EmployeeStore').employees;
-
         return {employees}
     },
 
     render() {
         var range = {from: this.state.from, to: this.state.to};
         var employeeRowCalendars = this.state.employees.map((employee) => {
-            return <EmployeeRowCalendar employee={employee} range={range}/>
+            return <EmployeeRowCalendar key={"employeerow" + employee.id} employee={employee} range={range}/>
         });
 
         return (
