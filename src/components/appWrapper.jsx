@@ -8,7 +8,7 @@ var AppWrapper = React.createClass({
 
     render() {
         return (
-            <div className='main-content'>
+            <div>
                 {this.props.children}
             </div>
         );
