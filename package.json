@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "webpack-dev-server",
-    "dist": "webpack",
+    "dist": "webpack --config ./webpack-prod.config.js",
     "watch": "webpack --watch"
   },
   "author": "",
