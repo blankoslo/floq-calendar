@@ -14,7 +14,7 @@ var EmployeeStore = Fluxxor.createStore({
     },
 
     onLoggedInEmployeeLoaded(employee) {
-        this.loggedInEmployee = employee;
+        this.loggedInEmployee = employee[0];
         this.emit('change');
     },
 
