@@ -20,11 +20,6 @@ var actions = require('./actions.js')(history);
 
 var flux = new Fluxxor.Flux(stores, actions);
 
-// TODO: Only for debugging, remove later.
-flux.on('dispatch', function(type, payload) {
-    console.log("Dispatch:", type, payload);
-});
-
 var AppWrapper = require('./components/appWrapper.jsx');
 var LinkPage = require('./components/linkPage.jsx');
 var AllCalendar = require('./components/allCalendar.jsx');
