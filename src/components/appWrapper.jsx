@@ -1,18 +1,21 @@
-var React = require('react');
-var Fluxxor = require('fluxxor');
+const React = require('react');
+const Fluxxor = require('fluxxor');
 
-var AppWrapper = React.createClass({
-    mixins: [
-        Fluxxor.FluxMixin(React)
-    ],
+const AppWrapper = React.createClass({
+  propTypes: {
+    children: React.PropTypes.node
+  },
 
-    render() {
-        return (
-            <div>
-                {this.props.children}
-            </div>
-        );
-    }
+  mixins: [
+    Fluxxor.FluxMixin(React)
+  ],
+
+  render() {
+    return (
+      <div>
+        {this.props.children}
+      </div>);
+  }
 });
 
 module.exports = AppWrapper;

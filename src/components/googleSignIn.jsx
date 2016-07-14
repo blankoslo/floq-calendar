@@ -1,43 +1,42 @@
-var React = require('react');
-var Fluxxor = require('fluxxor');
+const React = require('react');
+const Fluxxor = require('fluxxor');
 
-var GoogleSignIn = React.createClass({
-    mixins: [
-        Fluxxor.FluxMixin(React)
-    ],  
+const GoogleSignIn = React.createClass({
+  mixins: [
+    Fluxxor.FluxMixin(React)
+  ],
 
-    renderGoogleLoginButton() {
-        gapi.signin2.render('my-signin2', {
-            'scope': 'profile',
-            'width': 250,
-            'height': 50, 
-            'longtitle': true,
-            'theme': 'light',
-            'onsuccess': this.onSignIn,
-            'onfailure': this.onFailure
-        })  
-    },  
+  componentDidMount() {
+    window.addEventListener('googleloaded', this.renderGoogleLoginButton);
+  },
 
-    componentDidMount() {
-        window.addEventListener('googleloaded', this.renderGoogleLoginButton);
-    },  
+  onSignIn(googleUser) {
+    const token = googleUser.getAuthResponse().id_token;
 
-    onSignIn(googleUser) {
-        var token = googleUser.getAuthResponse().id_token
+    this.getFlux().actions.googleSigninSucceeded(token);
+    this.getFlux().actions.getLoggedInEmployee();
+  },
 
-        this.getFlux().actions.googleSigninSucceeded(token);
-        this.getFlux().actions.getLoggedInEmployee();
-    },  
+  onFailure() {
+    console.log("An error occured with logging in!");
+  },
 
-    onFailure() {
-        console.log("An error occured with logging in!");
-    },  
+  renderGoogleLoginButton() {
+    gapi.signin2.render('my-signin2', {
+      scope: 'profile',
+      width: 250,
+      height: 50,
+      longtitle: true,
+      theme: 'light',
+      onsuccess: this.onSignIn,
+      onfailure: this.onFailure
+    });
+  },
 
-    render() {
-        return(
-            <div id="my-signin2"/>
-        );  
-    }   
+
+  render() {
+    return <div id='my-signin2' />;
+  }
 
 });
 

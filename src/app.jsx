@@ -1,40 +1,40 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var Fluxxor = require('fluxxor');
-import { Router, Route, IndexRoute } from 'react-router'
+const React = require('react');
+const ReactDOM = require('react-dom');
+const Fluxxor = require('fluxxor');
 
-var EmployeeStore = require('./stores/employeeStore.js');
-var AbsenceTypeStore = require('./stores/absenceTypeStore.js');
-var AbsenceStore = require('./stores/absenceStore.js');
+import { Router, Route, IndexRoute } from 'react-router';
 
-var stores = {
-    EmployeeStore: new EmployeeStore(),
-    AbsenceTypeStore: new AbsenceTypeStore(),
-    AbsenceStore: new AbsenceStore()
-}
+const EmployeeStore = require('./stores/employeeStore.js');
+const AbsenceTypeStore = require('./stores/absenceTypeStore.js');
+const AbsenceStore = require('./stores/absenceStore.js');
 
-import createHistory from 'history/lib/createBrowserHistory'
-var history = createHistory();
+const stores = {
+  EmployeeStore: new EmployeeStore(),
+  AbsenceTypeStore: new AbsenceTypeStore(),
+  AbsenceStore: new AbsenceStore()
+};
 
-var actions = require('./actions.js')(history);
+import createHistory from 'history/lib/createBrowserHistory';
+const history = createHistory();
 
-var flux = new Fluxxor.Flux(stores, actions);
+const actions = require('./actions.js')(history);
+const flux = new Fluxxor.Flux(stores, actions);
 
-var AppWrapper = require('./components/appWrapper.jsx');
-var LinkPage = require('./components/linkPage.jsx');
-var AllCalendar = require('./components/allCalendar.jsx');
-var EmployeeCalendar = require('./components/employeeCalendar.jsx');
+const AppWrapper = require('./components/appWrapper.jsx');
+const LinkPage = require('./components/linkPage.jsx');
+const AllCalendar = require('./components/allCalendar.jsx');
+const EmployeeCalendar = require('./components/employeeCalendar.jsx');
 
 function createFluxComponent(Component, props) {
-    return <Component {...props} flux={flux}/>;
+  return <Component {...props} flux={flux} />;
 }
 
 ReactDOM.render((
-    <Router history={history} createElement={createFluxComponent}>
-        <Route path="/calendar" component={AppWrapper}>
-            <IndexRoute component={LinkPage}/>
-            <Route path="/calendar/all" component={AllCalendar}/>
-            <Route path="/calendar/:employeeId" component={EmployeeCalendar}/>
-        </Route>
-    </Router>
+  <Router history={history} createElement={createFluxComponent}>
+    <Route path='/calendar' component={AppWrapper}>
+      <IndexRoute component={LinkPage} />
+      <Route path='/calendar/all' component={AllCalendar} />
+      <Route path='/calendar/:employeeId' component={EmployeeCalendar} />
+    </Route>
+  </Router>
 ), document.getElementById('app'));
