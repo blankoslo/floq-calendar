@@ -1,42 +1,41 @@
-var React = require('react');
-var Fluxxor = require('fluxxor');
-import { Link } from 'react-router'
+const React = require('react');
+const Fluxxor = require('fluxxor');
+import { Link } from 'react-router';
 
-var LinkPage = React.createClass({
-    mixins: [
-        Fluxxor.FluxMixin(React),
-        Fluxxor.StoreWatchMixin('EmployeeStore')
-    ],
+const LinkPage = React.createClass({
+  mixins: [
+    Fluxxor.FluxMixin(React),
+    Fluxxor.StoreWatchMixin('EmployeeStore')
+  ],
 
-    componentWillMount() {
-        this.getFlux().actions.getLoggedInEmployee(window.userEmail);
-    },
+  componentWillMount() {
+    this.getFlux().actions.getLoggedInEmployee(window.userEmail);
+  },
 
-    getStateFromFlux() {
-        return {
-            loggedInEmployee: this.getFlux().store('EmployeeStore').loggedInEmployee
-        }
-    },
+  getStateFromFlux() {
+    return { loggedInEmployee: this.getFlux().store('EmployeeStore').loggedInEmployee };
+  },
 
-    render() {
-        var myCalendarLink;
+  render() {
+    let myCalendar;
 
-        if (this.state.loggedInEmployee) {
-            myCalendarLink = <li><Link to={`/calendar/${this.state.loggedInEmployee.id}/`}>Min kalender</Link></li>;
-        }
-
-        return (
-            <div className='content-box'>
-                <h4>Gå til</h4>
-                <ul>
-                    <li>
-                        <Link to={`/calendar/all`}>Felleskalender</Link>
-                    </li>
-                    {myCalendarLink}
-                </ul>
-            </div>
-        );
+    if (this.state.loggedInEmployee) {
+      myCalendar = <Link to={`/calendar/${this.state.loggedInEmployee.id}/`}>Min kalender</Link>;
     }
+
+    return (
+      <div className='content-box'>
+        <h4>Gå til</h4>
+        <ul>
+          <li>
+            <Link to={'/calendar/all'}>Felleskalender</Link>
+          </li>
+          <li>
+            {myCalendar}
+          </li>
+        </ul>
+      </div>);
+  }
 });
 
 module.exports = LinkPage;

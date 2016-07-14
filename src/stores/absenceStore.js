@@ -1,12 +1,10 @@
-"use strict"
+const Fluxxor = require('fluxxor');
 
-var Fluxxor = require('fluxxor');
+const constants = require('./../constants.js');
 
-var constants = require('./../constants.js');
+const utils = require('./../utils.js');
 
-var utils = require('./../utils.js');
-
-var AbsenceStore = Fluxxor.createStore({
+const AbsenceStore = Fluxxor.createStore({
     initialize() {
         this.absenceDays = {};
 
