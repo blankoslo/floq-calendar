@@ -10,14 +10,14 @@ module.exports = {
   ],
   output: {
     path: __dirname + "/dist/js",
-    filename: "app.bundle.js"
+    filename: 'app.bundle.js'
   },
-  //devtool: "source-map",
+  // devtool: "source-map",
   module: {
     loaders: [
-      { test: /\.less$/, loader: "style!css!less" },
-      { test: /\.jsx$/, exclude: /(node_modules)/, loader: "babel" },
-      { test: /\.json$/, loader: "json" }
+      { test: /\.less$/, loader: 'style!css!less' },
+      { test: /\.jsx$/, exclude: /(node_modules)/, loader: 'babel' },
+      { test: /\.json$/, loader: 'json' }
     ]
   }
 };

@@ -1,39 +1,44 @@
-var React = require('react');
-var Fluxxor = require('fluxxor');
+const React = require('react');
+const Fluxxor = require('fluxxor');
 
-var EmployeeSelector = React.createClass({
-    mixins: [
-        Fluxxor.FluxMixin(React),
-        Fluxxor.StoreWatchMixin('EmployeeStore')
-    ],
+const EmployeeSelector = React.createClass({
+  propTypes: {
+    selected: React.PropTypes.number.isRequired
+  },
 
-    componentWillMount() {
-        // TODO: Only load if not exists.
-        this.getFlux().actions.loadEmployees();
-    },
+  mixins: [
+    Fluxxor.FluxMixin(React),
+    Fluxxor.StoreWatchMixin('EmployeeStore')
+  ],
 
-    getStateFromFlux() {
-        var employees = this.getFlux().store('EmployeeStore').employees;
+  componentWillMount() {
+    // TODO: Only load if not exists.
+    this.getFlux().actions.loadEmployees();
+  },
 
-        return {employees};
-    },
+  getStateFromFlux() {
+    const employees = this.getFlux().store('EmployeeStore').employees;
+    return { employees };
+  },
 
-    handleChange(event) {
-        this.getFlux().actions.newEmployeeSelected(event.target.value);
-    },
+  handleChange(event) {
+    this.getFlux().actions.newEmployeeSelected(event.target.value);
+  },
 
-    render() {
-        var options = [];
-        this.state.employees.forEach((employee) => {
-            options.push(<option key={"employees" + employee.id} value={employee.id}>{employee.first_name} {employee.last_name}</option>);
-        });
+  render() {
+    const options = [];
+    this.state.employees.forEach((employee) => {
+      options.push(
+        <option key={`employees${employee.id}`} value={employee.id}>
+          {employee.first_name} {employee.last_name}
+        </option>);
+    });
 
-        return (
-            <select value={this.props.selected} onChange={this.handleChange}>
-                {options}
-            </select>
-        );
-    }
+    return (
+      <select value={this.props.selected} onChange={this.handleChange}>
+        {options}
+      </select>);
+  }
 });
 
 module.exports = EmployeeSelector;

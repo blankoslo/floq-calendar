@@ -1,57 +1,63 @@
-var React = require('react');
-var Fluxxor = require('fluxxor');
+const React = require('react');
+const Fluxxor = require('fluxxor');
 
-var constants = require('./../constants.js');
+const constants = require('./../constants.js');
 
-var DateCell = React.createClass({
-    mixins: [
-        Fluxxor.FluxMixin(React),
-    ],
+const DateCell = React.createClass({
+  propTypes: {
+    absenceDay: React.PropTypes.object,
+    employeeId: React.PropTypes.number,
+    date: React.PropTypes.object,
+    day: React.PropTypes.number
+  },
 
-    handleClick(event) {
-        var selected = this.getFlux().store('AbsenceTypeStore').selected;
-        let absenceDay = this.props.absenceDay;
+  mixins: [
+    Fluxxor.FluxMixin(React),
+  ],
 
-        if (!absenceDay) {
-            this.getFlux().actions.createAbsenceDay(this.props.employeeId, selected, this.props.date);
-            return;
-        }
+  handleClick() {
+    const selected = this.getFlux().store('AbsenceTypeStore').selected;
+    const absenceDay = this.props.absenceDay;
 
-        if (!(absenceDay.project.id == selected)) {
-            this.getFlux().actions.updateAbsenceDay(selected, this.props.absenceDay);
-            return;
-        }
-
-        this.getFlux().actions.deleteAbsenceDay(absenceDay);
-
-    },
-
-    render() {
-       var date = this.props.date;
-       var name = this.props.absenceDay ? this.props.absenceDay.project.name : "";
-
-       return (
-           <td
-               onClick={this.handleClick}
-               className="day"
-               style={this._generateStyles()}
-               title={name}
-           >
-               {date ? date.getDate() : null}
-           </td>
-       );
-    },
-
-    _generateStyles() {
-        if (this.props.absenceDay) {
-            return {
-                color: 'white',
-                backgroundColor: constants.ABSENCE_TYPE_COLORS[this.props.absenceDay.project.billable]
-            }
-        } else if (this.props.day === 5 || this.props.day === 6) {
-            return {backgroundColor: constants.ABSENCE_TYPE_COLORS["weekend"]}
-        } else return {}
+    if (!absenceDay) {
+      this.getFlux().actions.createAbsenceDay(this.props.employeeId, selected, this.props.date);
+      return;
     }
+
+    if (!(absenceDay.project.id === selected)) {
+      this.getFlux().actions.updateAbsenceDay(selected, this.props.absenceDay);
+      return;
+    }
+
+    this.getFlux().actions.deleteAbsenceDay(absenceDay);
+  },
+
+  generateStyles() {
+    if (this.props.absenceDay) {
+      return {
+        color: 'white',
+        backgroundColor: constants.ABSENCE_TYPE_COLORS[this.props.absenceDay.project.billable]
+      };
+    } else if (this.props.day === 5 || this.props.day === 6) {
+      return { backgroundColor: constants.ABSENCE_TYPE_COLORS.weekend };
+    } return {};
+  },
+
+  render() {
+    const date = this.props.date;
+    const name = this.props.absenceDay ? this.props.absenceDay.project.name : '';
+
+    return (
+      <td
+        onClick={this.handleClick}
+        className='day'
+        style={this.generateStyles()}
+        title={name}
+      >
+        {date ? date.getDate() : null}
+      </td>
+     );
+  }
 });
 
 module.exports = DateCell;

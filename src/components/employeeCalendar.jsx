@@ -1,22 +1,24 @@
-var React = require('react');
+const React = require('react');
 
-var AbsenceTypeSelector = require('./absenceTypeSelector.jsx');
-var EmployeeSelector = require('./employeeSelector.jsx');
-var MonthCalendarList = require('./monthCalendarList.jsx');
+const AbsenceTypeSelector = require('./absenceTypeSelector.jsx');
+const EmployeeSelector = require('./employeeSelector.jsx');
+const MonthCalendarList = require('./monthCalendarList.jsx');
 
-var EmployeeCalendar = React.createClass({
-    render() {
-        var employeeId = parseInt(this.props.params.employeeId);
-        return (
-            <div>
-                <div className='top-fixed-menu'>
-                    <AbsenceTypeSelector/>
-                    <EmployeeSelector selected={employeeId}/>
-                </div>
-                <MonthCalendarList employeeId={employeeId}/>
-            </div>
-        );
-    }
-});
+const EmployeeCalendar = (props) => {
+  const employeeId = parseInt(props.params.employeeId);
+
+  return (
+    <div>
+      <div className='top-fixed-menu'>
+        <AbsenceTypeSelector />
+        <EmployeeSelector selected={employeeId} />
+      </div>
+      <MonthCalendarList employeeId={employeeId} />
+    </div>);
+};
+
+EmployeeCalendar.propTypes = {
+  params: React.PropTypes.object.isRequired
+};
 
 module.exports = EmployeeCalendar;
