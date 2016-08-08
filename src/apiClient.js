@@ -50,7 +50,7 @@ const apiClient = (rootUri) => {
   }
 
   function loadAbsenceTypes(token) {
-    return xhrGet('/projects', null, token);
+    return xhrGet('/projects?billable=eq.unavailable', null, token);
   }
 
   function loadAbsenceDays(employee, from, to, token) {
