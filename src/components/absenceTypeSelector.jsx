@@ -25,7 +25,7 @@ const AbsenceTypeSelector = React.createClass({
   },
 
   render() {
-    let options = [];
+    const options = [];
     this.state.absenceTypes.forEach((type) => {
       options.push(<option key={`absence${type.id}`} value={type.id}>{type.name}</option>);
     });

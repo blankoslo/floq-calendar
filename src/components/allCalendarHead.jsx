@@ -31,7 +31,7 @@ const AllCalendarHead = React.createClass({
         if (d.getYear() === now.getYear() && d.getMonth() === now.getMonth()) {
           ref = 'thisMonth';
         }
-        let span = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+        const span = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
         months.push(
           <th key={`monthheader${d}`} ref={ref} colSpan={span}>
             {monthNames[d.getMonth()]}, {d.getFullYear()}
