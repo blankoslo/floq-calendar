@@ -26,14 +26,14 @@ const MonthCalendar = React.createClass({
 
     // TODO: Dynamically find # of weeks (rows).
     for (let w = 0; w < 6; w++) {
-      let days = [];
+      const days = [];
       for (let d = 0; d < 7; d++) {
         const cell = w * 7 + d;
         const date = !(cell < firstDay || cell - firstDay >= daysInMonth) ?
                   (cell - firstDay) + 1 : null;
 
-        let absenceDay = absenceDays && date && absenceDays[date] ? absenceDays[date] : null;
-        let fullDate = date !== null ? new Date(now.getFullYear(), now.getMonth(), date) : null;
+        const absenceDay = absenceDays && date && absenceDays[date] ? absenceDays[date] : null;
+        const fullDate = date !== null ? new Date(now.getFullYear(), now.getMonth(), date) : null;
 
         days.push(
           <DateCell

@@ -1,23 +1,29 @@
-var webpack = require("webpack");
+const webpack = require('webpack');
 
 const port = process.env.PORT || 8080;
 
 module.exports = {
-  cache: true,
   entry: [
     `webpack-dev-server/client?http://localhost:${port}`,
+    'webpack/hot/only-dev-server',
     './src/app.jsx'
   ],
   output: {
-    path: __dirname + "/dist/js",
+    path: `${__dirname}/dist/js`,
     filename: 'app.bundle.js'
   },
-  // devtool: "source-map",
+  plugins: [
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  devtool: 'source-map',
   module: {
+    preLoaders: [{ test: /\.js?$/, loaders: ['eslint'] }],
     loaders: [
-      { test: /\.less$/, loader: 'style!css!less' },
-      { test: /\.jsx$/, exclude: /(node_modules)/, loader: 'babel' },
-      { test: /\.json$/, loader: 'json' }
+        { test: /\.less$/, loader: 'style!css!less' },
+        { test: /\.jsx$/,
+          loaders: ['react-hot', 'babel'],
+          exclude: /node_modules/,
+          include: __dirname }
     ]
   }
 };
