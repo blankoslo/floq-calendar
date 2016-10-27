@@ -4,8 +4,18 @@ import DateCell from './dateCell.jsx';
 
 import { MONTH_NAMES as monthNames } from './../constants.js';
 
-const calHeader = [<th>ma</th>, <th>ti</th>, <th>on</th>, <th>to</th>,
-  <th>fr</th>, <th>lø</th>, <th>sø</th>];
+const calHeader = (
+  <thead>
+    <tr>
+      <th>ma</th>
+      <th>ti</th>
+      <th>on</th>
+      <th>to</th>
+      <th>fr</th>
+      <th>lø</th>
+      <th>sø</th>
+    </tr>
+  </thead>);
 
 class MonthCalendar extends Component {
   generateRows(now) {
@@ -33,13 +43,21 @@ class MonthCalendar extends Component {
         days.push(
           <DateCell
             key={`datecell-${fullDate}-${w}-${d}-${this.props.employeeId}`}
-            absenceDay={absenceDay} date={fullDate} employeeId={this.props.employeeId} day={d}
+            absenceDay={absenceDay}
+            date={fullDate}
+            employeeId={this.props.employeeId}
+            day={d}
           />);
       }
 
-      weeks.push(<tr key={`week ${w}`} className='week'>{days}</tr>);
+      weeks.push(
+        <tr
+          key={w}
+          className='week'
+        >
+          {days}
+        </tr>);
     }
-
     return weeks;
   }
 
@@ -51,7 +69,7 @@ class MonthCalendar extends Component {
         <h5>{monthNames[now.getMonth()]}, {now.getFullYear()}</h5>
         <table className='month-cal-table'>
           <colgroup span='7' className='day-col' />
-          <thead><tr>{calHeader}</tr></thead>
+          {calHeader}
           <tbody>{this.generateRows(now)}</tbody>
         </table>
       </div>);
@@ -59,10 +77,7 @@ class MonthCalendar extends Component {
 }
 
 MonthCalendar.propTypes = {
-  // mapStateToProps
-
-  // mapDispatchToProps
-  absenceDays: React.PropTypes.array.isRequired,
+  absenceDays: React.PropTypes.object.isRequired,
   employeeId: React.PropTypes.number.isRequired,
   month: React.PropTypes.object.isRequired
 };
