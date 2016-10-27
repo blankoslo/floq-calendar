@@ -1,18 +1,13 @@
-const React = require('react');
+import React, { Component } from 'react';
 
-const monthNames = require('./../constants.js').MONTH_NAMES;
+import DateCell from './dateCell.jsx';
+
+import { MONTH_NAMES as monthNames } from './../constants.js';
+
 const calHeader = [<th>ma</th>, <th>ti</th>, <th>on</th>, <th>to</th>,
   <th>fr</th>, <th>lø</th>, <th>sø</th>];
 
-const DateCell = require('./dateCell.jsx');
-
-const MonthCalendar = React.createClass({
-  propTypes: {
-    absenceDays: React.PropTypes.array.isRequired,
-    employeeId: React.PropTypes.number.isRequired,
-    month: React.PropTypes.object.isRequired
-  },
-
+class MonthCalendar extends Component {
   generateRows(now) {
     // Correcting for the fact that Sunday is the first day in JavaScript,
     // while we consider Monday to be first.
@@ -46,7 +41,7 @@ const MonthCalendar = React.createClass({
     }
 
     return weeks;
-  },
+  }
 
   render() {
     const now = this.props.month;
@@ -61,6 +56,15 @@ const MonthCalendar = React.createClass({
         </table>
       </div>);
   }
-});
+}
 
-module.exports = MonthCalendar;
+MonthCalendar.propTypes = {
+  // mapStateToProps
+
+  // mapDispatchToProps
+  absenceDays: React.PropTypes.array.isRequired,
+  employeeId: React.PropTypes.number.isRequired,
+  month: React.PropTypes.object.isRequired
+};
+
+export default MonthCalendar;
