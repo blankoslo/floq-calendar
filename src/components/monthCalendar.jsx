@@ -1,18 +1,23 @@
-const React = require('react');
+import React, { Component } from 'react';
 
-const monthNames = require('./../constants.js').MONTH_NAMES;
-const calHeader = [<th>ma</th>, <th>ti</th>, <th>on</th>, <th>to</th>,
-  <th>fr</th>, <th>lø</th>, <th>sø</th>];
+import DateCell from './dateCell.jsx';
 
-const DateCell = require('./dateCell.jsx');
+import { MONTH_NAMES as monthNames } from './../constants.js';
 
-const MonthCalendar = React.createClass({
-  propTypes: {
-    absenceDays: React.PropTypes.array.isRequired,
-    employeeId: React.PropTypes.number.isRequired,
-    month: React.PropTypes.object.isRequired
-  },
+const calHeader = (
+  <thead>
+    <tr>
+      <th>ma</th>
+      <th>ti</th>
+      <th>on</th>
+      <th>to</th>
+      <th>fr</th>
+      <th>lø</th>
+      <th>sø</th>
+    </tr>
+  </thead>);
 
+class MonthCalendar extends Component {
   generateRows(now) {
     // Correcting for the fact that Sunday is the first day in JavaScript,
     // while we consider Monday to be first.
@@ -38,15 +43,23 @@ const MonthCalendar = React.createClass({
         days.push(
           <DateCell
             key={`datecell-${fullDate}-${w}-${d}-${this.props.employeeId}`}
-            absenceDay={absenceDay} date={fullDate} employeeId={this.props.employeeId} day={d}
+            absenceDay={absenceDay}
+            date={fullDate}
+            employeeId={this.props.employeeId}
+            day={d}
           />);
       }
 
-      weeks.push(<tr key={`week ${w}`} className='week'>{days}</tr>);
+      weeks.push(
+        <tr
+          key={w}
+          className='week'
+        >
+          {days}
+        </tr>);
     }
-
     return weeks;
-  },
+  }
 
   render() {
     const now = this.props.month;
@@ -56,11 +69,17 @@ const MonthCalendar = React.createClass({
         <h5>{monthNames[now.getMonth()]}, {now.getFullYear()}</h5>
         <table className='month-cal-table'>
           <colgroup span='7' className='day-col' />
-          <thead><tr>{calHeader}</tr></thead>
+          {calHeader}
           <tbody>{this.generateRows(now)}</tbody>
         </table>
       </div>);
   }
-});
+}
 
-module.exports = MonthCalendar;
+MonthCalendar.propTypes = {
+  absenceDays: React.PropTypes.object.isRequired,
+  employeeId: React.PropTypes.number.isRequired,
+  month: React.PropTypes.object.isRequired
+};
+
+export default MonthCalendar;
