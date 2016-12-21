@@ -1,0 +1,55 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+div.main {
+  padding: 1rem;
+}
+
+table.calendar {
+  margin: 1rem;
+  border-spacing: 0.1rem;
+}
+
+table.calendar td {
+  padding: 0rem;
+  margin: 0rem;
+  width: 2rem;
+  height: 2rem;
+  text-align: center;
+  background-color: #fee;
+  border: 1px solid #fff;
+}
+
+table.calendar td.edit-mode {
+  border: 1px dashed #f00;
+  cursor: pointer;
+}
+
+table.calendar td.edit-mode:hover {
+  border: 1px solid #f00;
+  cursor: pointer;
+  background-color: #ffa;
+}
+
+table.calendar td.weekend {
+  background-color: #fcc;
+}
+
+table.calendar td.event-holiday {
+  background-color: #ccf;
+}
+
+table.calendar td.event-vacation {
+  background-color: #c9f;
+}
+
+table.calendar td.event-sick {
+  background-color: #f33;
+}
+
+table.calendar td.event-leave {
+  background-color: #9f9;
+}
