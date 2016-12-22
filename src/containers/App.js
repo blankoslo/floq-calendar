@@ -74,7 +74,7 @@ class App extends React.Component {
             <MenuItem
               key={x.id}
               onClick={() => this.props.selectAbsenceReason(x.id)}
-              secondaryText='2/16'
+              secondaryText=''
             >
               {x.name}
             </MenuItem>
@@ -122,16 +122,16 @@ class App extends React.Component {
                 openOnFocus={true}
                 onNewRequest={this.handleSetEmployee}
               />
-              <IconButton
-                iconClassName='material-icons'
-              >
-                zoom_out
-              </IconButton>
-              <IconButton
-                iconClassName='material-icons'
-              >
-                zoom_in
-              </IconButton>
+              {/* <IconButton
+                  iconClassName='material-icons'
+                  >
+                  zoom_out
+                  </IconButton>
+                  <IconButton
+                  iconClassName='material-icons'
+                  >
+                  zoom_in
+                  </IconButton> */}
               <RaisedButton
                 label={absenceReasonToolLabel}
                 primary={this.props.absenceReasonTool.active}
