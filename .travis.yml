@@ -5,7 +5,7 @@ cache:
 node_js:
 - '6'
 script:
-- npm run dist
+- yarn build
 notifications:
   slack:
     secure: gtacqnqkP3aCPXiCe6+guijE1bvgCdUO33iIOhz5gF+n4uZ3nXvMogJv03lQa8yvHEjutDvWxfx/A1Yx8mV7m/zXUi1tj7aGkXkZa+hdUzhltcIav1gJ4LTsKVvcNWAwSvbXi1O3Iar2naUXIHl28KAhK6sN8MdKFey464HqX/hiwUfnkOxKJiORsHTS9iGQ3Jlo3A2n/+BfR+WNqr9rtMr4hfOHCg+wtkF/16DE8sRac4a6zvguyWVcepasDsZDBsyDcZo7GRkS95e1P3xdy/L/306CoW6Wme0qdP+orIra4VTqDck20JZ+Vglv6GvQK2gkGjIxt2sHWoBkeNsvOnYtoyo08H0bgF/uNifOutaR15978ejwrvfFKGfUIiXP/8pWG8IGTWcVOSzRLCZWvwwIdDxS+bmN/zjbJ/bXnj85wI/XFcyP7+zna29D1lVyG+naX3jLa28XMMdlWEiCGc58mwS9pYTlFAaxvZQspbXnc/v87W8uC/fNRjLszSYuVNMdLSpnQJepliqtGc/fN3xw6ihzZOby3ZwTuqd+MNFLTxDye90nx1ZBpcuQag5L2HcQS9o4Zr/zZCCN5qMYoviRlvepBzp9FeFpGY9vxDrBNdAj/iykR2HvC+SARIrg1KqWAv8Ha6TbDqTP6740mPjhlWq2D1rNA0GdOB29pug=
@@ -15,7 +15,7 @@ deploy:
   secret_access_key:
     secure: A4S85nqdCe2LylF6ruGdKRt8VnhsYMKhCvPKRsUMuQ/3DNWg6A5QR3cIjmY3Q0BfEh4q+ogXdWafT4VwrYq76xpub324O2Dh3JlGPppapRnC1ZrQplPoCEQQFOYHVtWILPNPVyLp+T/quUvbJwVYke6MhAcx1L3nqAlIp2fCR4FsW48oKsHYKba7096Jbp1BbYDYS1D4OjKXtfpVCkKTbFNPrY5gqybmxVY3n+3Uw9v9mxR8bL2UGkFZ3svaAOGICeQByHEKSSNqIoY30RbgW1Pqn4pQQVY24U8tnhCWj1q75zsZFxkNwSzeTcun5OXsQkL9aAdTX924XiYUfHY81AYMnSWUwGkiT1CYqQy0C610s4aztd4f6ciXK6+Wn8GMICDWX9L/zDYh0gBfKrvLL/pgSVoiLp07zO7VxQTbfK/jQKYRJGiZ08LGhLYTi84nccemV6jZ2z/Hq9odpHilz0KBSn3WAlU9R8CS/23aws1guUQ7eIIphnlY2san2PHs+JaHnitqrHa8IYyJlH+Fa0z6ThG63v2MK0bXY5dmNLZ6D/VDTvSmFFRElmx5KJpuXVv5B0mNlRrpiHLoi9n84cIXRMuxQRbQXCIYp6eEyuyIIaixwcuTke0pY+0e1WDFy2DniJ2LnFQwFJFN/NaowXmZKyAPz8jLVmOFu5DsKJc=
   bucket: floq-test
-  local-dir: dist
+  local-dir: build
   upload-dir: calendar
   skip-cleanup: true
   acl: public-read
@@ -27,7 +27,7 @@ deploy:
   secret_access_key:
     secure: A4S85nqdCe2LylF6ruGdKRt8VnhsYMKhCvPKRsUMuQ/3DNWg6A5QR3cIjmY3Q0BfEh4q+ogXdWafT4VwrYq76xpub324O2Dh3JlGPppapRnC1ZrQplPoCEQQFOYHVtWILPNPVyLp+T/quUvbJwVYke6MhAcx1L3nqAlIp2fCR4FsW48oKsHYKba7096Jbp1BbYDYS1D4OjKXtfpVCkKTbFNPrY5gqybmxVY3n+3Uw9v9mxR8bL2UGkFZ3svaAOGICeQByHEKSSNqIoY30RbgW1Pqn4pQQVY24U8tnhCWj1q75zsZFxkNwSzeTcun5OXsQkL9aAdTX924XiYUfHY81AYMnSWUwGkiT1CYqQy0C610s4aztd4f6ciXK6+Wn8GMICDWX9L/zDYh0gBfKrvLL/pgSVoiLp07zO7VxQTbfK/jQKYRJGiZ08LGhLYTi84nccemV6jZ2z/Hq9odpHilz0KBSn3WAlU9R8CS/23aws1guUQ7eIIphnlY2san2PHs+JaHnitqrHa8IYyJlH+Fa0z6ThG63v2MK0bXY5dmNLZ6D/VDTvSmFFRElmx5KJpuXVv5B0mNlRrpiHLoi9n84cIXRMuxQRbQXCIYp6eEyuyIIaixwcuTke0pY+0e1WDFy2DniJ2LnFQwFJFN/NaowXmZKyAPz8jLVmOFu5DsKJc=
   bucket: floq
-  local-dir: dist
+  local-dir: build
   upload-dir: calendar
   skip-cleanup: true
   acl: public-read
