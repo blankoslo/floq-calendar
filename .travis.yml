@@ -19,6 +19,7 @@ deploy:
   upload-dir: calendar
   skip-cleanup: true
   acl: public-read
+  cache_control: "max-age=0"
   on:
     repo: blankoslo/floq-calendar
     branch: develop
@@ -31,6 +32,7 @@ deploy:
   upload-dir: calendar
   skip-cleanup: true
   acl: public-read
+  cache_control: "max-age=0"
   on:
     repo: blankoslo/floq-calendar
     branch: master
