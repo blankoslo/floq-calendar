@@ -11,7 +11,8 @@ div.main {
 
 table.calendar {
   margin: 1rem;
-  border-spacing: 0.1rem;
+  border-spacing: 0rem;
+  border-collapse: collapse;
 }
 
 table.calendar td {
@@ -20,44 +21,52 @@ table.calendar td {
   width: 2rem;
   height: 2rem;
   text-align: center;
-  background-color: #fee;
-  border: 1px solid #fff;
+  background-color: #fff;
+  border: 1px solid #ccc;
 }
 
 table.calendar td.edit-mode {
-  border: 1px dashed #f00;
+  /* border: 1px dashed #f00; */
   cursor: pointer;
+  background-color: #fff6ff;
 }
 
 table.calendar td.edit-mode:hover {
-  border: 1px solid #f00;
   cursor: pointer;
+  color: #000;
   background-color: #ffa;
 }
 
 table.calendar td.weekend {
-  background-color: #fcc;
+  font-weight: bold;
+  color: #d93030;
+  background-color: #eee;
 }
 
 table.calendar td.event-holiday {
-  background-color: #ccf;
+  font-weight: bold;
+  color: #d93030;
+  background-color: #eee;
 }
 
 table.calendar td.event-vacation, div.event-vacation {
-  background-color: #c9f;
+  color: #fff;
+  background-color: #009ed9;
 }
 
 table.calendar td.event-sick, div.event-sick {
-  background-color: #f33;
+  color: #fff;
+  background-color: #d93030;
 }
 
 table.calendar td.event-leave, div.event-leave {
-  background-color: #9f9;
+  color: #fff;
+  background-color: #1eb222;
 }
 
 div.legend {
   float: left;
-  border: 1px solid #000;
+  border: 1px solid #ccc;
   width: 2rem;
   height: 2rem;
   margin: 0.6rem;
