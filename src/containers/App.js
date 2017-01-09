@@ -21,7 +21,8 @@ import {
 } from '../actions';
 
 import {
-  currentEmployee, currentAbsenceUpdates, currentEvents
+  currentEmployee, currentAbsenceUpdates, currentEvents,
+  reasonToEventClassName
 } from '../selectors';
 
 import YearCalendar from '../components/YearCalendar';
@@ -90,6 +91,7 @@ class App extends React.Component {
               onClick={() => this.props.selectAbsenceReason(x.id)}
               secondaryText=''
             >
+              <div className={`legend event-${reasonToEventClassName(x.id)}`}>&nbsp;</div>
               {x.name}
             </MenuItem>
           ))

@@ -43,14 +43,22 @@ table.calendar td.event-holiday {
   background-color: #ccf;
 }
 
-table.calendar td.event-vacation {
+table.calendar td.event-vacation, div.event-vacation {
   background-color: #c9f;
 }
 
-table.calendar td.event-sick {
+table.calendar td.event-sick, div.event-sick {
   background-color: #f33;
 }
 
-table.calendar td.event-leave {
+table.calendar td.event-leave, div.event-leave {
   background-color: #9f9;
+}
+
+div.legend {
+  float: left;
+  border: 1px solid #000;
+  width: 2rem;
+  height: 2rem;
+  margin: 0.6rem;
 }

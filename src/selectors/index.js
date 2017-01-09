@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { List } from 'immutable';
 
-const reasonToEventClassName = (reason) =>{
+export const reasonToEventClassName = (reason) =>{
   switch (reason) {
   case 'FER1000':
     return 'vacation';
