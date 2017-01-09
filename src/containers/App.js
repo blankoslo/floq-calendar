@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
+import moment from 'moment';
 
 import {
   fetchAbsenceReasons, fetchEmployees, fetchHolidays, fetchStaffing,
@@ -14,7 +15,7 @@ import {
 } from '../epics';
 
 import {
-  selectCurrentEmployee, selectPreviousYear, selectNextYear,
+  selectCurrentEmployee, setCurrentYear, selectPreviousYear, selectNextYear,
   openAbsenceReasonTool, closeAbsenceReasonTool, selectAbsenceReason,
   addAbsence, removeAbsence
 } from '../actions';
@@ -32,6 +33,18 @@ class App extends React.Component {
     this.props.fetchAbsenceReasons();
     this.props.fetchStaffing();
     this.props.fetchAbsence();
+
+    this.props.setCurrentYear(moment().year());
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      const dateId = moment().format('YYYY-M');
+      const e = document.getElementById(dateId);
+      if (e) {
+        e.scrollIntoView(true);
+      }
+    }, 0);
   }
 
   handleSetEmployee = ({ value }) => {
@@ -175,6 +188,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   selectCurrentEmployee,
+  setCurrentYear,
   selectPreviousYear,
   selectNextYear,
   openAbsenceReasonTool,

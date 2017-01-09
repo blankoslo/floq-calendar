@@ -4,6 +4,12 @@ export const selectCurrentEmployee = (id) => ({
   id
 });
 
+export const SET_CURRENT_YEAR = 'SET_CURRENT_YEAR';
+export const setCurrentYear = (currentYear) => ({
+  type: SET_CURRENT_YEAR,
+  currentYear
+});
+
 export const SELECT_PREVIOUS_YEAR = 'SELECT_PREVIOUS_YEAR';
 export const selectPreviousYear = () => ({
   type: SELECT_PREVIOUS_YEAR

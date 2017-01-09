@@ -45,7 +45,7 @@ const Calendar = (props) => {
               className={dayClassNames}
               onClick={() => editable && props.onSubmit(day)}
             >
-              {dayText}
+              <div title={dayEvents.map((x) => x.event).join()}>{dayText}</div>
             </td>
           );
         })
@@ -53,7 +53,10 @@ const Calendar = (props) => {
     </tr>
   );
   return (
-    <div style={{ float: 'left' }}>
+    <div
+      id={`${props.year}-${props.month}`}
+      style={{ float: 'left' }}
+    >
       <h5 style={{ textAlign: 'center' }}>
         {`${moment.months()[startOfMonth.month()]}`}
       </h5>

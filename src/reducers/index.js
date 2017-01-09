@@ -3,6 +3,7 @@ import { List } from 'immutable';
 
 import {
   SELECT_CURRENT_EMPLOYEE,
+  SET_CURRENT_YEAR,
   SELECT_PREVIOUS_YEAR,
   SELECT_NEXT_YEAR,
   OPEN_ABSENCE_REASON_TOOL,
@@ -40,6 +41,8 @@ export default combineReducers({
   },
   currentYear: (state = 2016, action) => {
     switch (action.type) {
+    case SET_CURRENT_YEAR:
+      return action.currentYear;
     case SELECT_PREVIOUS_YEAR:
       return state - 1;
     case SELECT_NEXT_YEAR:
