@@ -37,7 +37,7 @@ export const currentAbsenceUpdates = createSelector(
                     && y.reason !== x.reason))
       .map((x) => x.date),
     removes: currentEmployee && originalAbsence.get(currentEmployee.id, List())
-      .filter((x) => absence.get() && !absence.get(currentEmployee.id, List())
+      .filter((x) => !absence.get(currentEmployee.id, List())
               .some((y) => y.date.isSame(x.date)))
       .map((x) => x.date)
   })
