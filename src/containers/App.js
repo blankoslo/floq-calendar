@@ -168,7 +168,7 @@ class App extends React.Component {
           <Drawer
             open={this.props.absenceReasonTool.open}
             openSecondary={true}
-            containerStyle={{height: 'calc(100% - 8.6rem)', top: '8.6rem' }}
+            containerStyle={{ height: 'calc(100% - 4.6rem)', top: '4.6rem' }}
             width={300}
           >
             {absenceReasonMenu}
