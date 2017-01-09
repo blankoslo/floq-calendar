@@ -22,26 +22,21 @@ export const currentEmployee = createSelector(
     employees.find((x) => x.id === currentEmployee) || employees.first()
 );
 
-export const currentAbsenceUpdates = createSelector(
-  currentEmployee,
-  (state) => state.originalAbsence,
-  (state) => state.absence,
-  (currentEmployee, originalAbsence, absence) => ({
-    adds: currentEmployee && absence.get(currentEmployee.id, List())
-      .filter((x) => !originalAbsence.get(currentEmployee.id, List())
-              .some((y) => y.date.isSame(x.date)))
-      .map((x) => x.date),
-    changes: currentEmployee && absence.get(currentEmployee.id, List())
-      .filter((x) => originalAbsence.get(currentEmployee.id, List())
-              .some((y) => y.date.isSame(x.date)
-                    && y.reason !== x.reason))
-      .map((x) => x.date),
-    removes: currentEmployee && originalAbsence.get(currentEmployee.id, List())
-      .filter((x) => !absence.get(currentEmployee.id, List())
-              .some((y) => y.date.isSame(x.date)))
-      .map((x) => x.date)
-  })
-);
+export const getCurrentAbsenceUpdates = (currentEmployee, originalAbsence, absence) => ({
+  adds: currentEmployee && absence.get(currentEmployee.id, List())
+    .filter((x) => !originalAbsence.get(currentEmployee.id, List())
+            .some((y) => y.date.isSame(x.date)))
+    .map((x) => x.date),
+  changes: currentEmployee && absence.get(currentEmployee.id, List())
+    .filter((x) => originalAbsence.get(currentEmployee.id, List())
+            .some((y) => y.date.isSame(x.date)
+                  && y.reason !== x.reason))
+    .map((x) => x.date),
+  removes: currentEmployee && originalAbsence.get(currentEmployee.id, List())
+    .filter((x) => !absence.get(currentEmployee.id, List())
+            .some((y) => y.date.isSame(x.date)))
+    .map((x) => x.date)
+});
 
 export const currentEvents = createSelector(
   currentEmployee,

@@ -21,8 +21,8 @@ import {
 } from '../actions';
 
 import {
-  currentEmployee, currentAbsenceUpdates, currentEvents,
-  reasonToEventClassName
+  currentEmployee, currentEvents,
+  reasonToEventClassName, getCurrentAbsenceUpdates
 } from '../selectors';
 
 import YearCalendar from '../components/YearCalendar';
@@ -69,12 +69,17 @@ class App extends React.Component {
       if (this.props.absenceReasonTool.active
           && this.props.currentEmployee.id
           && this.props.absenceReasonTool.value) {
+        const currentAbsenceUpdates = getCurrentAbsenceUpdates(
+          this.props.currentEmployee,
+          this.props.originalAbsence,
+          this.props.absence
+        );
         this.props.updateAbsence(
           this.props.currentEmployee.id,
           this.props.absenceReasonTool.value,
-          this.props.currentAbsenceUpdates.adds,
-          this.props.currentAbsenceUpdates.changes,
-          this.props.currentAbsenceUpdates.removes
+          currentAbsenceUpdates.adds,
+          currentAbsenceUpdates.changes,
+          currentAbsenceUpdates.removes
         );
       }
     } else {
@@ -181,11 +186,11 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => ({
   currentEmployee: currentEmployee(state),
-  currentAbsenceUpdates: currentAbsenceUpdates(state),
   currentYear: state.currentYear,
   employees: state.employees,
   absenceReasonTool: state.absenceReasonTool,
   absenceReasons: state.absenceReasons,
+  originalAbsence: state.originalAbsence,
   absence: state.absence,
   currentEvents: currentEvents(state)
 });
