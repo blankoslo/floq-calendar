@@ -11,6 +11,7 @@ import {
   LOAD_ABSENCE_REASONS,
   LOAD_HOLIDAYS,
   LOAD_EMPLOYEES,
+  LOAD_STAFFING,
   LOAD_ABSENCE,
   ADD_ABSENCE,
   REMOVE_ABSENCE
@@ -86,8 +87,8 @@ export default combineReducers({
   },
   originalAbsence: (state = List(), action) => {
     switch (action.type) {
-    case LOAD_ABSENCE:
-      return action.absence;
+    case LOAD_STAFFING:
+      return action.staffing;
     default:
       return state;
     }

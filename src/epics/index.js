@@ -5,7 +5,7 @@ import 'rxjs/add/observable/dom/ajax';
 import moment from 'moment';
 
 import {
-  loadAbsenceReasons, loadEmployees, loadHolidays, loadAbsence
+  loadAbsenceReasons, loadEmployees, loadHolidays, loadAbsence, loadStaffing
 } from '../actions';
 
 export const getApiConfig = () => ({
@@ -74,6 +74,29 @@ const fetchEmployeesEpic = action$ => action$
           email: y.email
         })))
         .map(loadEmployees);
+
+export const FETCH_STAFFING = 'FETCH_STAFFING';
+export const fetchStaffing = () => ({
+  type: FETCH_STAFFING
+});
+
+const fetchStaffingEpic = action$ => action$
+        .ofType(FETCH_STAFFING)
+        .mergeMap((x) => Observable.ajax({
+          url: `${getApiConfig().apiHost}/staffing`,
+          method: 'GET',
+          responseType: 'json',
+          headers: {
+            'Authorization': 'Bearer ' + getApiConfig().apiToken
+          }
+        }))
+        .map((x) => List(x.response).map((y) => ({
+          employeeId: y.employee.toString(),
+          date: moment(y.date),
+          reason: y.project
+        })))
+        .map((x) => x.groupBy((y) => y.employeeId))
+        .map(loadStaffing);
 
 export const FETCH_ABSENCE = 'FETCH_ABSENCE';
 export const fetchAbsence = () => ({
@@ -164,6 +187,7 @@ export default combineEpics(
   fetchAbsenceReasonsEpic,
   fetchHolidaysEpic,
   fetchEmployeesEpic,
+  fetchStaffingEpic,
   fetchAbsenceEpic,
   updateAbsenceEpic
 );

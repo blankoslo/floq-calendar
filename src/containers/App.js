@@ -9,8 +9,8 @@ import MenuItem from 'material-ui/MenuItem';
 import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 
 import {
-  fetchAbsenceReasons, fetchEmployees, fetchHolidays, fetchAbsence,
-  updateAbsence
+  fetchAbsenceReasons, fetchEmployees, fetchHolidays, fetchStaffing,
+  fetchAbsence, updateAbsence
 } from '../epics';
 
 import {
@@ -30,6 +30,7 @@ class App extends React.Component {
     this.props.fetchHolidays();
     this.props.fetchEmployees();
     this.props.fetchAbsenceReasons();
+    this.props.fetchStaffing();
     this.props.fetchAbsence();
   }
 
@@ -184,6 +185,7 @@ const mapDispatchToProps = {
   fetchAbsenceReasons,
   fetchHolidays,
   fetchEmployees,
+  fetchStaffing,
   fetchAbsence,
   updateAbsence
 };
