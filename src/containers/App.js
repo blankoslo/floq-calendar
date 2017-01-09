@@ -106,7 +106,9 @@ class App extends React.Component {
     return (
       <MuiThemeProvider>
         <div>
-          <Toolbar>
+          <Toolbar
+            style={{ position: 'fixed', width: '100%' }}
+          >
             <ToolbarGroup firstChild={true}>
               <IconButton
                 iconClassName='material-icons'

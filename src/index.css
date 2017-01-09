@@ -6,6 +6,7 @@ body {
 
 div.main {
   padding: 1rem;
+  padding-top: 4rem;
 }
 
 table.calendar {
