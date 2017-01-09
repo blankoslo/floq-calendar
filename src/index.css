@@ -15,6 +15,11 @@ table.calendar {
   border-collapse: collapse;
 }
 
+table.edit-mode {
+  border-spacing: 0.1rem;
+  border-collapse: separate;
+}
+
 table.calendar td {
   padding: 0rem;
   margin: 0rem;
@@ -26,7 +31,7 @@ table.calendar td {
 }
 
 table.calendar td.edit-mode {
-  /* border: 1px dashed #f00; */
+  border: 1px dashed #f00;
   cursor: pointer;
   background-color: #fff6ff;
 }

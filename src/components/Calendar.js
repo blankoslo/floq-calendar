@@ -60,7 +60,7 @@ const Calendar = (props) => {
       <h5 style={{ textAlign: 'center' }}>
         {`${moment.months()[startOfMonth.month()]}`}
       </h5>
-      <table className='calendar'>
+      <table className={classNames({ calendar: true, 'edit-mode': props.editMode })}>
         <thead>{days}</thead>
         <tbody>{dates}</tbody>
       </table>
