@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { Map, List } from 'immutable';
+import { Map } from 'immutable';
 
 export const reasonToEventClassName = (reason) =>{
   switch (reason) {
