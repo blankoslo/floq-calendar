@@ -1,4 +1,5 @@
 import React from 'react';
+import { List } from 'immutable';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AutoComplete from 'material-ui/AutoComplete';
@@ -55,7 +56,8 @@ class App extends React.Component {
   handleSetDate = (date) => {
     const reason = this.props.absenceReasonTool.value;
     if (this.props.absence.get(this.props.currentEmployee.id)
-            .some((x) => x.date.isSame(date) && x.reason === reason)) {
+            .get(date.format('YYYY-M-D'), List())
+            .some((x) => x.reason === reason)) {
       this.props.removeAbsence(this.props.currentEmployee.id, date);
     } else {
       this.props.addAbsence(this.props.currentEmployee.id, date, reason);
@@ -74,6 +76,7 @@ class App extends React.Component {
           this.props.originalAbsence,
           this.props.absence
         );
+        console.log(currentAbsenceUpdates);
         this.props.updateAbsence(
           this.props.currentEmployee.id,
           this.props.absenceReasonTool.value,

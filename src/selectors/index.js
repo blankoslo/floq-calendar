@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { List } from 'immutable';
+import { Map, List } from 'immutable';
 
 export const reasonToEventClassName = (reason) =>{
   switch (reason) {
@@ -22,21 +22,27 @@ export const currentEmployee = createSelector(
     employees.find((x) => x.id === currentEmployee) || employees.first()
 );
 
-export const getCurrentAbsenceUpdates = (currentEmployee, originalAbsence, absence) => ({
-  adds: currentEmployee && absence.get(currentEmployee.id, List())
-    .filter((x) => !originalAbsence.get(currentEmployee.id, List())
-            .some((y) => y.date.isSame(x.date)))
-    .map((x) => x.date),
-  changes: currentEmployee && absence.get(currentEmployee.id, List())
-    .filter((x) => originalAbsence.get(currentEmployee.id, List())
-            .some((y) => y.date.isSame(x.date)
-                  && y.reason !== x.reason))
-    .map((x) => x.date),
-  removes: currentEmployee && originalAbsence.get(currentEmployee.id, List())
-    .filter((x) => !absence.get(currentEmployee.id, List())
-            .some((y) => y.date.isSame(x.date)))
-    .map((x) => x.date)
-});
+export const getCurrentAbsenceUpdates =
+  (currentEmployee, originalAbsence, absence) => ({
+    adds: currentEmployee && absence.get(currentEmployee.id, Map())
+      .valueSeq().flatten()
+      .filter((x) => !originalAbsence.get(currentEmployee.id, Map())
+              .valueSeq().flatten()
+              .some((y) => y.date.isSame(x.date)))
+      .map((x) => x.date).toList(),
+    changes: currentEmployee && absence.get(currentEmployee.id, Map())
+      .valueSeq().flatten()
+      .filter((x) => originalAbsence.get(currentEmployee.id, Map())
+              .valueSeq().flatten()
+              .some((y) => y.date.isSame(x.date) && y.reason !== x.reason))
+      .map((x) => x.date).toList(),
+    removes: currentEmployee && originalAbsence.get(currentEmployee.id, Map())
+      .valueSeq().flatten()
+      .filter((x) => !absence.get(currentEmployee.id, Map())
+              .valueSeq().flatten()
+              .some((y) => y.date.isSame(x.date)))
+      .map((x) => x.date).toList()
+  });
 
 export const currentEvents = createSelector(
   currentEmployee,
@@ -49,7 +55,8 @@ export const currentEvents = createSelector(
       event: x.name,
       eventClassName: 'holiday'
     })).concat(
-      absence.get(currentEmployee && currentEmployee.id, List())
+      absence.get(currentEmployee && currentEmployee.id, Map())
+        .valueSeq().flatten()
         .map((x) => ({
           date: x.date,
           event: x.reason,

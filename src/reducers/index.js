@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { List } from 'immutable';
+import { Map, List } from 'immutable';
 
 import {
   SELECT_CURRENT_EMPLOYEE,
@@ -88,7 +88,7 @@ export default combineReducers({
       return state;
     }
   },
-  originalAbsence: (state = List(), action) => {
+  originalAbsence: (state = Map(), action) => {
     switch (action.type) {
     case LOAD_STAFFING:
       return action.staffing;
@@ -96,7 +96,7 @@ export default combineReducers({
       return state;
     }
   },
-  absence: (state = List(), action) => {
+  absence: (state = Map(), action) => {
     switch (action.type) {
     case LOAD_ABSENCE:
       return action.absence;
@@ -106,19 +106,13 @@ export default combineReducers({
         date: action.date,
         reason: action.reason
       };
-      const index = state.get(action.employeeId)
-              .findIndex((x) => action.date.isSame(x.date));
-      const updatedAbsence = index >= 0
-              ? state.get(action.employeeId).update(index, () => newAbsence)
-              : state.get(action.employeeId).push(newAbsence);
-      return state.update(action.employeeId, () => updatedAbsence);
+      return state.update(action.employeeId,
+                          (x) => x.update(action.date.format('YYYY-M-D'),
+                                          (y) => List([newAbsence])));
     case REMOVE_ABSENCE:
-      const deleteIndex = state.get(action.employeeId)
-        .findIndex((x) => action.date.isSame(x.date));
-      const removedAbsence = deleteIndex >= 0
-              ? state.get(action.employeeId).delete(deleteIndex)
-              : state.get(action.employeeId);
-      return state.update(action.employeeId, () => removedAbsence);
+      return state.update(action.employeeId,
+                          (x) => x.update(action.date.format('YYYY-M-D'),
+                                          (y) => List()));
     default:
       return state;
     }

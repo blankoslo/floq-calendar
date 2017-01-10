@@ -38,8 +38,6 @@ table.calendar td.edit-mode {
 
 table.calendar td.edit-mode:hover {
   cursor: pointer;
-  color: #000;
-  background-color: #ffa;
 }
 
 table.calendar td.weekend {
