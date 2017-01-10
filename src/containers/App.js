@@ -165,9 +165,7 @@ class App extends React.Component {
       <MuiThemeProvider>
         <div>
           <Toolbar id='toolbar'>
-            <ToolbarGroup firstChild={true}>
-            </ToolbarGroup>
-            <ToolbarGroup lastChild={true}>
+            <ToolbarGroup>
               <div id='employee-selector'>
                 <AutoComplete
                   id='employee-selector-autocomplete'
@@ -179,6 +177,8 @@ class App extends React.Component {
                   onNewRequest={this.handleSetEmployee}
                 />
               </div>
+            </ToolbarGroup>
+            <ToolbarGroup lastChild={true}>
               <IconButton
                 iconClassName='material-icons'
                 onClick={() => this.handleSetCurrentZoomLevel(-1)}

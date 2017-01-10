@@ -33,7 +33,7 @@ div.month-calendar {
   padding-right: 2rem;
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 480px) {
   div.month-calendar {
     padding: 0;
   }
