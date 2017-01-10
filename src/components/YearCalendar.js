@@ -4,7 +4,7 @@ import { Range } from 'immutable';
 import Calendar from './Calendar';
 
 export default (props) => {
-  const months = Range(1, 13).map((x) =>
+  const months = Range(1, 13).map((x) => (
     <Calendar
       key={x}
       year={props.year}
@@ -12,7 +12,8 @@ export default (props) => {
       events={props.events}
       editMode={props.editMode}
       onSubmit={props.onSubmit}
-    />);
+    />
+  ));
   return (
     <div>
       {months}

@@ -9,6 +9,72 @@ div.main {
   padding-top: 4rem;
 }
 
+/* MONTH CALENDAR */
+
+div.month-calendar {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+table.month-calendar {
+  width: 100%;
+  border-spacing: 0rem;
+  border-collapse: collapse;
+}
+
+table.month-calendar th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: normal;
+}
+
+table.month-calendar td {
+  padding: 0rem;
+  margin: 0rem;
+  width: 14.29%;
+  height: 8rem;
+  text-align: left;
+  vertical-align: top;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
+table.month-calendar div.month-calendar-event {
+  border-radius: 0.6rem;
+  padding: 0 1rem 0 1rem;
+  font-size: 1rem;
+  animation-name: event-fade-in;
+  animation-duration: 1.2s;
+  animation-timing-function: ease-in-out;
+}
+
+@-webkit-keyframes event-fade-in {
+  0% { opacity: 0; margin-top: -2rem; }
+  100% { opacity: 1; margin-top: 0rem; }
+}
+
+table.month-calendar div.month-calendar-day {
+  margin: 1rem;
+}
+
+table.month-calendar td.edit-mode {
+  border: 1px dashed #f00;
+  cursor: pointer;
+  background-color: #fff6ff;
+}
+
+table.month-calendar td.edit-mode:hover {
+  cursor: pointer;
+}
+
+table.month-calendar td.disabled {
+  background-color: #eee;
+}
+
+/* YEAR CALENDAR */
+
 table.calendar {
   margin: 1rem;
   border-spacing: 0rem;
@@ -40,13 +106,7 @@ table.calendar td.edit-mode:hover {
   cursor: pointer;
 }
 
-table.calendar td.weekend {
-  font-weight: bold;
-  color: #d93030;
-  background-color: #eee;
-}
-
-table.calendar td.event-holiday {
+td.weekend, td.event-holiday {
   font-weight: bold;
   color: #d93030;
   background-color: #eee;

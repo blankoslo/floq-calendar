@@ -16,7 +16,8 @@ import {
 } from '../epics';
 
 import {
-  selectCurrentEmployee, setCurrentYear, selectPreviousYear, selectNextYear,
+  setCurrentZoomLevel, selectCurrentEmployee, setCurrentYear, setCurrentMonth,
+  selectPreviousYear, selectNextYear,
   openAbsenceReasonTool, closeAbsenceReasonTool, selectAbsenceReason,
   addAbsence, removeAbsence
 } from '../actions';
@@ -27,6 +28,7 @@ import {
 } from '../selectors';
 
 import YearCalendar from '../components/YearCalendar';
+import MonthCalendar from '../components/MonthCalendar';
 
 class App extends React.Component {
   componentWillMount() {
@@ -37,6 +39,7 @@ class App extends React.Component {
     this.props.fetchAbsence();
 
     this.props.setCurrentYear(moment().year());
+    this.props.setCurrentMonth(moment().month() + 1);
   }
 
   componentDidMount() {
@@ -76,7 +79,6 @@ class App extends React.Component {
           this.props.originalAbsence,
           this.props.absence
         );
-        console.log(currentAbsenceUpdates);
         this.props.updateAbsence(
           this.props.currentEmployee.id,
           this.props.absenceReasonTool.value,
@@ -90,6 +92,21 @@ class App extends React.Component {
     }
   }
 
+  handleSetCurrentZoomLevel = (delta) => {
+    this.props.setCurrentZoomLevel(this.props.currentZoomLevel + delta);
+  }
+
+  handleSetCurrentMonth = (delta) => {
+    console.log(delta);
+    const n = 1 + ((((this.props.currentMonth + delta) - 1) % 12) + 12) % 12;
+    if (delta > 0 && n < this.props.currentMonth) {
+      this.props.setCurrentYear(this.props.currentYear + 1);
+    } else if (delta < 0 && n > this.props.currentMonth) {
+      this.props.setCurrentYear(this.props.currentYear - 1);
+    }
+    this.props.setCurrentMonth(n);
+  }
+
   render() {
     const absenceReasonMenu = (
       <div>
@@ -99,7 +116,9 @@ class App extends React.Component {
               onClick={() => this.props.selectAbsenceReason(x.id)}
               secondaryText=''
             >
-              <div className={`legend event-${reasonToEventClassName(x.id)}`}>&nbsp;</div>
+              <div className={`legend event-${reasonToEventClassName(x.id)}`}>
+                &nbsp;
+              </div>
               {x.name}
             </MenuItem>
           ))
@@ -113,6 +132,34 @@ class App extends React.Component {
       this.props.absenceReasonTool.active
       ? 'Save'
       : (this.props.absenceReasonTool.open ? 'Close' : 'Edit');
+    let calendar = null;
+    switch (this.props.currentZoomLevel) {
+      case 1:
+        calendar = (
+          <YearCalendar
+            year={this.props.currentYear}
+            events={this.props.currentEvents}
+            editMode={this.props.absenceReasonTool.active}
+            onSubmit={this.handleSetDate}
+          />
+        );
+        break;
+      case 2:
+        calendar = (
+          <MonthCalendar
+            year={this.props.currentYear}
+            month={this.props.currentMonth}
+            events={this.props.currentEvents}
+            editMode={this.props.absenceReasonTool.active}
+            onSubmit={this.handleSetDate}
+            onPrevMonth={() => this.handleSetCurrentMonth(-1)}
+            onNextMonth={() => this.handleSetCurrentMonth(1)}
+          />
+        );
+        break;
+      default:
+        break;
+    }
     return (
       <MuiThemeProvider>
         <div>
@@ -133,7 +180,6 @@ class App extends React.Component {
               <IconButton
                 iconClassName='material-icons'
                 onClick={() => this.props.selectNextYear()}
-                touch={false}
               >
                 arrow_forward
               </IconButton>
@@ -148,16 +194,20 @@ class App extends React.Component {
                 openOnFocus={true}
                 onNewRequest={this.handleSetEmployee}
               />
-              {/* <IconButton
-                  iconClassName='material-icons'
-                  >
-                  zoom_out
-                  </IconButton>
-                  <IconButton
-                  iconClassName='material-icons'
-                  >
-                  zoom_in
-                  </IconButton> */}
+              <IconButton
+                iconClassName='material-icons'
+                onClick={() => this.handleSetCurrentZoomLevel(-1)}
+                disabled={!(this.props.currentZoomLevel > 1)}
+              >
+                zoom_out
+              </IconButton>
+              <IconButton
+                iconClassName='material-icons'
+                onClick={() => this.handleSetCurrentZoomLevel(1)}
+                disabled={!(this.props.currentZoomLevel < 2)}
+              >
+                zoom_in
+              </IconButton>
               <RaisedButton
                 label={absenceReasonToolLabel}
                 primary={this.props.absenceReasonTool.active}
@@ -166,12 +216,7 @@ class App extends React.Component {
             </ToolbarGroup>
           </Toolbar>
           <div className='main'>
-            <YearCalendar
-              year={this.props.currentYear}
-              events={this.props.currentEvents}
-              editMode={this.props.absenceReasonTool.active}
-              onSubmit={this.handleSetDate}
-            />
+            {calendar}
           </div>
           <Drawer
             open={this.props.absenceReasonTool.open}
@@ -188,8 +233,10 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  currentZoomLevel: state.currentZoomLevel,
   currentEmployee: currentEmployee(state),
   currentYear: state.currentYear,
+  currentMonth: state.currentMonth,
   employees: state.employees,
   absenceReasonTool: state.absenceReasonTool,
   absenceReasons: state.absenceReasons,
@@ -199,10 +246,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+  setCurrentZoomLevel,
   selectCurrentEmployee,
   setCurrentYear,
   selectPreviousYear,
   selectNextYear,
+  setCurrentMonth,
   openAbsenceReasonTool,
   closeAbsenceReasonTool,
   selectAbsenceReason,

@@ -2,16 +2,26 @@ import React from 'react';
 import { Map, List, Range } from 'immutable';
 import moment from 'moment';
 import classNames from 'classnames';
+import IconButton from 'material-ui/IconButton';
 
-const daysOfWeek = List(['ma', 'ti', 'on', 'to', 'fr', 'lø', 'sø']);
-const isWeekend = (day) => day === 'lø' || day === 'sø';
+const daysOfWeek = List([
+  'Mandag',
+  'Tirsdag',
+  'Onsdag',
+  'Torsdag',
+  'Fredag',
+  'Lørdag',
+  'Søndag'
+]);
+
+const isWeekend = (day) => day === 'Lørdag' || day === 'Søndag';
 
 const getDayText = (startOfMonth, daysInMonth, x, y) => {
   const day = x + y * 7 - startOfMonth + 1;
   return (day > 0 && day <= daysInMonth) ? day.toString() : '';
 };
 
-const Calendar = (props) => {
+const MonthCalendar = (props) => {
   const events = props.events || List();
   const startOfMonth = moment(props.year + '-' + props.month, 'YYYY-M');
   const dayOfWeek = startOfMonth.isoWeekday() - 1;
@@ -36,6 +46,7 @@ const Calendar = (props) => {
                         && props.editMode;
           const dayClassNames = classNames({
             ...dayEventClassNames,
+            'month-calendar-event': true,
             'disabled': !dayText,
             'weekend': isWeekend(y),
             'edit-mode': editable
@@ -46,7 +57,8 @@ const Calendar = (props) => {
               className={dayClassNames}
               onClick={() => editable && props.onSubmit(day)}
             >
-              <div title={dayEvents.map((x) => x.event).join()}>{dayText}</div>
+              <div className='month-calendar-day' title={dayEvents.map((x) => x.event).join()}>{dayText}</div>
+              <div className={dayClassNames}>{dayEvents.map((x) => x.event).join()}</div>
             </td>
           );
         })
@@ -56,12 +68,29 @@ const Calendar = (props) => {
   return (
     <div
       id={`${props.year}-${props.month}`}
-      style={{ float: 'left' }}
+      className='month-calendar'
     >
-      <h5 style={{ textAlign: 'center' }}>
-        {`${moment.months()[startOfMonth.month()]}`}
-      </h5>
-      <table className={classNames({ calendar: true, 'edit-mode': props.editMode })}>
+      <h3 style={{ textAlign: 'center' }}>
+        <IconButton
+          iconClassName='material-icons'
+          onClick={() => props.onPrevMonth()}
+        >
+          arrow_back
+        </IconButton>
+        {`${moment.months()[startOfMonth.month()]} ${props.year}`}
+        <IconButton
+          iconClassName='material-icons'
+          onClick={() => props.onNextMonth()}
+        >
+          arrow_forward
+        </IconButton>
+      </h3>
+      <table
+        className={classNames({
+          'month-calendar': true,
+          'edit-mode': props.editMode
+        })}
+      >
         <thead>{days}</thead>
         <tbody>{dates}</tbody>
       </table>
@@ -69,4 +98,4 @@ const Calendar = (props) => {
   );
 };
 
-export default Calendar;
+export default MonthCalendar;
