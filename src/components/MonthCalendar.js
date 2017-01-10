@@ -70,21 +70,33 @@ const MonthCalendar = (props) => {
       id={`${props.year}-${props.month}`}
       className='month-calendar'
     >
-      <h3 style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', paddingTop: '2rem' }}>
         <IconButton
           iconClassName='material-icons'
+          style={{ display: 'inline-block' }}
           onClick={() => props.onPrevMonth()}
         >
           arrow_back
         </IconButton>
-        {`${moment.months()[startOfMonth.month()]} ${props.year}`}
+        <div
+          style={{ display: 'inline-block' }}
+        >
+          <span style={{ fontSize: '2rem' }}>
+            {`${moment.months()[startOfMonth.month()]}`}
+          </span>
+          <br/>
+          <span style={{ fontSize: '1rem' }}>
+            {props.year}
+          </span>
+        </div>
         <IconButton
           iconClassName='material-icons'
+          style={{ display: 'inline-block' }}
           onClick={() => props.onNextMonth()}
         >
           arrow_forward
         </IconButton>
-      </h3>
+      </div>
       <table
         className={classNames({
           'month-calendar': true,

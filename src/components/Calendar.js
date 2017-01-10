@@ -56,7 +56,7 @@ const Calendar = (props) => {
   return (
     <div
       id={`${props.year}-${props.month}`}
-      style={{ float: 'left' }}
+      style={{ display: 'inline-block' }}
     >
       <h5 style={{ textAlign: 'center' }}>
         {`${moment.months()[startOfMonth.month()]}`}

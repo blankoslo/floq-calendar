@@ -7,7 +7,7 @@ import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
+import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import moment from 'moment';
 
 import {
@@ -97,7 +97,6 @@ class App extends React.Component {
   }
 
   handleSetCurrentMonth = (delta) => {
-    console.log(delta);
     const n = 1 + ((((this.props.currentMonth + delta) - 1) % 12) + 12) % 12;
     if (delta > 0 && n < this.props.currentMonth) {
       this.props.setCurrentYear(this.props.currentYear + 1);
@@ -141,6 +140,8 @@ class App extends React.Component {
             events={this.props.currentEvents}
             editMode={this.props.absenceReasonTool.active}
             onSubmit={this.handleSetDate}
+            onPrevYear={() => this.props.selectPreviousYear()}
+            onNextYear={() => this.props.selectNextYear(1)}
           />
         );
         break;
@@ -163,37 +164,21 @@ class App extends React.Component {
     return (
       <MuiThemeProvider>
         <div>
-          <Toolbar
-            style={{ position: 'fixed', width: '100%' }}
-          >
+          <Toolbar id='toolbar'>
             <ToolbarGroup firstChild={true}>
-              <IconButton
-                iconClassName='material-icons'
-                onClick={() => this.props.selectPreviousYear()}
-              >
-                arrow_back
-              </IconButton>
-              <ToolbarTitle
-                text={this.props.currentYear.toString()}
-                style={{ padding: '0rem', color: '#000' }}
-              />
-              <IconButton
-                iconClassName='material-icons'
-                onClick={() => this.props.selectNextYear()}
-              >
-                arrow_forward
-              </IconButton>
             </ToolbarGroup>
             <ToolbarGroup lastChild={true}>
-              <AutoComplete
-                id='employeeSelector'
-                dataSource={employees}
-                filter={AutoComplete.fuzzyFilter}
-                searchText={(this.props.currentEmployee
-                          && this.props.currentEmployee.name) || ''}
-                openOnFocus={true}
-                onNewRequest={this.handleSetEmployee}
-              />
+              <div id='employee-selector'>
+                <AutoComplete
+                  id='employee-selector-autocomplete'
+                  dataSource={employees}
+                  filter={AutoComplete.fuzzyFilter}
+                  searchText={(this.props.currentEmployee
+                            && this.props.currentEmployee.name) || ''}
+                  openOnFocus={true}
+                  onNewRequest={this.handleSetEmployee}
+                />
+              </div>
               <IconButton
                 iconClassName='material-icons'
                 onClick={() => this.handleSetCurrentZoomLevel(-1)}
@@ -219,10 +204,10 @@ class App extends React.Component {
             {calendar}
           </div>
           <Drawer
+            className='absence-reason-tool-drawer'
+            containerClassName='absence-reason-tool-drawer'
             open={this.props.absenceReasonTool.open}
             openSecondary={true}
-            containerStyle={{ height: 'calc(100% - 4.6rem)', top: '4.6rem' }}
-            width={300}
           >
             {absenceReasonMenu}
           </Drawer>
