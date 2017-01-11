@@ -46,12 +46,18 @@ export const getCurrentAbsenceUpdates =
       .map((x) => x.date).toList()
   });
 
+export const absenceReasonMap = createSelector(
+  (state) => state.absenceReasons,
+  (absenceReasons) => Map(absenceReasons.map((x) => [x.id, x.name]))
+);
+
 export const currentEvents = createSelector(
   currentEmployee,
   (state) => state.currentYear,
   (state) => state.holidays,
   (state) => state.absence,
-  (currentEmployee, currentYear, holidays, absence) =>
+  absenceReasonMap,
+  (currentEmployee, currentYear, holidays, absence, absenceReasons) =>
     holidays.map((x) => ({
       date: x.date,
       event: x.name,
@@ -61,7 +67,7 @@ export const currentEvents = createSelector(
         .valueSeq().flatten()
         .map((x) => ({
           date: x.date,
-          event: x.reason,
+          event: absenceReasons.get(x.reason),
           eventClassName: reasonToEventClassName(x.reason)
         }))
     ).filter((x) => x.date.year() === currentYear)
