@@ -89,7 +89,7 @@ class MonthCalendar extends React.Component {
         id={`${props.year}-${props.month}`}
         className='month-calendar'
       >
-        <div style={{ textAlign: 'center', paddingTop: '2rem' }}>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
           <IconButton
             iconClassName='material-icons'
             style={{ display: 'inline-block' }}

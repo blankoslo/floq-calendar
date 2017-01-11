@@ -10,6 +10,12 @@ import MenuItem from 'material-ui/MenuItem';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import moment from 'moment';
 
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+const muiTheme = getMuiTheme({
+  fontFamily: 'museo-sans'
+});
+
 import {
   fetchAbsenceReasons, fetchEmployees, fetchHolidays, fetchStaffing,
   fetchAbsence, updateAbsence
@@ -160,7 +166,7 @@ class App extends React.Component {
         break;
     }
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={muiTheme}>
         <div id='outer'>
           <Toolbar id='toolbar'>
             <ToolbarGroup>
