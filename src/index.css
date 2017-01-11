@@ -1,3 +1,7 @@
+html, body, h1, h2, h3, h4, h5 {
+  font-family: museo-sans;
+}
+
 div#outer {
   position: absolute;
   width: 100%;
@@ -10,6 +14,7 @@ div#container {
   display: inline-block;
   position: absolute;
   overflow-y: scroll;
+  background-color: #f5f6f5;
 }
 
 div#main {
@@ -19,6 +24,7 @@ div#main {
 #toolbar {
   height: 56px;
   display: inline-block;
+  background-color: #f5f6f5 !important;
 }
 
 .absence-reason-tool-drawer {
@@ -68,14 +74,13 @@ table.month-calendar td {
   text-align: left;
   vertical-align: top;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 4px solid #f5f6f5;
   font-weight: 400;
   font-size: 1.6rem;
   overflow: ellipsis;
 }
 
 table.month-calendar div.month-calendar-event {
-  border-radius: 0.6rem;
   padding: 0 1rem 0 1rem;
   font-size: 1rem;
   overflow: hidden;
@@ -100,6 +105,7 @@ td.edit-mode {
 
 table.month-calendar td.disabled {
   border: none;
+  background-color: #f5f6f5;
 }
 
 /* YEAR CALENDAR */
@@ -128,6 +134,11 @@ table.calendar td {
   text-align: center;
   background-color: #fff;
   border: 1px solid #ccc;
+}
+
+table.calendar td.disabled {
+  border: none;
+  background-color: #f5f6f5;
 }
 
 table.calendar td.edit-mode:hover {

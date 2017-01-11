@@ -1,7 +1,6 @@
 import React from 'react';
 import { Range } from 'immutable';
 import IconButton from 'material-ui/IconButton';
-import moment from 'moment';
 
 import Calendar from './Calendar';
 
