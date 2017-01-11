@@ -4,6 +4,8 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
 import { Provider } from 'react-redux';
 import 'rxjs';
+import 'moment';
+import 'moment/locale/nb';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();

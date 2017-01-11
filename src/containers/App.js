@@ -42,16 +42,6 @@ class App extends React.Component {
     this.props.setCurrentMonth(moment().month() + 1);
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      const dateId = moment().format('YYYY-M');
-      const e = document.getElementById(dateId);
-      if (e) {
-        e.scrollIntoView(true);
-      }
-    }, 0);
-  }
-
   handleSetEmployee = ({ value }) => {
     this.props.selectCurrentEmployee(value);
   }
@@ -106,6 +96,12 @@ class App extends React.Component {
     this.props.setCurrentMonth(n);
   }
 
+  handleSetCurrentYearMonth = (year, month) => {
+    this.props.setCurrentYear(year);
+    this.props.setCurrentMonth(month);
+    this.props.setCurrentZoomLevel(2);
+  }
+
   render() {
     const absenceReasonMenu = (
       <div>
@@ -142,6 +138,7 @@ class App extends React.Component {
             onSubmit={this.handleSetDate}
             onPrevYear={() => this.props.selectPreviousYear()}
             onNextYear={() => this.props.selectNextYear(1)}
+            onSetCurrentYearMonth={this.handleSetCurrentYearMonth}
           />
         );
         break;
@@ -163,7 +160,7 @@ class App extends React.Component {
     }
     return (
       <MuiThemeProvider>
-        <div>
+        <div id='outer'>
           <Toolbar id='toolbar'>
             <ToolbarGroup>
               <div id='employee-selector'>
@@ -200,8 +197,10 @@ class App extends React.Component {
               />
             </ToolbarGroup>
           </Toolbar>
-          <div className='main'>
-            {calendar}
+          <div id='container'>
+            <div id='main'>
+              {calendar}
+            </div>
           </div>
           <Drawer
             className='absence-reason-tool-drawer'

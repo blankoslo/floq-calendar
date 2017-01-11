@@ -58,10 +58,23 @@ const Calendar = (props) => {
       id={`${props.year}-${props.month}`}
       style={{ display: 'inline-block' }}
     >
-      <h5 style={{ textAlign: 'center' }}>
+      <h5
+        style={{
+          textAlign: 'center',
+          textTransform: 'capitalize'
+        }}
+        onClick={() => {
+          props.onSetCurrentYearMonth(props.year, startOfMonth.month() + 1);
+        }}
+      >
         {`${moment.months()[startOfMonth.month()]}`}
       </h5>
-      <table className={classNames({ calendar: true, 'edit-mode': props.editMode })}>
+      <table
+        className={classNames({
+          calendar: true,
+          'edit-mode': props.editMode
+        })}
+      >
         <thead>{days}</thead>
         <tbody>{dates}</tbody>
       </table>

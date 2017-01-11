@@ -1,18 +1,24 @@
-body {
-  margin: 0;
-  padding: 0;
-	font-family: sans-serif;
+div#outer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
-div.main {
+div#container {
+  height: calc(100% - 56px);
+  width: 100%;
+  display: inline-block;
+  position: absolute;
+  overflow-y: scroll;
+}
+
+div#main {
   padding: 1rem;
-  padding-top: 4rem;
 }
 
 #toolbar {
-  z-index: 1000;
-  position: fixed;
-  width: 100%;
+  height: 56px;
+  display: inline-block;
 }
 
 .absence-reason-tool-drawer {
@@ -48,7 +54,7 @@ table.month-calendar {
 table.month-calendar th {
   padding: 1rem;
   text-align: left;
-  font-weight: normal;
+  font-weight: 400;
   overflow: hidden;
   max-width: 0;
 }
@@ -62,8 +68,8 @@ table.month-calendar td {
   text-align: left;
   vertical-align: top;
   background-color: #fff;
-  border: 2px solid #ccc;
-  font-weight: bold;
+  border: 1px solid #ccc;
+  font-weight: 400;
   font-size: 1.6rem;
   overflow: ellipsis;
 }
@@ -87,10 +93,9 @@ table.month-calendar div.month-calendar-day {
   margin: 1rem;
 }
 
-table.month-calendar td.edit-mode {
-  border: 1px dashed #f00;
+td.edit-mode {
   cursor: pointer;
-  background-color: #fff6ff;
+  box-shadow: inset 0 0 0.8rem #eee;
 }
 
 table.month-calendar td.edit-mode:hover {
@@ -98,7 +103,7 @@ table.month-calendar td.edit-mode:hover {
 }
 
 table.month-calendar td.disabled {
-  background-color: #eee;
+  border: none;
 }
 
 /* YEAR CALENDAR */
@@ -112,17 +117,11 @@ table.calendar {
 table.calendar td {
   padding: 0rem;
   margin: 0rem;
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   text-align: center;
   background-color: #fff;
   border: 1px solid #ccc;
-}
-
-table.calendar td.edit-mode {
-  border: 1px dashed #f00;
-  cursor: pointer;
-  background-color: #fff6ff;
 }
 
 table.calendar td.edit-mode:hover {
@@ -130,9 +129,9 @@ table.calendar td.edit-mode:hover {
 }
 
 td.weekend, td.event-holiday {
-  font-weight: bold;
-  color: #d93030;
-  background-color: #eee;
+  font-weight: 400;
+  color: #e12b38;
+  background-color: #f5f6f5;
 }
 
 table.calendar td.event-vacation, div.event-vacation {
@@ -142,12 +141,22 @@ table.calendar td.event-vacation, div.event-vacation {
 
 table.calendar td.event-sick, div.event-sick {
   color: #fff;
-  background-color: #d93030;
+  background-color: #e12b38;
+}
+
+table.calendar td.event-sick-child, div.event-sick-child {
+  color: #fff;
+  background-color: #f8485e;
 }
 
 table.calendar td.event-leave, div.event-leave {
+  color: #000;
+  background-color: #fdd757;
+}
+
+table.calendar td.event-leave-with-pay, div.event-leave-with-pay {
   color: #fff;
-  background-color: #1eb222;
+  background-color: #ffbf3f;
 }
 
 div.legend {

@@ -6,9 +6,11 @@ export const reasonToEventClassName = (reason) =>{
   case 'FER1000':
     return 'vacation';
   case 'SYK1001':
-  case 'SYK1002':
     return 'sick';
+  case 'SYK1002':
+    return 'sick-child';
   case 'PER1000':
+    return 'leave-with-pay';
   case 'PER1001':
   default:
     return 'leave';
