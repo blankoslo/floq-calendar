@@ -24,12 +24,12 @@ const getDayText = (startOfMonth, daysInMonth, x, y) => {
 class MonthCalendar extends React.Component {
   componentDidMount() {
     setTimeout(() => {
-      const dateId = moment().format('YYYY-M');
+      const dateId = this.props.year + '-' + this.props.month;
       const e = document.getElementById(dateId);
       if (e) {
         e.scrollIntoView(true);
       }
-    }, 100);
+    }, 0);
   }
 
   render() {

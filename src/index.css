@@ -98,15 +98,21 @@ td.edit-mode {
   box-shadow: inset 0 0 0.8rem #eee;
 }
 
-table.month-calendar td.edit-mode:hover {
-  cursor: pointer;
-}
-
 table.month-calendar td.disabled {
   border: none;
 }
 
 /* YEAR CALENDAR */
+
+.month-header {
+  text-align: center;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.month-header:hover {
+  color: #009ed9;
+}
 
 table.calendar {
   margin: 1rem;

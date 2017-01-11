@@ -8,7 +8,7 @@ import Calendar from './Calendar';
 class YearCalendar extends React.Component {
   componentDidMount() {
     setTimeout(() => {
-      const dateId = moment().format('YYYY-M');
+      const dateId = this.props.year + '-' + this.props.selectedMonth;
       const e = document.getElementById(dateId);
       if (e) {
         e.scrollIntoView(true);

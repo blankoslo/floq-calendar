@@ -59,10 +59,7 @@ const Calendar = (props) => {
       style={{ display: 'inline-block' }}
     >
       <h5
-        style={{
-          textAlign: 'center',
-          textTransform: 'capitalize'
-        }}
+        className='month-header'
         onClick={() => {
           props.onSetCurrentYearMonth(props.year, startOfMonth.month() + 1);
         }}

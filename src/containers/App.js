@@ -133,6 +133,7 @@ class App extends React.Component {
         calendar = (
           <YearCalendar
             year={this.props.currentYear}
+            selectedMonth={this.props.currentMonth}
             events={this.props.currentEvents}
             editMode={this.props.absenceReasonTool.active}
             onSubmit={this.handleSetDate}
