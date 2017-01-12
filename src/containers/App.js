@@ -8,7 +8,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
-import moment from 'moment';
+import dateFns from 'date-fns';
+import getYear from 'date-fns/get_year';
+import getMonth from 'date-fns/get_month';
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
@@ -44,8 +46,9 @@ class App extends React.Component {
     this.props.fetchStaffing();
     this.props.fetchAbsence();
 
-    this.props.setCurrentYear(moment().year());
-    this.props.setCurrentMonth(moment().month() + 1);
+    const now = new Date();
+    this.props.setCurrentYear(getYear(now));
+    this.props.setCurrentMonth(getMonth(now) + 1);
   }
 
   handleSetEmployee = ({ value }) => {
@@ -55,7 +58,7 @@ class App extends React.Component {
   handleSetDate = (date) => {
     const reason = this.props.absenceReasonTool.value;
     if (this.props.absence.get(this.props.currentEmployee.id)
-            .get(date.format('YYYY-M-D'), List())
+            .get(dateFns.format(date, 'YYYY-M-D'), List())
             .some((x) => x.reason === reason)) {
       this.props.removeAbsence(this.props.currentEmployee.id, date);
     } else {

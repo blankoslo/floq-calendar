@@ -1,11 +1,17 @@
 import React from 'react';
-import moment from 'moment';
 import { List, Range } from 'immutable';
 import IconButton from 'material-ui/IconButton';
+import dateFns from 'date-fns';
+import nbLocale from 'date-fns/locale/nb';
 
 import Calendar from './Calendar';
 
 const daysOfWeek = List(['ma', 'ti', 'on', 'to', 'fr', 'lø', 'sø']);
+
+const getMonthText = (year, month) => {
+  const date = new Date(year, month - 1, 1);
+  return dateFns.format(date, 'MMMM', { locale: nbLocale });
+}
 
 class YearCalendar extends React.Component {
   componentDidMount() {
@@ -47,7 +53,7 @@ class YearCalendar extends React.Component {
                   className='month-header'
                   onClick={() => setYearMonth(this.props.year, x)}
                 >
-                  {`${moment.months()[x - 1]} ${this.props.year}`}
+                  {`${getMonthText(this.props.year, x)} ${this.props.year}`}
                 </h5>
                 <Calendar
                   key={x}

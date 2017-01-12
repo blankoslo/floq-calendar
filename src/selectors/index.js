@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
 import { List, Map } from 'immutable';
+import dateFns from 'date-fns';
+import getYear from 'date-fns/get_year';
 
 export const reasonToEventClassName = (reason) =>{
   switch (reason) {
@@ -30,19 +32,20 @@ export const getCurrentAbsenceUpdates =
       .valueSeq().flatten()
       .filter((x) => !originalAbsence.get(currentEmployee.id, Map())
               .valueSeq().flatten()
-              .some((y) => y.date.isSame(x.date)))
+              .some((y) => dateFns.isSameDay(y.date, x.date)))
       .map((x) => x.date).toList(),
     changes: currentEmployee && absence.get(currentEmployee.id, Map())
       .valueSeq().flatten()
       .filter((x) => originalAbsence.get(currentEmployee.id, Map())
               .valueSeq().flatten()
-              .some((y) => y.date.isSame(x.date) && y.reason !== x.reason))
+              .some((y) => dateFns.isSameDay(y.date, x.date) &&
+                    y.reason !== x.reason))
       .map((x) => x.date).toList(),
     removes: currentEmployee && originalAbsence.get(currentEmployee.id, Map())
       .valueSeq().flatten()
       .filter((x) => !absence.get(currentEmployee.id, Map())
               .valueSeq().flatten()
-              .some((y) => y.date.isSame(x.date)))
+              .some((y) => dateFns.isSameDay(y.date, x.date)))
       .map((x) => x.date).toList()
   });
 
@@ -56,8 +59,8 @@ export const holidays = createSelector(
   (state) => state.holidays,
   (currentYear, holidays) => (
     holidays
-      .filter((x) => x.date.year() === currentYear)
-      .map((x) => [x.date.format('YYYY-M-D'), List([{
+      .filter((x) => getYear(x.date) === currentYear)
+      .map((x) => [dateFns.format(x.date, 'YYYY-M-D'), List([{
         date: x.date,
         event: x.name,
         eventClassName: 'holiday'

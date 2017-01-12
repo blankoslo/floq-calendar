@@ -1,7 +1,8 @@
 import React from 'react';
 import { List }  from 'immutable';
-import moment from 'moment';
 import IconButton from 'material-ui/IconButton';
+import dateFns from 'date-fns';
+import nbLocale from 'date-fns/locale/nb';
 
 import Calendar from './Calendar';
 
@@ -14,6 +15,11 @@ const daysOfWeek = List([
   'Lørdag',
   'Søndag'
 ]);
+
+const getMonthText = (year, month) => {
+  const date = new Date(year, month - 1, 1);
+  return dateFns.format(date, 'MMMM', { locale: nbLocale });
+}
 
 class MonthCalendar extends React.Component {
   componentDidMount() {
@@ -49,7 +55,7 @@ class MonthCalendar extends React.Component {
                 textTransform: 'capitalize'
               }}
             >
-              {`${moment.months()[this.props.month - 1]}`}
+              {`${getMonthText(this.props.year, this.props.month)}`}
             </span>
             <br/>
             <span style={{ fontSize: '1rem' }}>

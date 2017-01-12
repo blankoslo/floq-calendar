@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { Map, List } from 'immutable';
+import dateFns from 'date-fns';
 
 import {
   SET_CURRENT_ZOOM_LEVEL,
@@ -125,11 +126,11 @@ export default combineReducers({
         reason: action.reason
       };
       return state.update(action.employeeId,
-                          (x) => x.update(action.date.format('YYYY-M-D'),
+                          (x) => x.update(dateFns.format(action.date, 'YYYY-M-D'),
                                           (y) => List([newAbsence])));
     case REMOVE_ABSENCE:
       return state.update(action.employeeId,
-                          (x) => x.update(action.date.format('YYYY-M-D'),
+                          (x) => x.update(dateFns.format(action.date, 'YYYY-M-D'),
                                           (y) => List()));
     default:
       return state;
