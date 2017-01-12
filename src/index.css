@@ -144,7 +144,7 @@ div.year-calendar div.calendar-dates {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  width: 25rem;
+  width: 22.5rem;
 }
 
 .month-header {
@@ -159,7 +159,6 @@ div.year-calendar div.calendar-dates {
 
 div.year-calendar {
   display: inline-block;
-  margin: 1rem;
 }
 
 div.year-calendar div.date {
@@ -168,10 +167,10 @@ div.year-calendar div.date {
   align-items: center;
   padding: 0;
   margin: 0;
-  width: 3rem;
-  height: 3rem;
+  width: 2.8rem;
+  height: 2.8rem;
   background-color: #fff;
-  border: 4px solid #f5f6f5;
+  border: 3px solid #f5f6f5;
 }
 
 div.year-calendar div.date-disabled {
