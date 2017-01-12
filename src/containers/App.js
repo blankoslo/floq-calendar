@@ -146,6 +146,7 @@ class App extends React.Component {
             onPrevYear={() => this.props.selectPreviousYear()}
             onNextYear={() => this.props.selectNextYear(1)}
             onSetCurrentYearMonth={this.handleSetCurrentYearMonth}
+            absenceReasons={this.props.absenceReasons}
           />
         );
         break;
@@ -159,6 +160,7 @@ class App extends React.Component {
             onSubmit={this.handleSetDate}
             onPrevMonth={() => this.handleSetCurrentMonth(-1)}
             onNextMonth={() => this.handleSetCurrentMonth(1)}
+            absenceReasons={this.props.absenceReasons}
           />
         );
         break;

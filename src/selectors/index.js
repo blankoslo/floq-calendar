@@ -51,24 +51,35 @@ export const absenceReasonMap = createSelector(
   (absenceReasons) => Map(absenceReasons.map((x) => [x.id, x.name]))
 );
 
+export const holidays = createSelector(
+  (state) => state.currentYear,
+  (state) => state.holidays,
+  (currentYear, holidays) => (
+    holidays
+      .filter((x) => x.date.year() === currentYear)
+      .map((x) => [x.date.format('YYYY-M-D'), List([{
+        date: x.date,
+        event: x.name,
+        eventClassName: 'holiday'
+      }])])
+  )
+);
+
 export const currentEvents = createSelector(
   currentEmployee,
   (state) => state.currentYear,
-  (state) => state.holidays,
+  holidays,
   (state) => state.absence,
   absenceReasonMap,
   (currentEmployee, currentYear, holidays, absence, absenceReasons) =>
-    Map(holidays.map((x) => ({
-      date: x.date,
-      event: x.name,
-      eventClassName: 'holiday'
-    })).concat(
+    Map(holidays.concat(
       absence.get(currentEmployee && currentEmployee.id, Map())
-        .valueSeq().flatten()
-        .map((x) => ({
-          date: x.date,
-          event: absenceReasons.get(x.reason),
-          eventClassName: reasonToEventClassName(x.reason)
-        }))
-    ).map((x) => [x.date.format('YYYY-M-D'), List([x])]))
+        .entrySeq()
+        .filter(([k, v]) => k.startsWith(currentYear.toString()))
+        .map(([k, v]) => [k, v.map((y) => ({
+          date: y.date,
+          event: absenceReasons.get(y.reason),
+          eventClassName: reasonToEventClassName(y.reason)
+        }))])
+    ))
 );

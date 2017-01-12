@@ -1,5 +1,5 @@
 import React from 'react';
-import { Map, List, Range } from 'immutable';
+import { Map, Range } from 'immutable';
 import moment from 'moment';
 import classNames from 'classnames';
 
@@ -12,45 +12,56 @@ export const getDayText = (startOfMonth, x, y) => {
   return (day > 0 && day <= daysInMonth) ? day.toString() : '';
 };
 
-const CalendarDate = (props) => {
-  const dateText = props.year + '-' +
-                   props.month + '-' +
-                   props.day;
-  const day = props.day && moment(dateText, 'YYYY-M-D');
-  const weekend = props.day && isWeekend(day.isoWeekday());
-  const dayEvents = props.events.get(dateText, List());
-  const holiday = dayEvents.some((x) => x.eventClassName === 'holiday');
-  const dayEventClassNames = Map(dayEvents
-    .map((x) => [`event-${x.eventClassName}`, true]))
-    .toObject();
-  const editable = props.day
-                && !weekend
-                && !holiday
-                && props.editMode;
-  const dayClassNames = classNames({
-    ...dayEventClassNames,
-    'month-calendar-event': true,
-    'disabled': !props.day,
-    'weekend': weekend,
-    'edit-mode': editable
-  });
-  return (
-    <td
-      className={dayClassNames}
-      onClick={() => editable && props.onSubmit(day)}
-    >
-      <div
-        className='month-calendar-day'
-        title={dayEvents.map((x) => x.event).join()}
+class CalendarDate extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    return this.props.year !== nextProps.year ||
+           this.props.month !== nextProps.month ||
+           this.props.day !== nextProps.day ||
+           this.props.events !== nextProps.events ||
+           this.props.editMode !== nextProps.editMode
+  }
+
+  render() {
+    const props = this.props;
+    const dateText = props.year + '-' +
+                     props.month + '-' +
+                     props.day;
+    const day = props.day && moment(dateText, 'YYYY-M-D');
+    const weekend = props.day && isWeekend(day.isoWeekday());
+    const holiday = props.events &&
+                    props.events.some((x) => x.eventClassName === 'holiday');
+    const eventClassNames = props.events && Map(props.events
+      .map((x) => [`event-${x.eventClassName}`, true]))
+      .toObject();
+    const editable = props.day
+                  && !weekend
+                  && !holiday
+                  && props.editMode;
+    const dayClassNames = classNames({
+      ...eventClassNames,
+      'month-calendar-event': true,
+      'disabled': !props.day,
+      'weekend': weekend,
+      'edit-mode': editable
+    });
+    return (
+      <td
+        className={dayClassNames}
+        onClick={() => editable && props.onSubmit(day)}
       >
-        {props.day}
-      </div>
-      <div className={dayClassNames}>
-        {dayEvents.map((x) => x.event).join()}
-      </div>
-    </td>
-  );
-};
+        <div
+          className='month-calendar-day'
+          title={props.events && props.events.map((x) => x.event).join()}
+        >
+          {props.day}
+        </div>
+        <div className={dayClassNames}>
+          {props.events && props.events.map((x) => x.event).join()}
+        </div>
+      </td>
+    );
+  }
+}
 
 const Calendar = (props) => {
   const startOfMonth = moment(props.year + '-' + props.month, 'YYYY-M');
@@ -71,17 +82,23 @@ const Calendar = (props) => {
         { Range(0, 6).map((x) => (
             <tr key={props.year + '-' + props.month + '-' + x}>
               { props.daysOfWeek
-                     .map((y) => (
-                       <CalendarDate
-                         key={props.year + '-' + props.month + '-' + x + y}
-                         year={props.year}
-                         month={props.month}
-                         day={getDay(y, x)}
-                         editMode={props.editMode}
-                         events={props.events}
-                         onSubmit={props.onSubmit}
-                       />
-                     ))
+                     .map((y) => {
+                       const day = getDay(y, x);
+                       const dateText = props.year + '-' +
+                                        props.month + '-' +
+                                        day;
+                       return (
+                         <CalendarDate
+                           key={dateText + '-' + x + '-' + y}
+                           year={props.year}
+                           month={props.month}
+                           day={day}
+                           editMode={props.editMode}
+                           events={props.events.get(dateText)}
+                           onSubmit={props.onSubmit}
+                         />
+                       );
+                     })
               }
             </tr>
           ))
