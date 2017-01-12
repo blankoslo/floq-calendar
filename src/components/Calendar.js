@@ -3,79 +3,91 @@ import { Map, List, Range } from 'immutable';
 import moment from 'moment';
 import classNames from 'classnames';
 
-const daysOfWeek = List(['ma', 'ti', 'on', 'to', 'fr', 'lø', 'sø']);
-const isWeekend = (day) => day === 'lø' || day === 'sø';
+const isWeekend = (day) => day === 6 || day === 7;
 
-const getDayText = (startOfMonth, daysInMonth, x, y) => {
-  const day = x + y * 7 - startOfMonth + 1;
+export const getDayText = (startOfMonth, x, y) => {
+  const startOfMonthDay = startOfMonth.isoWeekday() - 1;
+  const daysInMonth = startOfMonth.daysInMonth();
+  const day = x + y * 7 - startOfMonthDay + 1;
   return (day > 0 && day <= daysInMonth) ? day.toString() : '';
 };
 
-const Calendar = (props) => {
-  const events = props.events || List();
-  const startOfMonth = moment(props.year + '-' + props.month, 'YYYY-M');
-  const dayOfWeek = startOfMonth.isoWeekday() - 1;
-  const daysInMonth = startOfMonth.daysInMonth();
-  const days = <tr>{daysOfWeek.map((x) => <th key={x}>{x}</th>)}</tr>;
-  const dates = Range(0, 6).map((x) =>
-    <tr key={x}>
-      { daysOfWeek.map((y) => {
-          const dayText =
-            getDayText(dayOfWeek, daysInMonth, daysOfWeek.indexOf(y), x);
-          const day = dayText && moment(props.year + '-' +
-                                        props.month + '-' +
-                                        dayText, 'YYYY-M-D');
-          const dayEvents = events.filter((x) => x.date.isSame(day));
-          const holiday = dayEvents.some((x) => x.eventClassName === 'holiday');
-          const dayEventClassNames = Map(dayEvents
-            .map((x) => [`event-${x.eventClassName}`, true]))
-            .toObject();
-          const editable = dayText
-                        && !isWeekend(y)
-                        && !holiday
-                        && props.editMode;
-          const dayClassNames = classNames({
-            ...dayEventClassNames,
-            'disabled': !dayText,
-            'weekend': isWeekend(y),
-            'edit-mode': editable
-          });
-          return (
-            <td
-              key={y}
-              className={dayClassNames}
-              onClick={() => editable && props.onSubmit(day)}
-            >
-              <div title={dayEvents.map((x) => x.event).join()}>{dayText}</div>
-            </td>
-          );
-        })
-      }
-    </tr>
-  );
+const CalendarDate = (props) => {
+  const dateText = props.year + '-' +
+                   props.month + '-' +
+                   props.day;
+  const day = props.day && moment(dateText, 'YYYY-M-D');
+  const weekend = props.day && isWeekend(day.isoWeekday());
+  const dayEvents = props.events.get(dateText, List());
+  const holiday = dayEvents.some((x) => x.eventClassName === 'holiday');
+  const dayEventClassNames = Map(dayEvents
+    .map((x) => [`event-${x.eventClassName}`, true]))
+    .toObject();
+  const editable = props.day
+                && !weekend
+                && !holiday
+                && props.editMode;
+  const dayClassNames = classNames({
+    ...dayEventClassNames,
+    'month-calendar-event': true,
+    'disabled': !props.day,
+    'weekend': weekend,
+    'edit-mode': editable
+  });
   return (
-    <div
-      id={`${props.year}-${props.month}`}
-      style={{ display: 'inline-block' }}
+    <td
+      className={dayClassNames}
+      onClick={() => editable && props.onSubmit(day)}
     >
-      <h5
-        className='month-header'
-        onClick={() => {
-          props.onSetCurrentYearMonth(props.year, startOfMonth.month() + 1);
-        }}
+      <div
+        className='month-calendar-day'
+        title={dayEvents.map((x) => x.event).join()}
       >
-        {`${moment.months()[startOfMonth.month()]}`}
-      </h5>
-      <table
-        className={classNames({
-          calendar: true,
-          'edit-mode': props.editMode
-        })}
-      >
-        <thead>{days}</thead>
-        <tbody>{dates}</tbody>
-      </table>
-    </div>
+        {props.day}
+      </div>
+      <div className={dayClassNames}>
+        {dayEvents.map((x) => x.event).join()}
+      </div>
+    </td>
+  );
+};
+
+const Calendar = (props) => {
+  const startOfMonth = moment(props.year + '-' + props.month, 'YYYY-M');
+  const getDay = (dow, day) =>
+    getDayText(startOfMonth, props.daysOfWeek.indexOf(dow), day);
+  const calendarClassNames = classNames({
+    [props.className]: true,
+    'edit-mode': props.editMode
+  });
+  return (
+    <table className={calendarClassNames}>
+      <thead>
+        <tr>
+          {props.daysOfWeek.map((x) => <th key={x}>{x}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        { Range(0, 6).map((x) => (
+            <tr key={props.year + '-' + props.month + '-' + x}>
+              { props.daysOfWeek
+                     .map((y) => (
+                       <CalendarDate
+                         key={props.year + '-' + props.month + '-' + x + y}
+                         year={props.year}
+                         month={props.month}
+                         day={getDay(y, x)}
+                         editMode={props.editMode}
+                         events={props.events}
+                         onSubmit={props.onSubmit}
+                       />
+                     ))
+              }
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
   );
 };
 

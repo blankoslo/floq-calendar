@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { Map } from 'immutable';
+import { List, Map } from 'immutable';
 
 export const reasonToEventClassName = (reason) =>{
   switch (reason) {
@@ -58,7 +58,7 @@ export const currentEvents = createSelector(
   (state) => state.absence,
   absenceReasonMap,
   (currentEmployee, currentYear, holidays, absence, absenceReasons) =>
-    holidays.map((x) => ({
+    Map(holidays.map((x) => ({
       date: x.date,
       event: x.name,
       eventClassName: 'holiday'
@@ -70,5 +70,5 @@ export const currentEvents = createSelector(
           event: absenceReasons.get(x.reason),
           eventClassName: reasonToEventClassName(x.reason)
         }))
-    ).filter((x) => x.date.year() === currentYear)
+    ).map((x) => [x.date.format('YYYY-M-D'), List([x])]))
 );

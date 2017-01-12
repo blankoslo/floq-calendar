@@ -149,6 +149,10 @@ table.calendar td.edit-mode:hover {
   cursor: pointer;
 }
 
+table.calendar div.month-calendar-event {
+  display: none;
+}
+
 td.weekend, td.event-holiday {
   font-weight: 400;
   color: #e12b38;
