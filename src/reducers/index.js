@@ -29,7 +29,7 @@ const initialState = {
 };
 
 export default combineReducers({
-  currentZoomLevel: (state = 2, action) => {
+  currentZoomLevel: (state = 1, action) => {
     switch (action.type) {
     case SET_CURRENT_ZOOM_LEVEL:
       return action.zoomLevel;
