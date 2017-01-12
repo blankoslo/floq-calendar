@@ -59,7 +59,7 @@ class YearCalendar extends React.Component {
                 </h5>
                 <Calendar
                   key={x}
-                  className='calendar'
+                  className='year-calendar'
                   year={this.props.year}
                   month={x}
                   events={this.props.events}
