@@ -17,7 +17,6 @@ class YearCalendar extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       const dateId = this.props.year + '-' + this.props.selectedMonth;
-      console.log(dateId);
       const e = document.getElementById(dateId);
       if (e) {
         e.scrollIntoView(true);
