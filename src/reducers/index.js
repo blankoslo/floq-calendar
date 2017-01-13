@@ -30,7 +30,7 @@ const initialState = {
 };
 
 export default combineReducers({
-  currentZoomLevel: (state = 1, action) => {
+  currentZoomLevel: (state = 2, action) => {
     switch (action.type) {
     case SET_CURRENT_ZOOM_LEVEL:
       return action.zoomLevel;
@@ -109,8 +109,8 @@ export default combineReducers({
   },
   originalAbsence: (state = Map(), action) => {
     switch (action.type) {
-    case LOAD_STAFFING:
-      return action.staffing;
+    case LOAD_ABSENCE:
+      return action.absence;
     default:
       return state;
     }

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Map, Range } from 'immutable';
 import classNames from 'classnames';
+import dateFns from 'date-fns';
 import getISODay from 'date-fns/get_iso_day';
 import getDaysInMonth from 'date-fns/get_days_in_month';
 import isWeekend from 'date-fns/is_weekend';
+import nbLocale from 'date-fns/locale/nb';
 
 export const getDayText = (startOfMonth, x, y) => {
   const startOfMonthDay = getISODay(startOfMonth) - 1;
@@ -37,16 +39,24 @@ class CalendarDate extends React.Component {
                   && props.editMode;
     const dayClassNames = classNames({
       ...eventClassNames,
-      'month-calendar-event': true,
-      'disabled': !props.day,
-      'weekend': weekend,
-      'edit-mode': editable
+      'event-weekend': weekend,
+      'month-calendar-event': true
+    });
+    const dateClassNames = classNames({
+      ...eventClassNames,
+      date: true,
+      'event-weekend': weekend,
+      'date-disabled': !props.day,
+      'date-edit-mode': editable
     });
     return (
-      <td
-        className={dayClassNames}
+      <div
+        className={dateClassNames}
         onClick={() => editable && props.onSubmit(day)}
       >
+        <div className='month-calendar-day-name'>
+          {day && dateFns.format(day, 'ddd', { locale: nbLocale })}
+        </div>
         <div
           className='month-calendar-day'
           title={props.events && props.events.map((x) => x.event).join()}
@@ -56,7 +66,7 @@ class CalendarDate extends React.Component {
         <div className={dayClassNames}>
           {props.events && props.events.map((x) => x.event).join()}
         </div>
-      </td>
+      </div>
     );
   }
 }
@@ -66,43 +76,35 @@ const Calendar = (props) => {
   const getDay = (dow, day) =>
     getDayText(startOfMonth, props.daysOfWeek.indexOf(dow), day);
   const calendarClassNames = classNames({
-    [props.className]: true,
-    'edit-mode': props.editMode
+    [props.className]: true
   });
   return (
-    <table className={calendarClassNames}>
-      <thead>
-        <tr>
-          {props.daysOfWeek.map((x) => <th key={x}>{x}</th>)}
-        </tr>
-      </thead>
-      <tbody>
-        { Range(0, 6).map((x) => (
-            <tr key={props.year + '-' + props.month + '-' + x}>
-              { props.daysOfWeek
-                     .map((y) => {
-                       const day = getDay(y, x);
-                       const dateText = props.year + '-' +
-                                        props.month + '-' +
-                                        day;
-                       return (
-                         <CalendarDate
-                           key={dateText + '-' + x + '-' + y}
-                           year={props.year}
-                           month={props.month}
-                           day={day}
-                           editMode={props.editMode}
-                           events={props.events.get(dateText)}
-                           onSubmit={props.onSubmit}
-                         />
-                       );
-                     })
-              }
-            </tr>
-          ))
+    <div className={calendarClassNames}>
+      <div className='calendar-header'>
+        {props.daysOfWeek.map((x) => <div key={x}>{x}</div>)}
+      </div>
+      <div className='calendar-dates'>
+        { Range(0, 6).map((x) => props.daysOfWeek
+                                      .map((y) => {
+                                        const day = getDay(y, x);
+                                        const dateText = props.year + '-' +
+                                                         props.month + '-' +
+                                                         day;
+                                        return (
+                                          <CalendarDate
+                                            key={dateText + '-' + x + '-' + y}
+                                            year={props.year}
+                                            month={props.month}
+                                            day={day}
+                                            editMode={props.editMode}
+                                            events={props.events.get(dateText)}
+                                            onSubmit={props.onSubmit}
+                                          />
+                                        );
+                                      }))
         }
-      </tbody>
-    </table>
+      </div>
+    </div>
   );
 };
 

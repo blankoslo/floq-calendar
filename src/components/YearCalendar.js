@@ -17,7 +17,6 @@ class YearCalendar extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       const dateId = this.props.year + '-' + this.props.selectedMonth;
-      console.log(dateId);
       const e = document.getElementById(dateId);
       if (e) {
         e.scrollIntoView(true);
@@ -59,7 +58,7 @@ class YearCalendar extends React.Component {
                 </h5>
                 <Calendar
                   key={x}
-                  className='calendar'
+                  className='year-calendar'
                   year={this.props.year}
                   month={x}
                   events={this.props.events}
