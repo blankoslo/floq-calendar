@@ -19,8 +19,8 @@ const muiTheme = getMuiTheme({
 });
 
 import {
-  fetchAbsenceReasons, fetchEmployees, fetchHolidays, fetchStaffing,
-  fetchAbsence, updateAbsence
+  fetchAbsenceReasons, fetchEmployees, fetchHolidays, fetchAbsence,
+  updateAbsence
 } from '../epics';
 
 import {
@@ -43,7 +43,6 @@ class App extends React.Component {
     this.props.fetchHolidays();
     this.props.fetchEmployees();
     this.props.fetchAbsenceReasons();
-    this.props.fetchStaffing();
     this.props.fetchAbsence();
 
     const now = new Date();
@@ -256,7 +255,6 @@ const mapDispatchToProps = {
   fetchAbsenceReasons,
   fetchHolidays,
   fetchEmployees,
-  fetchStaffing,
   fetchAbsence,
   updateAbsence
 };

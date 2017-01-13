@@ -11,7 +11,7 @@ const daysOfWeek = List(['ma', 'ti', 'on', 'to', 'fr', 'lø', 'sø']);
 const getMonthText = (year, month) => {
   const date = new Date(year, month - 1, 1);
   return dateFns.format(date, 'MMMM', { locale: nbLocale });
-}
+};
 
 class YearCalendar extends React.Component {
   componentDidMount() {

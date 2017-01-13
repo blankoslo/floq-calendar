@@ -66,12 +66,6 @@ export const loadEmployees = (employees) => ({
   employees
 });
 
-export const LOAD_STAFFING = 'LOAD_STAFFING';
-export const loadStaffing = (staffing) => ({
-  type: LOAD_STAFFING,
-  staffing
-});
-
 export const LOAD_ABSENCE = 'LOAD_ABSENCE';
 export const loadAbsence = (absence) => ({
   type: LOAD_ABSENCE,
