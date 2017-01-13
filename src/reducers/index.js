@@ -109,8 +109,8 @@ export default combineReducers({
   },
   originalAbsence: (state = Map(), action) => {
     switch (action.type) {
-    case LOAD_STAFFING:
-      return action.staffing;
+    case LOAD_ABSENCE:
+      return action.absence;
     default:
       return state;
     }
