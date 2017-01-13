@@ -140,6 +140,11 @@ div.month-calendar div.date-disabled {
   font-weight: 400;
 }
 
+.calendar-header div {
+  text-align: center;
+  width: 100%;
+}
+
 div.year-calendar div.calendar-dates {
   display: flex;
   flex-wrap: wrap;
@@ -182,7 +187,6 @@ div.year-calendar div.date {
 
 div.year-calendar div.date-disabled {
   background-color: #f5f6f5;
-  height: 0;
 }
 
 div.year-calendar div.date-edit-mode:hover {
