@@ -38,7 +38,7 @@ import {
 import YearCalendar from '../components/YearCalendar';
 import MonthCalendar from '../components/MonthCalendar';
 
-class App extends React.Component {
+class App extends React.PureComponent {
   componentWillMount() {
     this.props.fetchHolidays();
     this.props.fetchEmployees();

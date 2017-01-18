@@ -14,15 +14,7 @@ export const getDayText = (startOfMonth, x, y) => {
   return (day > 0 && day <= daysInMonth) ? day.toString() : '';
 };
 
-class CalendarDate extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    return this.props.year !== nextProps.year ||
-           this.props.month !== nextProps.month ||
-           this.props.day !== nextProps.day ||
-           this.props.events !== nextProps.events ||
-           this.props.editMode !== nextProps.editMode
-  }
-
+class CalendarDate extends React.PureComponent {
   render() {
     const props = this.props;
     const day = props.day &&
