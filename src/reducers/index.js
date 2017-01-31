@@ -125,6 +125,7 @@ export default combineReducers({
         reason: action.reason
       };
       return state.update(action.employeeId,
+                          Map([[dateFns.format(action.date, 'YYYY-M-D'), List([newAbsence])]]),
                           (x) => x.update(dateFns.format(action.date, 'YYYY-M-D'),
                                           (y) => List([newAbsence])));
     case REMOVE_ABSENCE:
