@@ -21,7 +21,7 @@ const getMonthText = (year, month) => {
   return dateFns.format(date, 'MMMM', { locale: nbLocale });
 }
 
-class MonthCalendar extends React.Component {
+class MonthCalendar extends React.PureComponent {
   componentDidMount() {
     setTimeout(() => {
       const dateId = this.props.year + '-' + this.props.month;

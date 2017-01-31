@@ -6,7 +6,7 @@ import dateFns from 'date-fns';
 import parse from 'date-fns/parse';
 
 import {
-  loadAbsenceReasons, loadEmployees, loadHolidays, loadAbsence, loadStaffing
+  loadAbsenceReasons, loadEmployees, loadHolidays, loadAbsence
 } from '../actions';
 
 export const getApiConfig = () => ({
@@ -76,33 +76,6 @@ const fetchEmployeesEpic = action$ => action$
         })))
         .map(loadEmployees);
 
-export const FETCH_STAFFING = 'FETCH_STAFFING';
-export const fetchStaffing = () => ({
-  type: FETCH_STAFFING
-});
-
-const fetchStaffingAsync = () =>
-        Observable.ajax({
-          url: `${getApiConfig().apiHost}/staffing`,
-          method: 'GET',
-          responseType: 'json',
-          headers: {
-            'Authorization': 'Bearer ' + getApiConfig().apiToken
-          }
-        })
-        .map((x) => List(x.response).map((y) => ({
-          employeeId: y.employee.toString(),
-          date: parse(y.date),
-          reason: y.project
-        })))
-        .map((x) => x.groupBy((y) => y.employeeId)
-             .map((y) => y.groupBy((z) => dateFns.format(z.date, 'YYYY-M-D'))));
-
-const fetchStaffingEpic = action$ => action$
-        .ofType(FETCH_STAFFING)
-        .mergeMap(fetchStaffingAsync)
-        .map(loadStaffing);
-
 export const FETCH_ABSENCE = 'FETCH_ABSENCE';
 export const fetchAbsence = () => ({
   type: FETCH_ABSENCE
@@ -140,49 +113,65 @@ export const updateAbsence = (employeeId, reason, adds, changes, removes) => ({
   removes
 });
 
+const addAbsenceAsync = (employeeId, reason, adds) =>
+  (adds.size > 0 && Observable.ajax({
+    url: `${getApiConfig().apiHost}/absence`,
+    method: 'POST',
+    body: JSON.stringify(adds.map((x) => ({
+      employee_id: employeeId,
+      reason: reason,
+      date: dateFns.format(x, 'YYYY-MM-DD')
+    })).toArray()),
+    headers: {
+      'Authorization': 'Bearer ' + getApiConfig().apiToken,
+      'Content-Type': 'application/json;charset=utf-8'
+    }
+  })) || Observable.of(null);
+
+const changeAbsenceAsync = (employeeId, reason, changes) => {
+  const dates = changes.map((x) => dateFns.format(x, 'YYYY-MM-DD')).join();
+  const url = `${getApiConfig().apiHost}/absence` +
+          `?employee_id=eq.${employeeId}&date=in.${dates}`;
+  return (changes.size > 0 && Observable.ajax({
+    url: url,
+    method: 'PATCH',
+    body: JSON.stringify({
+      reason: reason
+    }),
+    headers: {
+      'Authorization': 'Bearer ' + getApiConfig().apiToken,
+      'Content-Type': 'application/json;charset=utf-8'
+    }
+  })) || Observable.of(null);
+};
+
+const removeAbsenceAsync= (employeeId, reason, removes) => {
+  const dates = removes.map((x) => dateFns.format(x, 'YYYY-MM-DD')).join();
+  const url = `${getApiConfig().apiHost}/absence` +
+          `?employee_id=eq.${employeeId}&date=in.${dates}`;
+  return (removes.size > 0 && Observable.ajax({
+    url: url,
+    method: 'DELETE',
+    headers: {
+      'Authorization': 'Bearer ' + getApiConfig().apiToken
+    }
+  })) || Observable.of(null);
+};
+  
 const updateAbsenceEpic = action$ => action$
         .ofType(UPDATE_ABSENCE)
         .mergeMap((x) => Observable.zip(
-          (x.adds.size > 0 && Observable.ajax({
-            url: `${getApiConfig().apiHost}/staffing`,
-            method: 'POST',
-            body: JSON.stringify(x.adds.map((y) => ({
-              employee: x.employeeId,
-              project: x.reason,
-              date: dateFns.format(y, 'YYYY-MM-DD')
-            })).toArray()),
-            headers: {
-              'Authorization': 'Bearer ' + getApiConfig().apiToken,
-              'Content-Type': 'application/json;charset=utf-8'
-            }
-          })) || Observable.of(null),
-          (x.changes.size > 0 && Observable.ajax({
-            url: `${getApiConfig().apiHost}/staffing?employee=eq.${x.employeeId}&date=in.${x.changes.map((y) => dateFns.format(y, 'YYYY-MM-DD')).join()}`,
-            method: 'PATCH',
-            body: JSON.stringify({
-              project: x.reason
-            }),
-            headers: {
-              'Authorization': 'Bearer ' + getApiConfig().apiToken,
-              'Content-Type': 'application/json;charset=utf-8'
-            }
-          })) || Observable.of(null),
-          (x.removes.size > 0 && Observable.ajax({
-            url: `${getApiConfig().apiHost}/staffing?employee=eq.${x.employeeId}&date=in.${x.removes.map((y) => dateFns.format(y, 'YYYY-MM-DD')).join()}`,
-            method: 'DELETE',
-            headers: {
-              'Authorization': 'Bearer ' + getApiConfig().apiToken
-            }
-          })) || Observable.of(null)
+          addAbsenceAsync(x.employeeId, x.reason, x.adds),
+          changeAbsenceAsync(x.employeeId, x.reason, x.changes),
+          removeAbsenceAsync(x.employeeId, x.reason, x.removes)
         ))
-        .mergeMap(() => Observable.zip(fetchAbsenceAsync(), fetchStaffingAsync()))
-        .flatMap((x) => ([loadAbsence(x[0]), loadStaffing(x[1])]));
+        .mergeMap(() => fetchAbsenceAsync())
+        .map(loadAbsence);
 
 export default combineEpics(
   fetchAbsenceReasonsEpic,
   fetchHolidaysEpic,
   fetchEmployeesEpic,
-  fetchStaffingEpic,
   fetchAbsenceEpic,
   updateAbsenceEpic
 );
