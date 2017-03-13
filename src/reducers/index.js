@@ -42,6 +42,11 @@ export default combineReducers({
     case SELECT_CURRENT_EMPLOYEE:
       return action.id;
     case LOAD_EMPLOYEES:
+      const url = window.location.href;
+      const id = url.substr(url.lastIndexOf('/') + 1);
+      if (id !== 'calendar') {
+        return id;
+      }
       const employee = action.employees
         .find((x) => getApiConfig().userEmail === x.email);
       return (employee && employee.id) || null;
