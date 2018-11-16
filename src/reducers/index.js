@@ -3,12 +3,10 @@ import { Map, List } from 'immutable';
 import dateFns from 'date-fns';
 
 import {
-  SET_CURRENT_ZOOM_LEVEL,
   SELECT_CURRENT_EMPLOYEE,
   SET_CURRENT_YEAR,
   SELECT_PREVIOUS_YEAR,
   SELECT_NEXT_YEAR,
-  SET_CURRENT_MONTH,
   OPEN_ABSENCE_REASON_TOOL,
   CLOSE_ABSENCE_REASON_TOOL,
   SELECT_ABSENCE_REASON,
@@ -29,14 +27,6 @@ const initialState = {
 };
 
 export default combineReducers({
-  currentZoomLevel: (state = 1, action) => {
-    switch (action.type) {
-      case SET_CURRENT_ZOOM_LEVEL:
-        return action.zoomLevel;
-      default:
-        return state;
-    }
-  },
   currentEmployee: (state = null, action) => {
     switch (action.type) {
       case SELECT_CURRENT_EMPLOYEE:
@@ -62,14 +52,6 @@ export default combineReducers({
         return state - 1;
       case SELECT_NEXT_YEAR:
         return state + 1;
-      default:
-        return state;
-    }
-  },
-  currentMonth: (state = 1, action) => {
-    switch (action.type) {
-      case SET_CURRENT_MONTH:
-        return action.currentMonth;
       default:
         return state;
     }

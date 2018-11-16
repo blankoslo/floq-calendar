@@ -25,7 +25,6 @@ class YearCalendar extends React.PureComponent {
   }
 
   render() {
-    const setYearMonth = this.props.onSetCurrentYearMonth;
     return (
       <div>
         <h3 style={{ textAlign: 'center' }}>
@@ -50,10 +49,7 @@ class YearCalendar extends React.PureComponent {
               id={`${this.props.year}-${x}`}
               style={{ display: 'inline-block' }}
             >
-              <h5
-                className='month-header'
-                onClick={() => setYearMonth(this.props.year, x)}
-              >
+              <h5 className='month-header'>
                 {`${getMonthText(this.props.year, x)} ${this.props.year}`}
               </h5>
               <Calendar
@@ -64,7 +60,6 @@ class YearCalendar extends React.PureComponent {
                 events={this.props.events}
                 editMode={this.props.editMode}
                 onSubmit={this.props.onSubmit}
-                onSetCurrentYearMonth={this.props.onSetCurrentYearMonth}
                 daysOfWeek={daysOfWeek}
               />
             </div>

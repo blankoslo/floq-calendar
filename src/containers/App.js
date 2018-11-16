@@ -3,14 +3,12 @@ import { Map, List } from 'immutable';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AutoComplete from 'material-ui/AutoComplete';
-import IconButton from 'material-ui/IconButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import dateFns from 'date-fns';
 import getYear from 'date-fns/get_year';
-import getMonth from 'date-fns/get_month';
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
@@ -24,7 +22,7 @@ import {
 } from '../epics';
 
 import {
-  setCurrentZoomLevel, selectCurrentEmployee, setCurrentYear, setCurrentMonth,
+  selectCurrentEmployee, setCurrentYear,
   selectPreviousYear, selectNextYear,
   openAbsenceReasonTool, closeAbsenceReasonTool, selectAbsenceReason,
   addAbsence, removeAbsence
@@ -36,7 +34,6 @@ import {
 } from '../selectors';
 
 import YearCalendar from '../components/YearCalendar';
-import MonthCalendar from '../components/MonthCalendar';
 
 class App extends React.PureComponent {
   componentWillMount() {
@@ -47,7 +44,6 @@ class App extends React.PureComponent {
 
     const now = new Date();
     this.props.setCurrentYear(getYear(now));
-    this.props.setCurrentMonth(getMonth(now) + 1);
   }
 
   handleSetEmployee = ({ value }) => {
@@ -90,24 +86,9 @@ class App extends React.PureComponent {
     }
   }
 
-  handleSetCurrentZoomLevel = (delta) => {
-    this.props.setCurrentZoomLevel(this.props.currentZoomLevel + delta);
-  }
-
-  handleSetCurrentMonth = (delta) => {
-    const n = 1 + ((((this.props.currentMonth + delta) - 1) % 12) + 12) % 12;
-    if (delta > 0 && n < this.props.currentMonth) {
-      this.props.setCurrentYear(this.props.currentYear + 1);
-    } else if (delta < 0 && n > this.props.currentMonth) {
-      this.props.setCurrentYear(this.props.currentYear - 1);
-    }
-    this.props.setCurrentMonth(n);
-  }
-
   handleSetCurrentYearMonth = (year, month) => {
     this.props.setCurrentYear(year);
     this.props.setCurrentMonth(month);
-    this.props.setCurrentZoomLevel(2);
   }
 
   render() {
@@ -135,40 +116,18 @@ class App extends React.PureComponent {
       this.props.absenceReasonTool.active
         ? 'Save'
         : (this.props.absenceReasonTool.open ? 'Close' : 'Edit');
-    let calendar = null;
-    switch (this.props.currentZoomLevel) {
-      case 1:
-        calendar = (
-          <YearCalendar
-            year={this.props.currentYear}
-            selectedMonth={this.props.currentMonth}
-            events={this.props.currentEvents}
-            editMode={this.props.absenceReasonTool.active}
-            onSubmit={this.handleSetDate}
-            onPrevYear={() => this.props.selectPreviousYear()}
-            onNextYear={() => this.props.selectNextYear(1)}
-            onSetCurrentYearMonth={this.handleSetCurrentYearMonth}
-            absenceReasons={this.props.absenceReasons}
-          />
-        );
-        break;
-      case 2:
-        calendar = (
-          <MonthCalendar
-            year={this.props.currentYear}
-            month={this.props.currentMonth}
-            events={this.props.currentEvents}
-            editMode={this.props.absenceReasonTool.active}
-            onSubmit={this.handleSetDate}
-            onPrevMonth={() => this.handleSetCurrentMonth(-1)}
-            onNextMonth={() => this.handleSetCurrentMonth(1)}
-            absenceReasons={this.props.absenceReasons}
-          />
-        );
-        break;
-      default:
-        break;
-    }
+    const calendar = (
+      <YearCalendar
+        year={this.props.currentYear}
+        selectedMonth={this.props.currentMonth}
+        events={this.props.currentEvents}
+        editMode={this.props.absenceReasonTool.active}
+        onSubmit={this.handleSetDate}
+        onPrevYear={() => this.props.selectPreviousYear()}
+        onNextYear={() => this.props.selectNextYear(1)}
+        absenceReasons={this.props.absenceReasons}
+      />
+    );
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div id='outer'>
@@ -187,20 +146,6 @@ class App extends React.PureComponent {
               </div>
             </ToolbarGroup>
             <ToolbarGroup lastChild={true}>
-              <IconButton
-                iconClassName='material-icons'
-                onClick={() => this.handleSetCurrentZoomLevel(-1)}
-                disabled={!(this.props.currentZoomLevel > 1)}
-              >
-                zoom_out
-              </IconButton>
-              <IconButton
-                iconClassName='material-icons'
-                onClick={() => this.handleSetCurrentZoomLevel(1)}
-                disabled={!(this.props.currentZoomLevel < 2)}
-              >
-                zoom_in
-              </IconButton>
               <RaisedButton
                 label={absenceReasonToolLabel}
                 primary={this.props.absenceReasonTool.active}
@@ -228,10 +173,8 @@ class App extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-  currentZoomLevel: state.currentZoomLevel,
   currentEmployee: currentEmployee(state),
   currentYear: state.currentYear,
-  currentMonth: state.currentMonth,
   employees: state.employees,
   absenceReasonTool: state.absenceReasonTool,
   absenceReasons: state.absenceReasons,
@@ -241,12 +184,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  setCurrentZoomLevel,
   selectCurrentEmployee,
   setCurrentYear,
   selectPreviousYear,
   selectNextYear,
-  setCurrentMonth,
   openAbsenceReasonTool,
   closeAbsenceReasonTool,
   selectAbsenceReason,
