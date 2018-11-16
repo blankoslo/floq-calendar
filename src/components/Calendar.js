@@ -61,13 +61,12 @@ const Calendar = (props) => {
   const startOfMonth = new Date(props.year, props.month - 1, 1);
   const getDay = (dow, day) =>
     getDayText(startOfMonth, props.daysOfWeek.indexOf(dow), day);
-  const calendarClassNames = classNames({
-    [props.className]: true
-  });
   return (
-    <div className={calendarClassNames}>
+    <div className={'calendar'}>
       <div className='calendar-header'>
-        {props.daysOfWeek.map((x) => <div key={x}>{x}</div>)}
+        {props.daysOfWeek.map((x) =>
+          <div className='calendar-header-day' key={x}>{x}</div>
+        )}
       </div>
       <div className='calendar-dates'>
         {Range(0, 6).map((x) => props.daysOfWeek

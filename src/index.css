@@ -1,4 +1,11 @@
-html, body, h1, h2, h3, h4, h5, h6 {
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: museo-sans;
 }
 
@@ -22,24 +29,53 @@ div#main {
   padding: 0 1rem 0 1rem;
 }
 
-#toolbar {
-  height: 56px;
-  display: inline-block;
-  background-color: #f5f6f5 !important;
-}
-
 .absence-reason-tool-drawer {
   height: calc(100% - 4.6rem) !important;
   top: 4.6rem !important;
 }
 
-@media screen and (max-width: 480px) {
-  #employee-selector {
-    display: none;
-  }
+/* Header */
+
+.header {
+  display: flex;
+}
+
+.employee-picker {
+  display: flex;
+  margin: 0 0.6rem;
+}
+
+.year-selector {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.year-selector-text {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #6600ff;
+  text-decoration: underline;
+}
+
+.edit-button {
+  margin-left: auto;
+  padding: 0.3rem 1rem;
 }
 
 /* YEAR CALENDAR */
+
+.year-wrapper {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.year-calendar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
 .calendar-header {
   display: flex;
@@ -47,51 +83,45 @@ div#main {
   font-weight: 400;
 }
 
-.calendar-header div {
-  text-align: center;
-  width: 100%;
+.calendar-header-day {
+  color: #9b9b9b;
+  padding: 0.5rem;
+  font-size: 0.8rem;
 }
 
-div.year-calendar div.calendar-dates {
+div.calendar div.calendar-dates {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   width: 22rem;
 }
 
-.month-header {
-  text-align: center;
-  text-transform: capitalize;
-  cursor: pointer;
-}
-
-.month-header:hover {
-  color: #009ed9;
-}
-
-div.year-calendar {
-  display: inline-block;
+.month {
   margin: 1rem;
 }
 
-@media screen and (max-width: 480px) {
-  div.year-calendar {
-    margin: 0;
-  }
+.month-header {
+  color: #3c1345;
+  border-bottom: 1px solid #9b9b9b;
 }
 
-div.year-calendar div.date {
+div.calendar {
+  display: inline-block;
+}
+
+div.calendar div.date {
   display: flex;
   padding: 0;
   margin: 0;
-  width: calc(100% / 5 - 6px);
+  width: calc(100% / 5 - 2px);
   height: 3.4rem;
   background-color: #fff;
-  border: 3px solid #f5f6f5;
+  border: 1px solid #f5f6f5;
 }
 
 div.date-text {
   padding: 0.4rem;
+  color: #6600ff;
 }
 
 div.year-calendar div.date-disabled {
@@ -108,36 +138,41 @@ div.year-calendar div.month-calendar-event {
 
 /* Events */
 
-div.year-calendar div.event-weekend,
-div.year-calendar div.event-holiday,
-div.month-calendar div.event-weekend,
-div.month-calendar div.event-holiday {
+div.year-calendar div.event-weekend .date-text,
+div.year-calendar div.event-holiday .date-text,
+div.month-calendar div.event-weekend .date-text,
+div.month-calendar div.event-holiday .date-text {
   color: #e12b38;
 }
 
-div.year-calendar div.event-vacation, div.event-vacation {
-  color: #fff;
-  background-color: #009ed9;
-}
-
-div.year-calendar div.event-sick, div.event-sick {
-  color: #fff;
-  background-color: #e12b38;
-}
-
-div.year-calendar div.event-sick-child, div.event-sick-child {
-  color: #fff;
-  background-color: #f8485e;
-}
-
-div.year-calendar div.event-leave, div.event-leave {
+div.year-calendar div.event-vacation,
+div.event-vacation {
   color: #000;
-  background-color: #fdd757;
+  background-color: #38fbfe;
 }
 
-div.year-calendar div.event-leave-with-pay, div.event-leave-with-pay {
+div.year-calendar div.event-sick,
+div.event-sick .date-text {
+  color: #000;
+  background-color: #fff081;
+}
+
+div.year-calendar div.event-sick-child,
+div.event-sick-child {
+  color: #000;
+  background-color: #fff081;
+}
+
+div.year-calendar div.event-leave,
+div.event-leave .date-text {
   color: #fff;
-  background-color: #ffbf3f;
+  background-color: #12eb81;
+}
+
+div.year-calendar div.event-leave-with-pay,
+div.event-leave-with-pay .date-text {
+  color: #fff;
+  background-color: #fe386e;
 }
 
 div.legend {

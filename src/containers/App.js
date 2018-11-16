@@ -2,11 +2,8 @@ import React from 'react';
 import { Map, List } from 'immutable';
 import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AutoComplete from 'material-ui/AutoComplete';
-import RaisedButton from 'material-ui/RaisedButton';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
-import { Toolbar, ToolbarGroup } from 'material-ui/Toolbar';
 import dateFns from 'date-fns';
 import getYear from 'date-fns/get_year';
 
@@ -34,6 +31,7 @@ import {
 } from '../selectors';
 
 import YearCalendar from '../components/YearCalendar';
+import Header from '../components/Header';
 
 class App extends React.PureComponent {
   componentWillMount() {
@@ -116,46 +114,32 @@ class App extends React.PureComponent {
       this.props.absenceReasonTool.active
         ? 'Save'
         : (this.props.absenceReasonTool.open ? 'Close' : 'Edit');
-    const calendar = (
-      <YearCalendar
-        year={this.props.currentYear}
-        selectedMonth={this.props.currentMonth}
-        events={this.props.currentEvents}
-        editMode={this.props.absenceReasonTool.active}
-        onSubmit={this.handleSetDate}
-        onPrevYear={() => this.props.selectPreviousYear()}
-        onNextYear={() => this.props.selectNextYear(1)}
-        absenceReasons={this.props.absenceReasons}
-      />
-    );
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div id='outer'>
-          <Toolbar id='toolbar'>
-            <ToolbarGroup>
-              <div id='employee-selector'>
-                <AutoComplete
-                  id='employee-selector-autocomplete'
-                  dataSource={employees}
-                  filter={AutoComplete.fuzzyFilter}
-                  searchText={(this.props.currentEmployee
-                    && this.props.currentEmployee.name) || ''}
-                  openOnFocus={true}
-                  onNewRequest={this.handleSetEmployee}
-                />
-              </div>
-            </ToolbarGroup>
-            <ToolbarGroup lastChild={true}>
-              <RaisedButton
-                label={absenceReasonToolLabel}
-                primary={this.props.absenceReasonTool.active}
-                onClick={this.handleSetAbsenceReasonTool}
-              />
-            </ToolbarGroup>
-          </Toolbar>
+          <Header
+            year={this.props.currentYear}
+            onPrevYear={() => this.props.selectPreviousYear()}
+            onNextYear={() => this.props.selectNextYear(1)}
+            employees={employees}
+            currentEmployee={this.props.currentEmployee}
+            handleSetEmployee={this.handleSetEmployee}
+            absenceReasonTool={this.props.absenceReasonTool.active}
+            handleSetAbsenceReasonTool={this.handleSetAbsenceReasonTool}
+            absenceReasonToolLabel={absenceReasonToolLabel}
+          />
           <div id='container'>
             <div id='main'>
-              {calendar}
+              <YearCalendar
+                year={this.props.currentYear}
+                selectedMonth={this.props.currentMonth}
+                events={this.props.currentEvents}
+                editMode={this.props.absenceReasonTool.active}
+                onSubmit={this.handleSetDate}
+                onPrevYear={() => this.props.selectPreviousYear()}
+                onNextYear={() => this.props.selectNextYear(1)}
+                absenceReasons={this.props.absenceReasons}
+              />
             </div>
           </div>
           <Drawer
