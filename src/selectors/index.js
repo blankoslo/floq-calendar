@@ -3,19 +3,19 @@ import { List, Map } from 'immutable';
 import dateFns from 'date-fns';
 import getYear from 'date-fns/get_year';
 
-export const reasonToEventClassName = (reason) =>{
+export const reasonToEventClassName = (reason) => {
   switch (reason) {
-  case 'FER1000':
-    return 'vacation';
-  case 'SYK1001':
-    return 'sick';
-  case 'SYK1002':
-    return 'sick-child';
-  case 'PER1000':
-    return 'leave-with-pay';
-  case 'PER1001':
-  default:
-    return 'leave';
+    case 'FER1000':
+      return 'vacation';
+    case 'SYK1001':
+      return 'sick';
+    case 'SYK1002':
+      return 'sick-child';
+    case 'PER1000':
+      return 'leave-with-pay';
+    case 'PER1001':
+    default:
+      return 'leave';
   }
 };
 
@@ -31,21 +31,21 @@ export const getCurrentAbsenceUpdates =
     adds: currentEmployee && absence.get(currentEmployee.id, Map())
       .valueSeq().flatten()
       .filter((x) => !originalAbsence.get(currentEmployee.id, Map())
-              .valueSeq().flatten()
-              .some((y) => dateFns.isSameDay(y.date, x.date)))
+        .valueSeq().flatten()
+        .some((y) => dateFns.isSameDay(y.date, x.date)))
       .map((x) => x.date).toList(),
     changes: currentEmployee && absence.get(currentEmployee.id, Map())
       .valueSeq().flatten()
       .filter((x) => originalAbsence.get(currentEmployee.id, Map())
-              .valueSeq().flatten()
-              .some((y) => dateFns.isSameDay(y.date, x.date) &&
-                    y.reason !== x.reason))
+        .valueSeq().flatten()
+        .some((y) => dateFns.isSameDay(y.date, x.date) &&
+          y.reason !== x.reason))
       .map((x) => x.date).toList(),
     removes: currentEmployee && originalAbsence.get(currentEmployee.id, Map())
       .valueSeq().flatten()
       .filter((x) => !absence.get(currentEmployee.id, Map())
-              .valueSeq().flatten()
-              .some((y) => dateFns.isSameDay(y.date, x.date)))
+        .valueSeq().flatten()
+        .some((y) => dateFns.isSameDay(y.date, x.date)))
       .map((x) => x.date).toList()
   });
 

@@ -57,8 +57,8 @@ class App extends React.PureComponent {
   handleSetDate = (date) => {
     const reason = this.props.absenceReasonTool.value;
     if (this.props.absence.get(this.props.currentEmployee.id, Map())
-            .get(dateFns.format(date, 'YYYY-M-D'), List())
-            .some((x) => x.reason === reason)) {
+      .get(dateFns.format(date, 'YYYY-M-D'), List())
+      .some((x) => x.reason === reason)) {
       this.props.removeAbsence(this.props.currentEmployee.id, date);
     } else {
       this.props.addAbsence(this.props.currentEmployee.id, date, reason);
@@ -67,11 +67,11 @@ class App extends React.PureComponent {
 
   handleSetAbsenceReasonTool = () => {
     if (this.props.absenceReasonTool.active
-        || this.props.absenceReasonTool.open) {
+      || this.props.absenceReasonTool.open) {
       this.props.closeAbsenceReasonTool();
       if (this.props.absenceReasonTool.active
-          && this.props.currentEmployee.id
-          && this.props.absenceReasonTool.value) {
+        && this.props.currentEmployee.id
+        && this.props.absenceReasonTool.value) {
         const currentAbsenceUpdates = getCurrentAbsenceUpdates(
           this.props.currentEmployee,
           this.props.originalAbsence,
@@ -113,28 +113,28 @@ class App extends React.PureComponent {
   render() {
     const absenceReasonMenu = (
       <div>
-        { this.props.absenceReasons.map((x) => (
-            <MenuItem
-              key={x.id}
-              onClick={() => this.props.selectAbsenceReason(x.id)}
-              secondaryText=''
-            >
-              <div className={`legend event-${reasonToEventClassName(x.id)}`}>
-                &nbsp;
+        {this.props.absenceReasons.map((x) => (
+          <MenuItem
+            key={x.id}
+            onClick={() => this.props.selectAbsenceReason(x.id)}
+            secondaryText=''
+          >
+            <div className={`legend event-${reasonToEventClassName(x.id)}`}>
+              &nbsp;
               </div>
-              {x.name}
-            </MenuItem>
-          ))
+            {x.name}
+          </MenuItem>
+        ))
         }
       </div>
     );
     const employees = this.props.employees
-                          .map((x) => ({ text: x.name, value: x.id }))
-                          .toArray();
+      .map((x) => ({ text: x.name, value: x.id }))
+      .toArray();
     const absenceReasonToolLabel =
       this.props.absenceReasonTool.active
-      ? 'Save'
-      : (this.props.absenceReasonTool.open ? 'Close' : 'Edit');
+        ? 'Save'
+        : (this.props.absenceReasonTool.open ? 'Close' : 'Edit');
     let calendar = null;
     switch (this.props.currentZoomLevel) {
       case 1:
@@ -180,7 +180,7 @@ class App extends React.PureComponent {
                   dataSource={employees}
                   filter={AutoComplete.fuzzyFilter}
                   searchText={(this.props.currentEmployee
-                            && this.props.currentEmployee.name) || ''}
+                    && this.props.currentEmployee.name) || ''}
                   openOnFocus={true}
                   onNewRequest={this.handleSetEmployee}
                 />

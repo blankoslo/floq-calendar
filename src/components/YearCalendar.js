@@ -44,31 +44,31 @@ class YearCalendar extends React.PureComponent {
           </IconButton>
         </h3>
         <div style={{ textAlign: 'center' }}>
-          { Range(1, 13).map((x) => (
-              <div
-                key={`${this.props.year}-${x}`}
-                id={`${this.props.year}-${x}`}
-                style={{ display: 'inline-block' }}
+          {Range(1, 13).map((x) => (
+            <div
+              key={`${this.props.year}-${x}`}
+              id={`${this.props.year}-${x}`}
+              style={{ display: 'inline-block' }}
+            >
+              <h5
+                className='month-header'
+                onClick={() => setYearMonth(this.props.year, x)}
               >
-                <h5
-                  className='month-header'
-                  onClick={() => setYearMonth(this.props.year, x)}
-                >
-                  {`${getMonthText(this.props.year, x)} ${this.props.year}`}
-                </h5>
-                <Calendar
-                  key={x}
-                  className='year-calendar'
-                  year={this.props.year}
-                  month={x}
-                  events={this.props.events}
-                  editMode={this.props.editMode}
-                  onSubmit={this.props.onSubmit}
-                  onSetCurrentYearMonth={this.props.onSetCurrentYearMonth}
-                  daysOfWeek={daysOfWeek}
-                />
-              </div>
-            ))
+                {`${getMonthText(this.props.year, x)} ${this.props.year}`}
+              </h5>
+              <Calendar
+                key={x}
+                className='year-calendar'
+                year={this.props.year}
+                month={x}
+                events={this.props.events}
+                editMode={this.props.editMode}
+                onSubmit={this.props.onSubmit}
+                onSetCurrentYearMonth={this.props.onSetCurrentYearMonth}
+                daysOfWeek={daysOfWeek}
+              />
+            </div>
+          ))
           }
         </div>
       </div>

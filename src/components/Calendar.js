@@ -18,17 +18,17 @@ class CalendarDate extends React.PureComponent {
   render() {
     const props = this.props;
     const day = props.day &&
-                new Date(props.year, props.month - 1, parseInt(props.day, 10));
+      new Date(props.year, props.month - 1, parseInt(props.day, 10));
     const weekend = props.day && isWeekend(day);
     const holiday = props.events &&
-                    props.events.some((x) => x.eventClassName === 'holiday');
+      props.events.some((x) => x.eventClassName === 'holiday');
     const eventClassNames = props.events && Map(props.events
       .map((x) => [`event-${x.eventClassName}`, true]))
       .toObject();
     const editable = props.day
-                  && !weekend
-                  && !holiday
-                  && props.editMode;
+      && !weekend
+      && !holiday
+      && props.editMode;
     const dayClassNames = classNames({
       ...eventClassNames,
       'event-weekend': weekend,
@@ -76,24 +76,24 @@ const Calendar = (props) => {
         {props.daysOfWeek.map((x) => <div key={x}>{x}</div>)}
       </div>
       <div className='calendar-dates'>
-        { Range(0, 6).map((x) => props.daysOfWeek
-                                      .map((y) => {
-                                        const day = getDay(y, x);
-                                        const dateText = props.year + '-' +
-                                                         props.month + '-' +
-                                                         day;
-                                        return (
-                                          <CalendarDate
-                                            key={dateText + '-' + x + '-' + y}
-                                            year={props.year}
-                                            month={props.month}
-                                            day={day}
-                                            editMode={props.editMode}
-                                            events={props.events.get(dateText)}
-                                            onSubmit={props.onSubmit}
-                                          />
-                                        );
-                                      }))
+        {Range(0, 6).map((x) => props.daysOfWeek
+          .map((y) => {
+            const day = getDay(y, x);
+            const dateText = props.year + '-' +
+              props.month + '-' +
+              day;
+            return (
+              <CalendarDate
+                key={dateText + '-' + x + '-' + y}
+                year={props.year}
+                month={props.month}
+                day={day}
+                editMode={props.editMode}
+                events={props.events.get(dateText)}
+                onSubmit={props.onSubmit}
+              />
+            );
+          }))
         }
       </div>
     </div>
