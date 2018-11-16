@@ -1,11 +1,9 @@
 import React from 'react';
 import { Map, Range } from 'immutable';
 import classNames from 'classnames';
-import dateFns from 'date-fns';
 import getISODay from 'date-fns/get_iso_day';
 import getDaysInMonth from 'date-fns/get_days_in_month';
 import isWeekend from 'date-fns/is_weekend';
-import nbLocale from 'date-fns/locale/nb';
 
 export const getDayText = (startOfMonth, x, y) => {
   const startOfMonthDay = getISODay(startOfMonth) - 1;
@@ -20,24 +18,26 @@ class CalendarDate extends React.PureComponent {
     const day = props.day &&
       new Date(props.year, props.month - 1, parseInt(props.day, 10));
     const weekend = props.day && isWeekend(day);
+
+    if (weekend) {
+      return null;
+    }
+
     const holiday = props.events &&
       props.events.some((x) => x.eventClassName === 'holiday');
     const eventClassNames = props.events && Map(props.events
       .map((x) => [`event-${x.eventClassName}`, true]))
       .toObject();
     const editable = props.day
-      && !weekend
       && !holiday
       && props.editMode;
     const dayClassNames = classNames({
       ...eventClassNames,
-      'event-weekend': weekend,
       'month-calendar-event': true
     });
     const dateClassNames = classNames({
       ...eventClassNames,
       date: true,
-      'event-weekend': weekend,
       'date-disabled': !props.day,
       'date-edit-mode': editable
     });
@@ -46,13 +46,7 @@ class CalendarDate extends React.PureComponent {
         className={dateClassNames}
         onClick={() => editable && props.onSubmit(day)}
       >
-        <div className='month-calendar-day-name'>
-          {day && dateFns.format(day, 'ddd', { locale: nbLocale })}
-        </div>
-        <div
-          className='month-calendar-day'
-          title={props.events && props.events.map((x) => x.event).join()}
-        >
+        <div className={'date-text'}>
           {props.day}
         </div>
         <div className={dayClassNames}>

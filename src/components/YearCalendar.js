@@ -6,7 +6,7 @@ import nbLocale from 'date-fns/locale/nb';
 
 import Calendar from './Calendar';
 
-const daysOfWeek = List(['ma', 'ti', 'on', 'to', 'fr', 'lø', 'sø']);
+const daysOfWeek = List(['ma', 'ti', 'on', 'to', 'fr']);
 
 const getMonthText = (year, month) => {
   const date = new Date(year, month - 1, 1);
