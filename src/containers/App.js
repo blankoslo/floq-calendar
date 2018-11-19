@@ -107,25 +107,25 @@ class App extends React.PureComponent {
         }
       </div>
     );
-    const employees = this.props.employees
-      .map((x) => ({ text: x.name, value: x.id }))
-      .toArray();
     const absenceReasonToolLabel =
       this.props.absenceReasonTool.active
         ? 'Save'
         : (this.props.absenceReasonTool.open ? 'Close' : 'Edit');
+
+    
+        /*console.log("Events: ");
+        console.log(this.props.currentEvents.toJS());*/
 
 
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div id='outer'>
           <Header
-            employees={employees}
             currentEmployee={this.props.currentEmployee}
-            handleSetEmployee={this.handleSetEmployee}
             absenceReasonTool={this.props.absenceReasonTool.active}
             handleSetAbsenceReasonTool={this.handleSetAbsenceReasonTool}
             absenceReasonToolLabel={absenceReasonToolLabel}
+            absenceReasons={this.props.absenceReasons}
           />
           <div id='container'>
             <div id='main'>

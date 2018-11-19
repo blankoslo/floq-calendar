@@ -38,11 +38,27 @@ div#main {
   top: 0;
   z-index: 10;
   background-color: #fff;
+  padding: 1rem;
 }
 
-.employee-picker {
+.employee {
   display: flex;
-  margin: 0 0.6rem;
+  color: #3c1345;
+  font-size: 0.8rem;
+}
+
+.absence {
+  display: flex;
+  padding: 0 2rem;
+}
+
+.absence-bar {
+  flex: 1;
+  margin: 0.4rem;
+}
+
+.absence-color {
+  height: 8px;
 }
 
 .edit-button {
@@ -149,6 +165,7 @@ div.event-vacation {
 }
 
 div.year-calendar div.event-sick,
+div.event-sick,
 div.event-sick .date-text {
   color: #000;
   background-color: #fff081;
@@ -161,16 +178,36 @@ div.event-sick-child {
 }
 
 div.year-calendar div.event-leave,
+div.event-leave,
 div.event-leave .date-text {
   color: #fff;
   background-color: #12eb81;
 }
 
 div.year-calendar div.event-leave-with-pay,
+div.event-leave-with-pay,
 div.event-leave-with-pay .date-text {
   color: #fff;
   background-color: #fe386e;
 }
+
+.FER1000 {
+  background-color: #38fbfe;
+}
+
+.SYK1001, .SYK1002 {
+  background-color: #fff081;
+}
+
+.AVS {
+  background-color: #12eb81;
+}
+
+.PER1000, .PER1001, .PER1002 {
+  background-color: #fe386e;
+}
+
+
 
 div.legend {
   float: left;
