@@ -114,13 +114,12 @@ class App extends React.PureComponent {
       this.props.absenceReasonTool.active
         ? 'Save'
         : (this.props.absenceReasonTool.open ? 'Close' : 'Edit');
+
+
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div id='outer'>
           <Header
-            year={this.props.currentYear}
-            onPrevYear={() => this.props.selectPreviousYear()}
-            onNextYear={() => this.props.selectNextYear(1)}
             employees={employees}
             currentEmployee={this.props.currentEmployee}
             handleSetEmployee={this.handleSetEmployee}
@@ -132,12 +131,12 @@ class App extends React.PureComponent {
             <div id='main'>
               <YearCalendar
                 year={this.props.currentYear}
+                onPrevYear={() => this.props.selectPreviousYear()}
+                onNextYear={() => this.props.selectNextYear(1)}
                 selectedMonth={this.props.currentMonth}
                 events={this.props.currentEvents}
                 editMode={this.props.absenceReasonTool.active}
                 onSubmit={this.handleSetDate}
-                onPrevYear={() => this.props.selectPreviousYear()}
-                onNextYear={() => this.props.selectNextYear(1)}
                 absenceReasons={this.props.absenceReasons}
               />
             </div>

@@ -4,6 +4,7 @@ import dateFns from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
 
 import Calendar from './Calendar';
+import AbsenceInfo from './AbsenceInfo';
 
 const daysOfWeek = List(['ma', 'ti', 'on', 'to', 'fr']);
 
@@ -24,7 +25,7 @@ const emojiMap = {
 
 const getMonthText = (year, month) => {
   const date = new Date(year, month - 1, 1);
-  return dateFns.format(date, 'MMMM', { locale: nbLocale }) + emojiMap[month];
+  return dateFns.format(date, 'MMMM', { locale: nbLocale }) + ' ' + emojiMap[month];
 };
 
 class YearCalendar extends React.PureComponent {
@@ -41,6 +42,11 @@ class YearCalendar extends React.PureComponent {
   render() {
     return (
       <div className='year-wrapper'>
+        <AbsenceInfo
+          year={this.props.year}
+          onPrevYear={this.props.onPrevYear}
+          onNextYear={this.propsonNextYear}
+        />
         <div className='year-calendar'>
           {Range(1, 13).map((x) => (
             <div
