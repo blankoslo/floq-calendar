@@ -22,8 +22,11 @@ export const reasonToEventClassName = (reason) => {
 export const currentEmployee = createSelector(
   (state) => state.currentEmployee,
   (state) => state.employees,
-  (currentEmployee, employees) =>
-    employees.find((x) => x.id === currentEmployee) || employees.first()
+  (currentEmployee, employees) => {
+    return employees.find((x) => x.id === currentEmployee)
+    || employees.find((x) => x.name.toLowerCase().indexOf(currentEmployee.toLowerCase()) !== -1)
+    || employees.first()
+  }
 );
 
 export const getCurrentAbsenceUpdates =
