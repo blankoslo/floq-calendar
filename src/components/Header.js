@@ -10,7 +10,6 @@ class Header extends React.PureComponent {
         </div>
         <div className='absence'>
           {this.props.absenceReasons.map(reason => {
-            console.log(reason);
             return (
               <div className='absence-bar' key={reason.id}>
                 <div className={'absence-color ' + reason.id}/>

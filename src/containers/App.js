@@ -112,11 +112,6 @@ class App extends React.PureComponent {
         ? 'Save'
         : (this.props.absenceReasonTool.open ? 'Close' : 'Edit');
 
-    
-        /*console.log("Events: ");
-        console.log(this.props.currentEvents.toJS());*/
-
-
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div id='outer'>
