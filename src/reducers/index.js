@@ -44,7 +44,7 @@ export default combineReducers({
         return state;
     }
   },
-  currentYear: (state = 2017, action) => {
+  currentYear: (state = 2018, action) => {
     switch (action.type) {
       case SET_CURRENT_YEAR:
         return action.currentYear;
