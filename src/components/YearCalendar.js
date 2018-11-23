@@ -1,12 +1,9 @@
 import React from 'react';
-import { List, Range } from 'immutable';
+import { Range } from 'immutable';
 import dateFns from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
 
 import Calendar from './Calendar';
-import AbsenceInfo from './AbsenceInfo';
-
-const daysOfWeek = List(['ma', 'ti', 'on', 'to', 'fr']);
 
 const emojiMap = {
   1: '',
@@ -28,48 +25,29 @@ const getMonthText = (year, month) => {
   return dateFns.format(date, 'MMMM', { locale: nbLocale }) + ' ' + emojiMap[month];
 };
 
-class YearCalendar extends React.PureComponent {
-  componentDidMount() {
-    setTimeout(() => {
-      const dateId = this.props.year + '-' + this.props.selectedMonth;
-      const e = document.getElementById(dateId);
-      if (e) {
-        e.scrollIntoView(true);
-      }
-    }, 0);
-  }
-
+class YearCalendar extends React.Component {
   render() {
     return (
-      <div className='year-wrapper'>
-        <AbsenceInfo
-          year={this.props.year}
-          onPrevYear={this.props.onPrevYear}
-          onNextYear={this.propsonNextYear}
-        />
-        <div className='year-calendar'>
-          {Range(1, 13).map((x) => (
-            <div
-              key={`${this.props.year}-${x}`}
-              id={`${this.props.year}-${x}`}
-              className='month'
-            >
-              <div className='month-header'>
-                {`${getMonthText(this.props.year, x)}`}
-              </div>
-              <Calendar
-                key={x}
-                year={this.props.year}
-                month={x}
-                events={this.props.events}
-                editMode={this.props.editMode}
-                onSubmit={this.props.onSubmit}
-                daysOfWeek={daysOfWeek}
-              />
-            </div>
-          ))
-          }
-        </div>
+      <div className='year-calendar'>
+        {Range(1, 13).map((x) => (
+          <div
+            key={`${this.props.year}-${x}`}
+            className='month'
+          >
+            <h5 className='month-header'>
+              {`${getMonthText(this.props.year, x)}`}
+            </h5>
+            <Calendar
+              key={x}
+              year={this.props.year}
+              month={x}
+              events={this.props.events}
+              absenceReasons={this.props.absenceReasons}
+              addDate={this.props.addDate}
+              updateCalendar={this.props.updateCalendar}
+            />
+          </div>
+        ))}
       </div>
     );
   }
