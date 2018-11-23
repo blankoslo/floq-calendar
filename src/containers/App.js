@@ -32,6 +32,7 @@ import {
 
 import YearCalendar from '../components/YearCalendar';
 import Header from '../components/Header';
+import AbsenceInfo from '../components/AbsenceInfo';
 
 class App extends React.PureComponent {
   componentWillMount() {
@@ -116,14 +117,16 @@ class App extends React.PureComponent {
       <MuiThemeProvider muiTheme={muiTheme}>
         <div id='outer'>
           <Header
-            currentEmployee={this.props.currentEmployee}
-            absenceReasonTool={this.props.absenceReasonTool.active}
-            handleSetAbsenceReasonTool={this.handleSetAbsenceReasonTool}
-            absenceReasonToolLabel={absenceReasonToolLabel}
             absenceReasons={this.props.absenceReasons}
           />
           <div id='container'>
             <div id='main'>
+              <AbsenceInfo
+                currentEmployee={this.props.currentEmployee}
+                year={this.props.currentYear}
+                prevYear={() => this.props.selectPreviousYear()}
+                nextYear={() => this.props.selectNextYear(1)}
+              />
               <YearCalendar
                 year={this.props.currentYear}
                 onPrevYear={() => this.props.selectPreviousYear()}

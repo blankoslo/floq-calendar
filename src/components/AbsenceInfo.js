@@ -5,21 +5,25 @@ class AbsenceInfo extends React.PureComponent {
   render() {
     return (
       <div className='info'>
+        <div className='employee-container'>
+          {this.props.currentEmployee ? this.props.currentEmployee.name : ''}
+        </div>
+        <div className='info-box-container'>
         <div className='info-box year-selector'>
-          <div className={'year-selector-text'}>
+          <h1 className={'year-selector-text'}>
             {this.props.year.toString()}
-          </div>
+          </h1>
           <div className='arrows'>
             <IconButton
               iconClassName='material-icons'
-              onClick={this.props.onPrevYear}
+              onClick={this.props.prevYear}
               iconStyle={{ fontSize: 16, color: '#6600ff' }}
             >
               arrow_back
           </IconButton>
             <IconButton
               iconClassName='material-icons'
-              onClick={this.props.onNextYear}
+              onClick={this.props.nextYear}
               iconStyle={{ fontSize: 16, color: '#6600ff' }}
             >
               arrow_forward
@@ -45,6 +49,7 @@ class AbsenceInfo extends React.PureComponent {
           <div>Lorem ipsum</div>
         </div>
         */}
+        </div>
       </div>
     );
   }
