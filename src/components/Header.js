@@ -16,13 +16,6 @@ class Header extends React.PureComponent {
             );
           })}
         </div>
-        <div className='edit-button'>
-          <RaisedButton
-            label={this.props.absenceReasonToolLabel}
-            primary={this.props.absenceReasonTool.active}
-            onClick={this.props.handleSetAbsenceReasonTool}
-          />
-        </div>
       </div>
     );
   }
