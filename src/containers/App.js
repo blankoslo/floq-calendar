@@ -40,7 +40,7 @@ class App extends React.PureComponent {
   }
 
   componentDidUpdate(prev) {
-    if (this.props.absence !== prev.absence) {
+    if (this.props.currentEmployee && this.props.absence !== prev.absence) {
       if (this.props.absence.get(this.props.currentEmployee.id).size > this.props.absence.get(this.props.currentEmployee.id, Map()).valueSeq().flatten().toJS().length) {
         this.saveAbsence('');
       }
