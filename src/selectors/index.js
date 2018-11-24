@@ -30,7 +30,7 @@ export const currentEmployee = createSelector(
 );
 
 export const getCurrentAbsenceUpdates =
-  (currentEmployee, originalAbsence, absence) => ({
+  (currentEmployee, originalAbsence, absence, newReason) => ({
     adds: currentEmployee && absence.get(currentEmployee.id, Map())
       .valueSeq().flatten()
       .filter((x) => !originalAbsence.get(currentEmployee.id, Map())

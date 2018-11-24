@@ -44,6 +44,8 @@ class YearCalendar extends React.Component {
               events={this.props.events}
               absenceReasons={this.props.absenceReasons}
               addDate={this.props.addDate}
+              removeDates={this.props.removeDates}
+              openLayover={this.props.openLayover}
               updateCalendar={this.props.updateCalendar}
             />
           </div>

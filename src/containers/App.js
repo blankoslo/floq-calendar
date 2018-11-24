@@ -1,8 +1,7 @@
 import React from 'react';
-import { Map, List } from 'immutable';
 import { connect } from 'react-redux';
+import { Map } from 'immutable';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import dateFns from 'date-fns';
 import getYear from 'date-fns/get_year';
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -40,6 +39,14 @@ class App extends React.PureComponent {
     }
   }
 
+  componentDidUpdate(prev) {
+    if (this.props.absence !== prev.absence) {
+      if (this.props.absence.get(this.props.currentEmployee.id).size > this.props.absence.get(this.props.currentEmployee.id, Map()).valueSeq().flatten().toJS().length) {
+        this.saveAbsence('');
+      }
+    }
+  }
+
   componentWillMount() {
     this.props.fetchHolidays();
     this.props.fetchEmployees();
@@ -55,21 +62,26 @@ class App extends React.PureComponent {
   }
 
   addDate = (date) => {
-    this.setState({ selectDatesMode: true });
+    this.props.addAbsence(this.props.currentEmployee.id, date, '');
+  }
 
-    if (this.props.absence.get(this.props.currentEmployee.id, Map())
-      .get(dateFns.format(date, 'YYYY-M-D'), List()).size > 0) {
-      this.props.removeAbsence(this.props.currentEmployee.id, date);
-    } else {
-      this.props.addAbsence(this.props.currentEmployee.id, date, '');
-    }
+  removeDates = (dates) => {
+    this.setState({selectDatesMode: false});
+    dates.map(date => this.props.removeAbsence(this.props.currentEmployee.id, date));
+  }
+
+  openLayover = () => {
+    this.setState({selectDatesMode: true});
   }
 
   saveAbsence = (reason) => {
+    this.setState({selectDatesMode: false});
+
     const currentAbsenceUpdates = getCurrentAbsenceUpdates(
       this.props.currentEmployee,
       this.props.originalAbsence,
-      this.props.absence
+      this.props.absence,
+      reason
     );
     this.props.updateAbsence(
       this.props.currentEmployee.id,
@@ -78,7 +90,6 @@ class App extends React.PureComponent {
       currentAbsenceUpdates.changes,
       currentAbsenceUpdates.removes
     );
-    this.setState({ selectDatesMode: false });
   }
 
   render() {
@@ -101,8 +112,10 @@ class App extends React.PureComponent {
                 selectedMonth={this.props.currentMonth}
                 events={this.props.currentEvents}
                 addDate={this.addDate}
+                removeDates={this.removeDates}
                 updateCalendar={this.saveAbsence}
                 absenceReasons={this.props.absenceReasons}
+                openLayover={this.openLayover}
               />
             </div>
             <div className={this.state.selectDatesMode ? 'select-dates-mode' : ''} />
@@ -129,8 +142,8 @@ const mapDispatchToProps = {
   setCurrentYear,
   selectPreviousYear,
   selectNextYear,
-  openAbsenceReasonTool, //TODO remove
-  closeAbsenceReasonTool, //TODO remove
+  openAbsenceReasonTool,
+  closeAbsenceReasonTool,
   selectAbsenceReason,
   addAbsence,
   removeAbsence,
