@@ -101,7 +101,8 @@ class Calendar extends React.Component {
   }
 
   hoverDate = (date) => {
-    if (this.state.startDate && !this.state.endDate && dateFns.isAfter(date, this.state.startDate)) {
+    if (this.state.startDate && !this.state.endDate &&
+      (dateFns.isAfter(date, this.state.startDate) || dateFns.isEqual(date, this.state.startDate))) {
       this.setState({
         selected: dateFns.eachDay(
           this.state.startDate,
