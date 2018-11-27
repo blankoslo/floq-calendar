@@ -69,11 +69,6 @@ div#main {
   height: 8px;
 }
 
-@media only screen and (max-width: 600px) {
-  .employee-picker {
-    display: none;
-  }
-}
 
 /* YEAR CALENDAR */
 
@@ -169,10 +164,6 @@ div.calendar {
   background-color: #6600ff !important;
 }
 
-div.year-calendar div.month-calendar-event {
-  display: none;
-}
-
 .cross {
   z-index: 5;
   position: absolute;
@@ -246,14 +237,6 @@ div.event-leave-with-pay {
 .PER1001,
 .PER1002 {
   background-color: #fe386e;
-}
-
-div.legend {
-  float: left;
-  border: 1px solid #ccc;
-  width: 2rem;
-  height: 2rem;
-  margin: 0.6rem;
 }
 
 /* Absence info */
