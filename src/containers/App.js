@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Map } from 'immutable';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getYear from 'date-fns/get_year';
 
@@ -65,6 +66,8 @@ class App extends React.PureComponent {
         <div id='outer'>
           <Header
             absenceReasons={this.props.absenceReasons}
+            absence={this.props.currentEmployee ?
+              this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
           />
           <div id='container'>
             <div id='main'>

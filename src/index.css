@@ -6,7 +6,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: museo-sans;
+  font-family: 'WorkSans-Regular';
 }
 
 div#outer {
@@ -62,11 +62,25 @@ div#main {
 
 .absence-bar {
   flex: 1;
-  margin: 0.4rem;
+  margin: 0.4rem 1rem;
 }
 
 .absence-color {
   height: 8px;
+}
+
+.absence-days {
+  margin: 0.4em 0;
+  font-weight: 600;
+  color: #3c1345;
+  font-size: 1rem;
+}
+
+.absence-days-reason {
+  margin: 0;
+  color: #3c1345;
+  font-size: 0.9rem;
+  line-height: 0.9rem;
 }
 
 
@@ -217,25 +231,6 @@ div.event-leave {
 div.year-calendar div.event-leave-with-pay,
 div.event-leave-with-pay {
   color: #fff;
-  background-color: #fe386e;
-}
-
-.FER1000 {
-  background-color: #38fbfe;
-}
-
-.SYK1001,
-.SYK1002 {
-  background-color: #fff081;
-}
-
-.AVS {
-  background-color: #12eb81;
-}
-
-.PER1000,
-.PER1001,
-.PER1002 {
   background-color: #fe386e;
 }
 
