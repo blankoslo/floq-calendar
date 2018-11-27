@@ -76,6 +76,8 @@ class App extends React.PureComponent {
                 year={this.props.currentYear}
                 prevYear={() => this.props.selectPreviousYear()}
                 nextYear={() => this.props.selectNextYear(1)}
+                absence={this.props.currentEmployee ?
+                  this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
               />
               <Calendar
                 openLayover={this.openLayover}

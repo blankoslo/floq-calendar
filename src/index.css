@@ -21,7 +21,7 @@ div#container {
 }
 
 div#main {
-  max-width: 1400px;
+  max-width: 1300px;
   padding-left: 10%;
   padding-right: 1rem;
 }
@@ -70,7 +70,7 @@ div#main {
 }
 
 .absence-days {
-  margin: 0.4em 0;
+  margin: 0.6em 0;
   font-weight: 600;
   color: #3c1345;
   font-size: 1rem;
@@ -82,7 +82,6 @@ div#main {
   font-size: 0.9rem;
   line-height: 0.9rem;
 }
-
 
 /* YEAR CALENDAR */
 
@@ -123,7 +122,6 @@ div.calendar div.calendar-dates {
 div.calendar {
   display: inline-block;
 }
-
 
 /* Calendar date */
 
@@ -192,7 +190,7 @@ div.calendar {
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-family: 'Comic Sans MS';
+  font-family: "Comic Sans MS";
 }
 
 /* Events */
@@ -261,13 +259,25 @@ div.event-leave-with-pay {
 
 .info-header {
   color: #3c1345;
-  font-weight: bold;
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.info-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.2rem 0;
+}
+
+.info-list li {
+  font-size: 0.9rem;
+  line-height: 1.1rem;
 }
 
 .year-selector {
   display: flex;
   flex-direction: column;
-  padding: 1rem 0;
 }
 
 .year-selector-text {

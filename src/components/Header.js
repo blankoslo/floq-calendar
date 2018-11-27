@@ -1,7 +1,6 @@
 import React from 'react';
-import { List } from 'immutable';
 
-import { reasonToEventClassName } from '../selectors';
+import { reasonToEventClassName, reasonToEventName } from '../selectors';
 
 class Header extends React.PureComponent {
   render() {
@@ -20,7 +19,7 @@ class Header extends React.PureComponent {
               <div className='absence-bar' key={reason.id}>
                 <div className={`absence-color event-${reasonToEventClassName(reason.id)}`}/>
                 <h5 className='absence-days'>{`${days} dager`}</h5>
-                <h6 className='absence-days-reason'>{reason.name}</h6>
+                <h6 className='absence-days-reason'>{reasonToEventName(reason.id)}</h6>
               </div>
             );
           })}

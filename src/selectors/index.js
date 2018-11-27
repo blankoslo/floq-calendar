@@ -19,13 +19,34 @@ export const reasonToEventClassName = (reason) => {
   }
 };
 
+export const reasonToEventName = (reason) => {
+  switch (reason) {
+    case 'FER1000':
+      return 'Ferie';
+    case 'SYK1001':
+      return 'Sykemelding';
+    case 'SYK1002':
+      return 'Sykt barn';
+    case 'PER1000':
+      return 'Permisjon m/lønn';
+    case 'PER1002':
+      return 'Foreldrepermisjon';
+    case 'PER1001':
+      return 'Permisjon u/lønn';
+    case 'AVS':
+      return 'Avspasering';
+    default:
+      return reason;
+  }
+};
+
 export const currentEmployee = createSelector(
   (state) => state.currentEmployee,
   (state) => state.employees,
   (currentEmployee, employees) => {
     return employees.find((x) => x.id === currentEmployee)
-    || employees.find((x) => x.name.toLowerCase().indexOf(currentEmployee.toLowerCase()) !== -1)
-    || employees.first()
+      || employees.find((x) => x.name.toLowerCase().indexOf(currentEmployee.toLowerCase()) !== -1)
+      || employees.first()
   }
 );
 
