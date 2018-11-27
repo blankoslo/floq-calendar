@@ -118,15 +118,25 @@ div.calendar {
 
 /* Calendar date */
 
-div.calendar div.date {
+.date {
   position: relative;
   display: flex;
   padding: 0;
   margin: 0;
   width: calc(100% / 5 - 2px);
   height: 3.4rem;
-  background-color: #fff;
   border: 1px solid #f5f6f5;
+  background-color: #fff;
+  cursor: default;
+}
+
+.date-disabled {
+  background-color: #f5f6f5 !important;
+}
+
+.date-editable:hover {
+  cursor: pointer;
+  background-color: #efe5ff !important;
 }
 
 .date-inner {
@@ -142,15 +152,6 @@ div.calendar div.date {
   font-size: 0.7rem;
   line-height: 0.7rem;
   padding-left: 0.1rem;
-}
-
-.date-disabled {
-  background-color: #f5f6f5 !important;
-}
-
-.date-editable:hover {
-  cursor: pointer;
-  background-color: #efe5ff !important;
 }
 
 .date-clicked {

@@ -30,26 +30,26 @@ export const currentEmployee = createSelector(
 );
 
 export const getCurrentAbsenceUpdates =
-  (currentEmployee, originalAbsence, absence, newReason) => ({
+  (currentEmployee, originalAbsence, absence) => ({
     adds: currentEmployee && absence.get(currentEmployee.id, Map())
       .valueSeq().flatten()
       .filter((x) => !originalAbsence.get(currentEmployee.id, Map())
         .valueSeq().flatten()
         .some((y) => dateFns.isSameDay(y.date, x.date)))
-      .map((x) => x.date).toList(),
+      .toList(),
     changes: currentEmployee && absence.get(currentEmployee.id, Map())
       .valueSeq().flatten()
       .filter((x) => originalAbsence.get(currentEmployee.id, Map())
         .valueSeq().flatten()
         .some((y) => dateFns.isSameDay(y.date, x.date) &&
           y.reason !== x.reason))
-      .map((x) => x.date).toList(),
+      .toList(),
     removes: currentEmployee && originalAbsence.get(currentEmployee.id, Map())
       .valueSeq().flatten()
       .filter((x) => !absence.get(currentEmployee.id, Map())
         .valueSeq().flatten()
         .some((y) => dateFns.isSameDay(y.date, x.date)))
-      .map((x) => x.date).toList()
+      .toList()
   });
 
 export const absenceReasonMap = createSelector(

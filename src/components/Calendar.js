@@ -1,115 +1,191 @@
 import React from 'react';
-import getISODay from 'date-fns/get_iso_day';
-import getDaysInMonth from 'date-fns/get_days_in_month';
-import CalendarDate from './CalendarDate';
-import { Range } from 'immutable';
+import { Range, List } from 'immutable';
+import dateFns from 'date-fns';
+import nbLocale from 'date-fns/locale/nb';
 
+import { getCurrentAbsenceUpdates } from '../selectors';
+
+import CalendarDate from './Date';
+
+const emojis = ['', '', '', '🐣', '', '', '☀️', '', '', '', '', '🎄']
 const daysOfWeek = ['ma', 'ti', 'on', 'to', 'fr'];
 
-export default class Calendar extends React.Component {
+class Calendar extends React.Component {
 
   constructor(props) {
     super(props)
 
     this.state = {
-      startOfMonth: new Date(this.props.year, this.props.month - 1, 1),
-      selectedDays: {},
-      isMouseDown: false,
-      lastSelectedDate: undefined,
+      startDate: undefined,
+      endDate: undefined,
+      selected: [],
+    }
+  }
+
+  componentDidUpdate(prev) {
+    if (this.props.currentEmployee && this.props.absence !== prev.absence) {
+      if (this.props.absence !== this.props.originalAbsence) {
+        const currentAbsenceUpdates = getCurrentAbsenceUpdates(
+          this.props.currentEmployee,
+          this.props.originalAbsence,
+          this.props.absence,
+        );
+        this.props.updateAbsence(currentAbsenceUpdates, this.props.currentEmployee.id);
+      }
     }
   }
 
   render() {
     return (
-      <div className={'calendar'}>
-        <div className='calendar-header'>
-          {daysOfWeek.map((x) =>
-            <div className='calendar-header-day' key={x}>{x}</div>
-          )}
-        </div>
-        <div className='calendar-dates'>
-          {this.getDates().map((date, i) =>
-            <CalendarDate
-              key={date.dateString + '-' + i}
-              day={date.dayInMonth}
-              date={date.date}
-              events={this.props.events.get(date.dateString)}
-              absenceReasons={this.props.absenceReasons}
-              addDate={this.addDate}
-              saveAbsence={this.saveAbsence}
-              isMouseDown={this.state.isMouseDown}
-              startSelect={this.startSelect}
-              stopSelect={this.stopSelect}
-              clicked={date.dayInMonth in this.state.selectedDays}
-              showAbsenceReasonContainer={this.state.lastSelectedDate === date.dayInMonth}
-              cancel={this.cancel}
-            />
-          )}
-        </div>
+      <div className='year-calendar'>
+        {Range(0, 12).map(month => {
+          const firstDateOfMonth = new Date(this.props.year, month, 1);
+          return (
+            <div
+              key={`${this.props.year}-${month}`}
+              className='month'
+            >
+              <h5 className='month-header'>
+                {this.getMonthText(firstDateOfMonth)} {emojis[month]}
+              </h5>
+              <div className='calendar'>
+                <div className='calendar-header'>
+                  {daysOfWeek.map((x) =>
+                    <div className='calendar-header-day' key={x}>{x}</div>
+                  )}
+                </div>
+                <div className='calendar-dates'>
+                  {this.getMonthDates(firstDateOfMonth).map((date, i) => {
+                    const dateString = this.props.year + '-' + (month + 1) + '-' + dateFns.getDate(date);
+
+                    const isClicked = dateFns.isEqual(date, this.state.startDate) ||
+                      this.state.selected.find(d => dateFns.isEqual(d, date));
+
+                    return (
+                      <CalendarDate
+                        key={dateString + '-' + i}
+                        date={date}
+                        events={this.props.currentEvents.get(dateString)}
+                        clicked={isClicked}
+                        clickDate={this.clickDate}
+                        hoverDate={this.hoverDate}
+                        stopHoverDate={this.stopHoverDate}
+                        absenceReasons={this.props.absenceReasons}
+                        showAbsenceReasonContainer={dateFns.isEqual(date, this.state.endDate)}
+                        saveAbsence={this.saveAbsence}
+                        cancel={this.cancel}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     );
   }
 
-  startSelect = () => {
-    this.setState({ isMouseDown: true });
-  }
-
-  addDate = (date, day) => {
-    if (!this.state.selectedDays[day]) {
-      this.setState({
-        selectedDays: {
-          ...this.state.selectedDays,
-          [day]: date
-        }
-      });
-      this.props.addDate(date);
+  clickDate = (date) => {
+    if (!this.state.startDate) {
+      this.selectStartDate(date);
+    }
+    else {
+      if (dateFns.isBefore(date, this.state.startDate)) {
+        this.selectStartDate(date);
+      }
+      else {
+        this.selectEndDate(date);
+      }
     }
   }
 
-  stopSelect = (day) => {
-    this.setState({ isMouseDown: false, lastSelectedDate: day });
+  hoverDate = (date) => {
+    if (this.state.startDate && !this.state.endDate && dateFns.isAfter(date, this.state.startDate)) {
+      this.setState({
+        selected: dateFns.eachDay(
+          this.state.startDate,
+          date
+        )
+      });
+    }
+  }
+
+  stopHoverDate = () => {
+    if (!this.state.endDate) {
+      this.setState({ selected: [] });
+    }
+  }
+
+  selectStartDate = (date) => {
+    this.setState({ startDate: date });
+  }
+
+  selectEndDate = (date) => {
+    this.setState({ endDate: date });
     this.props.openLayover();
   }
 
   saveAbsence = (reason) => {
-    this.setState({ selectedDays: {}, lastSelectedDate: undefined });
-    this.props.updateCalendar(reason);
+    this.props.closeLayover();
+
+    this.state.selected
+      .filter(date => !this.props.currentEvents
+        .get(dateFns.format(date, 'YYYY-M-D'), List()).some((x) => x.eventClassName === 'holiday')
+        && !dateFns.isWeekend(date))
+      .forEach(date => this.props.addAbsence(this.props.currentEmployee.id, date, reason));
+
+    this.setState({ startDate: undefined, endDate: undefined, selected: [] });
   }
 
   cancel = () => {
-    this.props.removeDates(Object.values(this.state.selectedDays));
-    this.setState({ selectedDays: {}, lastSelectedDate: undefined });
+    this.props.closeLayover();
+
+    this.state.selected
+      .filter(date => !this.props.currentEvents
+        .get(dateFns.format(date, 'YYYY-M-D'), List()).some((x) => x.eventClassName === 'holiday')
+        && !dateFns.isWeekend(date))
+      .forEach(date => this.props.removeAbsence(this.props.currentEmployee.id, date));
+
+    this.setState({ startDate: undefined, endDate: undefined, selected: [] });
   }
 
-  getDayInMonth = (x, y) => {
-    const startOfMonthDay = getISODay(this.state.startOfMonth) - 1;
-    const daysInMonth = getDaysInMonth(this.state.startOfMonth);
-    const day = x + y * 7 - startOfMonthDay + 1;
-    return (day > 0 && day <= daysInMonth) ? day.toString() : '';
+  getMonthText = (date) => {
+    return dateFns.format(date, 'MMMM', { locale: nbLocale });
   }
 
-  getDates = () => {
-    return Range(0, 6).reduce((acc, weekInMonth) => {
-      // Empty is a variable to check whether the whole week only consist of non-existant dates,
-      // If so, we just skip the whole week
-      let empty = true;
-      const week = [];
+  getMonthDates = (firstDateOfMonth) => {
+    const dates = [];
 
-      daysOfWeek.map(weekday => {
-        const day = this.getDayInMonth(daysOfWeek.indexOf(weekday), weekInMonth);
-        if (day !== '') {
-          empty = false;
-        }
-        week.push({
-          dayInMonth: day,
-          dateString: this.props.year + '-' + this.props.month + '-' + day,
-          date: new Date(this.props.year, this.props.month - 1, parseInt(day, 10)),
-        });
-      })
-      if (empty) {
-        return acc;
-      }
-      return acc.concat(week);
-    }, []);
+    Range(0, this.getPadDays(dateFns.getDay(firstDateOfMonth)))
+      .forEach(() => dates.push(null));
+
+    const lastDayOfMonth = dateFns.lastDayOfMonth(firstDateOfMonth);
+
+    dateFns.eachDay(
+      firstDateOfMonth,
+      lastDayOfMonth
+    ).map(date => dates.push(date));
+
+    Range(0, this.getPadDaysEnd(dateFns.getDay(lastDayOfMonth)))
+      .forEach(() => dates.push(null));
+
+    return dates;
+  }
+
+  getPadDays = (dayNumber) => {
+    if (dayNumber === 1 || dayNumber === 6 || dayNumber === 7) {
+      return 0;
+    }
+    return dayNumber - 1;
+  }
+
+  getPadDaysEnd = (dayNumber) => {
+    if (dayNumber === 5 || dayNumber === 6 || dayNumber === 7) {
+      return 0;
+    }
+    return 5 - dayNumber;
   }
 }
+
+export default Calendar;

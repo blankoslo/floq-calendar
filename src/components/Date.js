@@ -1,14 +1,16 @@
 import React from 'react';
 import { Map } from 'immutable';
+import getDate from 'date-fns/get_date';
+import isWeekend from 'date-fns/is_weekend';
 import classNames from 'classnames';
 import AbsenceReasons from './AbsenceReasons';
 
-class CalendarDate extends React.PureComponent {
+class Date extends React.PureComponent {
 
   constructor(props) {
     super(props)
     this.state = {
-      editable: this.props.day ? true : false,
+      editable: true,
     }
   }
 
@@ -26,6 +28,14 @@ class CalendarDate extends React.PureComponent {
 
   render() {
 
+    if (!this.props.date) {
+      return <div className='date date-disabled' />;
+    }
+
+    if (isWeekend(this.props.date)) {
+      return null;
+    }
+
     const eventClassNames = this.props.events && Map(this.props.events
       .filter(x => x.event)
       .map((x) => [`event-${x.eventClassName}`, true]))
@@ -34,10 +44,10 @@ class CalendarDate extends React.PureComponent {
     const dateClassNames = classNames({
       ...eventClassNames,
       date: true,
-      'date-disabled': !this.props.day,
       'date-editable': this.state.editable,
-      'date-clicked': this.props.clicked
+      'date-clicked': this.props.clicked,
     });
+
     return (
       <div className={dateClassNames}>
         {this.props.showAbsenceReasonContainer ?
@@ -45,12 +55,12 @@ class CalendarDate extends React.PureComponent {
           : null}
         <div
           className='date-inner'
-          onMouseDown={this.start}
-          onMouseOver={this.over}
-          onMouseUp={this.stop}
+          onClick={this.handleClick}
+          onMouseOver={this.hover}
+          onMouseOut={this.stopHover}
         >
           <div className={'date-number'}>
-            {this.props.day}
+            {getDate(this.props.date)}
           </div>
           <div className={'date-text'}>
             {this.props.events && this.props.events.map((x) => x.event).join()}
@@ -65,23 +75,18 @@ class CalendarDate extends React.PureComponent {
     );
   }
 
-  start = () => {
-    if (this.state.editable && !this.props.isMouseDown) {
-      this.props.startSelect();
-      this.props.addDate(this.props.date, this.props.day);
+  handleClick = () => {
+    if (this.state.editable) {
+      this.props.clickDate(this.props.date);
     }
   }
 
-  over = () => {
-    if (this.state.editable && this.props.isMouseDown) {
-      this.props.addDate(this.props.date, this.props.day);
-    }
+  hover = () => {
+    this.props.hoverDate(this.props.date);
   }
 
-  stop = () => {
-    if (this.state.editable && this.props.isMouseDown) {
-      this.props.stopSelect(this.props.day);
-    }
+  stopHover = () => {
+    this.props.stopHoverDate();
   }
 
   checkIfHoliday = () => {
@@ -91,4 +96,4 @@ class CalendarDate extends React.PureComponent {
   }
 }
 
-export default CalendarDate;
+export default Date;

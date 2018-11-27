@@ -104,23 +104,20 @@ const fetchAbsenceEpic = action$ => action$
   .map(loadAbsence);
 
 export const UPDATE_ABSENCE = 'UPDATE_ABSENCE';
-export const updateAbsence = (employeeId, reason, adds, changes, removes) => ({
+export const updateAbsence = (updates, employeeId) => ({
   type: UPDATE_ABSENCE,
-  employeeId,
-  reason,
-  adds,
-  changes,
-  removes
+  updates,
+  employeeId
 });
 
-const addAbsenceAsync = (employeeId, reason, adds) =>
+const addAbsenceAsync = (adds) =>
   (adds.size > 0 && Observable.ajax({
     url: `${getApiConfig().apiHost}/absence`,
     method: 'POST',
     body: JSON.stringify(adds.map((x) => ({
-      employee_id: employeeId,
-      reason: reason,
-      date: dateFns.format(x, 'YYYY-MM-DD')
+      employee_id: x.employeeId,
+      reason: x.reason,
+      date: dateFns.format(x.date, 'YYYY-MM-DD')
     })).toArray()),
     headers: {
       'Authorization': 'Bearer ' + getApiConfig().apiToken,
@@ -128,42 +125,54 @@ const addAbsenceAsync = (employeeId, reason, adds) =>
     }
   })) || Observable.of(null);
 
-const changeAbsenceAsync = (employeeId, reason, changes) => {
-  const dates = changes.map((x) => dateFns.format(x, 'YYYY-MM-DD')).join();
-  const url = `${getApiConfig().apiHost}/absence` +
-    `?employee_id=eq.${employeeId}&date=in.${dates}`;
-  return (changes.size > 0 && Observable.ajax({
-    url: url,
-    method: 'PATCH',
-    body: JSON.stringify({
-      reason: reason
-    }),
-    headers: {
-      'Authorization': 'Bearer ' + getApiConfig().apiToken,
-      'Content-Type': 'application/json;charset=utf-8'
+
+const changeAbsenceAsync = (changes, employeeId) => {
+  const changeReasonMap = changes.reduce((acc, curr) => {
+    const array = acc[curr.reason] ? acc[curr.reason] : [];
+    array.push(curr.date);
+    return {
+      ...acc,
+      [curr.reason]: array
     }
-  })) || Observable.of(null);
+  }, {});
+
+  return (Object.keys(changeReasonMap).map(reason => {
+    const dates = changeReasonMap[reason].map((x) => dateFns.format(x, 'YYYY-MM-DD')).join();
+    const url = `${getApiConfig().apiHost}/absence?employee_id=eq.${employeeId}&date=in.${dates}`;
+    return (changeReasonMap[reason].length > 0 && Observable.ajax({
+      url: url,
+      method: 'PATCH',
+      body: JSON.stringify({
+        reason: reason
+      }),
+      headers: {
+        'Authorization': 'Bearer ' + getApiConfig().apiToken,
+        'Content-Type': 'application/json;charset=utf-8'
+      }
+    })) || Observable.of(null);
+  }));
 };
 
-const removeAbsenceAsync = (employeeId, reason, removes) => {
-  const dates = removes.map((x) => dateFns.format(x, 'YYYY-MM-DD')).join();
+const removeAbsenceAsync = (removes, employeeId) => {
+  const dates = removes.map((x) => dateFns.format(x.date, 'YYYY-MM-DD')).join();
   const url = `${getApiConfig().apiHost}/absence` +
     `?employee_id=eq.${employeeId}&date=in.${dates}`;
+
   return (removes.size > 0 && Observable.ajax({
     url: url,
     method: 'DELETE',
     headers: {
       'Authorization': 'Bearer ' + getApiConfig().apiToken
     }
-  })) || Observable.of(null);
+  })) || Observable.of(null)
 };
 
 const updateAbsenceEpic = action$ => action$
   .ofType(UPDATE_ABSENCE)
   .mergeMap((x) => Observable.zip(
-    addAbsenceAsync(x.employeeId, x.reason, x.adds),
-    changeAbsenceAsync(x.employeeId, x.reason, x.changes),
-    removeAbsenceAsync(x.employeeId, x.reason, x.removes)
+    addAbsenceAsync(x.updates.adds),
+    ...changeAbsenceAsync(x.updates.changes, x.employeeId),
+    removeAbsenceAsync(x.updates.removes, x.employeeId)
   ))
   .mergeMap(() => fetchAbsenceAsync())
   .map(loadAbsence);
