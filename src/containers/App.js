@@ -17,7 +17,6 @@ import {
 import {
   selectCurrentEmployee, setCurrentYear,
   selectPreviousYear, selectNextYear,
-  openAbsenceReasonTool, closeAbsenceReasonTool, selectAbsenceReason,
   addAbsence, removeAbsence
 } from '../actions';
 
@@ -101,7 +100,6 @@ const mapStateToProps = (state) => ({
   currentEmployee: currentEmployee(state),
   currentYear: state.currentYear,
   employees: state.employees,
-  absenceReasonTool: state.absenceReasonTool,
   absenceReasons: state.absenceReasons,
   originalAbsence: state.originalAbsence,
   absence: state.absence,
@@ -113,9 +111,6 @@ const mapDispatchToProps = {
   setCurrentYear,
   selectPreviousYear,
   selectNextYear,
-  openAbsenceReasonTool,
-  closeAbsenceReasonTool,
-  selectAbsenceReason,
   addAbsence,
   removeAbsence,
   fetchAbsenceReasons,

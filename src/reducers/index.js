@@ -7,9 +7,6 @@ import {
   SET_CURRENT_YEAR,
   SELECT_PREVIOUS_YEAR,
   SELECT_NEXT_YEAR,
-  OPEN_ABSENCE_REASON_TOOL,
-  CLOSE_ABSENCE_REASON_TOOL,
-  SELECT_ABSENCE_REASON,
   LOAD_ABSENCE_REASONS,
   LOAD_HOLIDAYS,
   LOAD_EMPLOYEES,
@@ -19,12 +16,6 @@ import {
 } from '../actions';
 
 import { getApiConfig } from '../epics';
-
-const initialState = {
-  open: false,
-  active: false,
-  value: null
-};
 
 export default combineReducers({
   currentEmployee: (state = null, action) => {
@@ -52,19 +43,6 @@ export default combineReducers({
         return state - 1;
       case SELECT_NEXT_YEAR:
         return state + 1;
-      default:
-        return state;
-    }
-  },
-  absenceReasonTool: (state = initialState, action) => {
-    switch (action.type) {
-      case OPEN_ABSENCE_REASON_TOOL:
-        return { ...state, open: true, active: false };
-      case SELECT_CURRENT_EMPLOYEE:
-      case CLOSE_ABSENCE_REASON_TOOL:
-        return { ...state, open: false, active: false };
-      case SELECT_ABSENCE_REASON:
-        return { ...state, value: action.value, open: false, active: true };
       default:
         return state;
     }
