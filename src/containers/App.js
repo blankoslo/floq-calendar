@@ -65,6 +65,7 @@ class App extends React.PureComponent {
       <MuiThemeProvider muiTheme={muiTheme}>
         <div id='outer'>
           <Header
+            year={this.props.currentYear}
             absenceReasons={this.props.absenceReasons}
             absence={this.props.currentEmployee ?
               this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
