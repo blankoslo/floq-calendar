@@ -13,7 +13,10 @@ export const reasonToEventClassName = (reason) => {
       return 'sick-child';
     case 'PER1000':
       return 'leave-with-pay';
+    case 'PER1002':
+      return 'parent-leave';
     case 'PER1001':
+      return 'leave-without-pay';
     default:
       return 'leave';
   }

@@ -6,7 +6,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'WorkSans-Regular';
+  font-family: "WorkSans-Regular";
 }
 
 div#outer {
@@ -228,6 +228,18 @@ div.event-leave {
 
 div.year-calendar div.event-leave-with-pay,
 div.event-leave-with-pay {
+  color: #fff;
+  background-color: #fe386e;
+}
+
+div.year-calendar div.event-leave-without-pay,
+div.event-leave-without-pay {
+  color: #fff;
+  background-color: #3c1345;
+}
+
+div.year-calendar div.event-parent-leave,
+div.event-parent-leave {
   color: #fff;
   background-color: #fe386e;
 }
