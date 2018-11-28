@@ -1,9 +1,3 @@
-export const SET_CURRENT_ZOOM_LEVEL = 'SET_CURRENT_ZOOM_LEVEL';
-export const setCurrentZoomLevel = (zoomLevel) => ({
-  type: SET_CURRENT_ZOOM_LEVEL,
-  zoomLevel
-});
-
 export const SELECT_CURRENT_EMPLOYEE = 'SELECT_CURRENT_EMPLOYEE';
 export const selectCurrentEmployee = (id) => ({
   type: SELECT_CURRENT_EMPLOYEE,
@@ -24,28 +18,6 @@ export const selectPreviousYear = () => ({
 export const SELECT_NEXT_YEAR = 'SELECT_NEXT_YEAR';
 export const selectNextYear = () => ({
   type: SELECT_NEXT_YEAR
-});
-
-export const SET_CURRENT_MONTH = 'SET_CURRENT_MONTH';
-export const setCurrentMonth = (currentMonth) => ({
-  type: SET_CURRENT_MONTH,
-  currentMonth
-});
-
-export const OPEN_ABSENCE_REASON_TOOL = 'OPEN_ABSENCE_REASON_TOOL';
-export const openAbsenceReasonTool = () => ({
-  type: OPEN_ABSENCE_REASON_TOOL
-});
-
-export const CLOSE_ABSENCE_REASON_TOOL = 'CLOSE_ABSENCE_REASON_TOOL';
-export const closeAbsenceReasonTool = () => ({
-  type: CLOSE_ABSENCE_REASON_TOOL
-});
-
-export const SELECT_ABSENCE_REASON = 'SELECT_ABSENCE_REASON';
-export const selectAbsenceReason = (value) => ({
-  type: SELECT_ABSENCE_REASON,
-  value
 });
 
 export const LOAD_ABSENCE_REASONS = 'LOAD_ABSENCE_REASONS';
