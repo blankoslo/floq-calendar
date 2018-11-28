@@ -34,37 +34,35 @@ class AbsenceInfo extends React.PureComponent {
   render() {
     return (
       <div className='info'>
+        <div className='year-selector'>
+          <IconButton
+            iconClassName='material-icons'
+            onClick={this.props.prevYear}
+            iconStyle={{ fontSize: 12, color: '#3c1345' }}
+          >
+            arrow_back
+              </IconButton>
+          <h1 className={'year-selector-text'}>
+            {this.props.year.toString()}
+          </h1>
+          <IconButton
+            iconClassName='material-icons'
+            onClick={this.props.nextYear}
+            iconStyle={{ fontSize: 12, color: '#3c1345' }}
+          >
+            arrow_forward
+              </IconButton>
+        </div>
         <div className='info-box-container'>
-          <div className='info-box year-selector'>
-            <h1 className={'year-selector-text'}>
-              {this.props.year.toString()}
-            </h1>
-            <div className='arrows'>
-              <IconButton
-                iconClassName='material-icons'
-                onClick={this.props.prevYear}
-                iconStyle={{ fontSize: 16, color: '#6600ff' }}
-              >
-                arrow_back
-              </IconButton>
-              <IconButton
-                iconClassName='material-icons'
-                onClick={this.props.nextYear}
-                iconStyle={{ fontSize: 16, color: '#6600ff' }}
-              >
-                arrow_forward
-              </IconButton>
-            </div>
-          </div>
           <div className='info-box'>
             <h6 className='info-header'> Tidligere Fravær </h6>
             <ul className='info-list'>
               {this.state.past.map(el => {
                 const key = Object.keys(el)[0];
-                const string = reasonToEventName(key) + ' ' + this.getText(el[key]);
+                const dates = this.getText(el[key]);
                 return (
-                  <li key={string}>
-                    {string}
+                  <li key={dates}>
+                    <span>{reasonToEventName(key)}</span> {dates}
                   </li>
                 );
               })}
@@ -75,10 +73,10 @@ class AbsenceInfo extends React.PureComponent {
             <ul className='info-list'>
               {this.state.future.map(el => {
                 const key = Object.keys(el)[0];
-                const string = reasonToEventName(key) + ' ' + this.getText(el[key]);
+                const dates = this.getText(el[key]);
                 return (
-                  <li key={string}>
-                    {string}
+                  <li key={dates}>
+                    <span>{reasonToEventName(key)}</span> {dates}
                   </li>
                 );
               })}

@@ -139,12 +139,12 @@ div.calendar {
 .date {
   position: relative;
   display: flex;
-  padding: 0;
-  margin: 0;
-  width: calc(100% / 5 - 2px);
-  height: 3.4rem;
+  box-sizing: border-box;
+  width: calc(100% / 5);
+  height: 4.8rem;
   border: 1px solid #f5f6f5;
   background-color: #fff;
+  color: #6600ff;
   cursor: default;
 }
 
@@ -159,23 +159,27 @@ div.calendar {
 
 .date-inner {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
 .date-number {
-  padding: 0.2rem 0.4rem;
-  color: #6600ff;
+  margin-top: 0.4rem;
+  margin-left: 0.4rem;
 }
 
 .date-text {
   font-size: 0.7rem;
   line-height: 0.7rem;
-  padding-left: 0.1rem;
+  margin-bottom: 0.4rem;
+  margin-left: 0.4rem;
 }
 
 .date-clicked {
   background-color: #6600ff !important;
   border: 1px solid #6600ff !important;
-  margin-left: -1px !important;
   z-index: 10;
 }
 
@@ -190,8 +194,6 @@ div.calendar {
 .cross {
   z-index: 5;
   position: absolute;
-  top: -2rem;
-  right: 0;
   background: #fff;
   color: #7d7d7d;
   width: 22px;
@@ -202,6 +204,8 @@ div.calendar {
   justify-content: center;
   font-weight: bold;
   font-family: "Comic Sans MS";
+  right: -10px;
+  top: -10px;
 }
 
 /* Events */
@@ -215,31 +219,31 @@ div.year-calendar div.event-holiday .date-number {
 
 div.year-calendar div.event-vacation,
 div.event-vacation {
-  color: #000;
+  color: #3c1345;
   background-color: #38fbfe;
 }
 
 div.year-calendar div.event-sick,
 div.event-sick {
-  color: #000;
+  color: #3c1345;
   background-color: #fff081;
 }
 
 div.year-calendar div.event-sick-child,
 div.event-sick-child {
-  color: #000;
+  color: #3c1345;
   background-color: #fff081;
 }
 
 div.year-calendar div.event-leave,
-div.event-leave {
-  color: #fff;
+div.event-leave{
+  color: #3c1345;
   background-color: #12eb81;
 }
 
 div.year-calendar div.event-leave-with-pay,
 div.event-leave-with-pay {
-  color: #fff;
+  color: #fff081;
   background-color: #fe386e;
 }
 
@@ -251,7 +255,7 @@ div.event-leave-without-pay {
 
 div.year-calendar div.event-parent-leave,
 div.event-parent-leave {
-  color: #fff;
+  color: #fff081;
   background-color: #fe386e;
 }
 
@@ -265,18 +269,13 @@ div.event-parent-leave {
 
 .year-selector {
   display: flex;
-  flex-direction: column;
 }
 
 .year-selector-text {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 500;
-  color: #6600ff;
-  margin: 0;
-}
-
-.arrows {
-  margin-left: -15px;
+  color: #3c1345;
+  margin: auto 0;
 }
 
 .info-box-container {
@@ -286,7 +285,7 @@ div.event-parent-leave {
 
 .info-box {
   margin-right: 1rem;
-  min-width: 19rem;
+  min-width: 24em;
 }
 
 .info-header {
@@ -304,7 +303,11 @@ div.event-parent-leave {
 
 .info-list li {
   font-size: 0.9rem;
-  line-height: 1.1rem;
+  line-height: 1.4rem;
+}
+
+.info-list li span {
+  text-decoration: underline;
 }
 
 /* Absence reasons */
@@ -312,13 +315,14 @@ div.event-parent-leave {
 .absence-reasons {
   z-index: 5;
   position: absolute;
-  top: 3.4rem;
+  top: calc(4.8rem + 1px);
+  right: -1px;
 }
 
 .absence-reasons div {
-  margin: 2px;
+  margin-bottom: 2px;
   padding: 0.3rem;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   width: 150px;
   cursor: pointer;
 }
