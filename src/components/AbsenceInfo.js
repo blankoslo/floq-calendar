@@ -40,7 +40,7 @@ class AbsenceInfo extends React.PureComponent {
               <IconButton
                 iconClassName='material-icons'
                 onClick={this.props.prevYear}
-                iconStyle={{ fontSize: 12, color: '#3c1345;' }}
+                iconStyle={{ fontSize: 12, color: '#3c1345' }}
               >
                 arrow_back
               </IconButton>
@@ -50,7 +50,7 @@ class AbsenceInfo extends React.PureComponent {
               <IconButton
                 iconClassName='material-icons'
                 onClick={this.props.nextYear}
-                iconStyle={{ fontSize: 12, color: '#3c1345;' }}
+                iconStyle={{ fontSize: 12, color: '#3c1345' }}
               >
                 arrow_forward
               </IconButton>
@@ -61,10 +61,10 @@ class AbsenceInfo extends React.PureComponent {
             <ul className='info-list'>
               {this.state.past.map(el => {
                 const key = Object.keys(el)[0];
-                const string = reasonToEventName(key) + ' ' + this.getText(el[key]);
+                const dates = this.getText(el[key]);
                 return (
-                  <li key={string}>
-                    {string}
+                  <li key={dates}>
+                    <span>{reasonToEventName(key)}</span> {dates}
                   </li>
                 );
               })}
@@ -75,10 +75,10 @@ class AbsenceInfo extends React.PureComponent {
             <ul className='info-list'>
               {this.state.future.map(el => {
                 const key = Object.keys(el)[0];
-                const string = reasonToEventName(key) + ' ' + this.getText(el[key]);
+                const dates = this.getText(el[key]);
                 return (
-                  <li key={string}>
-                    {string}
+                  <li key={dates}>
+                    <span>{reasonToEventName(key)}</span> {dates}
                   </li>
                 );
               })}
