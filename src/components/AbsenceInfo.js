@@ -35,22 +35,22 @@ class AbsenceInfo extends React.PureComponent {
     return (
       <div className='info'>
         <div className='info-box-container'>
-          <div className='info-box year-selector'>
-            <h1 className={'year-selector-text'}>
-              {this.props.year.toString()}
-            </h1>
-            <div className='arrows'>
+          <div className='info-box'>
+            <div className='year-selector'>
               <IconButton
                 iconClassName='material-icons'
                 onClick={this.props.prevYear}
-                iconStyle={{ fontSize: 16, color: '#6600ff' }}
+                iconStyle={{ fontSize: 12, color: '#3c1345;' }}
               >
                 arrow_back
               </IconButton>
+              <h1 className={'year-selector-text'}>
+                {this.props.year.toString()}
+              </h1>
               <IconButton
                 iconClassName='material-icons'
                 onClick={this.props.nextYear}
-                iconStyle={{ fontSize: 16, color: '#6600ff' }}
+                iconStyle={{ fontSize: 12, color: '#3c1345;' }}
               >
                 arrow_forward
               </IconButton>
