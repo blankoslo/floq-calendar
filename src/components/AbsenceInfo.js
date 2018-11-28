@@ -4,6 +4,7 @@ import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import format from 'date-fns/format';
 import isFriday from 'date-fns/is_friday';
 import nbLocale from 'date-fns/locale/nb';
+import getYear from 'date-fns/get_year';
 
 import { reasonToEventName } from '../selectors';
 
@@ -18,13 +19,13 @@ class AbsenceInfo extends React.PureComponent {
   }
 
   componentDidMount() {
-    if (this.props.absence) {
+    if (this.props.absence && this.props.absence.size > 0) {
       this.getAbsenceStrings();
     }
   }
 
   componentDidUpdate(prev) {
-    if (this.props.absence !== prev.absence) {
+    if ((this.props.absence !== prev.absence || this.props.year !== prev.year) && this.props.absence.size > 0) {
       this.getAbsenceStrings();
     }
   }
@@ -33,9 +34,6 @@ class AbsenceInfo extends React.PureComponent {
   render() {
     return (
       <div className='info'>
-        <div className='employee-container'>
-          {this.props.currentEmployee ? this.props.currentEmployee.name : ''}
-        </div>
         <div className='info-box-container'>
           <div className='info-box year-selector'>
             <h1 className={'year-selector-text'}>
@@ -102,19 +100,23 @@ class AbsenceInfo extends React.PureComponent {
   }
 
   getAbsenceStrings = () => {
-    const getPastAndFutureDates = this.getPastAndFutureDates(this.props.absence.valueSeq().flatten());
-    const past = this.group(getPastAndFutureDates[0], true);
-    const future = this.group(getPastAndFutureDates[1], false);
+    const pastAndFutureDates = this.getPastAndFutureDates(this.props.absence.valueSeq().flatten());
+    const past = this.group(pastAndFutureDates[0]);
+    const future = this.group(pastAndFutureDates[1]);
 
     this.setState({ past: past, future: future });
   }
 
   getPastAndFutureDates = (arr) => {
     const today = new Date();
+
     let future = {};
     let past = {};
 
     arr.forEach(element => {
+      if (getYear(element.date) !== this.props.year) {
+        return;
+      }
       const diff = differenceInCalendarDays(today, element.date);
       if (diff > 0) {
         past = { ...past, [diff]: element }
@@ -126,23 +128,24 @@ class AbsenceInfo extends React.PureComponent {
     return [past, future];
   }
 
-  group = (obj, reverse) => {
+  group = (obj) => {
     const result = [];
     let curr = [];
     let expectedNumber = NaN;
     let expectedType = '';
-    
-    const keys = reverse ? Object.keys(obj).reverse() : Object.keys(obj);
+
+    const keys = Object.keys(obj).map(key => Number(key)).sort((a, b) => b - a);
+
     keys.forEach(key => {
       const el = obj[key];
-      if (!expectedNumber || (Number(key) === expectedNumber && el.reason === expectedType)) {
+      if (!expectedNumber || (key === expectedNumber && el.reason === expectedType)) {
         curr.push(el.date);
       }
       else {
         result.push({ [expectedType]: curr });
         curr = [el.date];
       }
-      expectedNumber = isFriday(el.date) ? Number(key) - 3 : Number(key) - 1;
+      expectedNumber = isFriday(el.date) ? key - 3 : key - 1;
       expectedType = el.reason;
     });
     if (curr.length > 0) {

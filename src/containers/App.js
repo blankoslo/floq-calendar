@@ -70,6 +70,9 @@ class App extends React.PureComponent {
               this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
           />
           <div id='container'>
+            <div className='employee-container'>
+              {this.props.currentEmployee ? this.props.currentEmployee.name : ''}
+            </div>
             <div id='main'>
               <AbsenceInfo
                 currentEmployee={this.props.currentEmployee}

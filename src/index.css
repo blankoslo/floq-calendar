@@ -21,15 +21,22 @@ div#container {
 }
 
 div#main {
-  max-width: 1300px;
-  padding-left: 10%;
-  padding-right: 1rem;
+  padding: 0 1rem;
+  display: flex;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 1100px) {
   div#main {
-    padding: 0 1rem;
+    flex-wrap: wrap;
   }
+}
+
+.employee-container {
+  display: flex;
+  color: #3c1345;
+  font-size: 0.8rem;
+  justify-content: flex-end;
+  padding: 0.2rem 1.2rem 0 0;
 }
 
 .select-dates-mode {
@@ -52,6 +59,8 @@ div#main {
   z-index: 10;
   background-color: #fff;
   padding: 1rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .header-inner {
@@ -83,11 +92,16 @@ div#main {
   line-height: 0.9rem;
 }
 
-/* YEAR CALENDAR */
+/* Calendar */
 
 .year-calendar {
   display: flex;
   flex-wrap: wrap;
+}
+
+.month {
+  width: 24rem;
+  margin: 1rem 1rem 1rem 0;
 }
 
 .calendar-header {
@@ -106,11 +120,6 @@ div.calendar div.calendar-dates {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  width: 22rem;
-}
-
-.month {
-  margin: 1rem 1rem 1rem 0;
 }
 
 .month-header {
@@ -252,11 +261,20 @@ div.event-parent-leave {
   flex-direction: column;
 }
 
-.employee-container {
+.year-selector {
   display: flex;
-  color: #3c1345;
-  font-size: 0.8rem;
-  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.year-selector-text {
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #6600ff;
+  margin: 0;
+}
+
+.arrows {
+  margin-left: -15px;
 }
 
 .info-box-container {
@@ -265,8 +283,8 @@ div.event-parent-leave {
 }
 
 .info-box {
-  margin-right: 0.4rem;
-  min-width: 23rem;
+  margin-right: 1rem;
+  min-width: 19rem;
 }
 
 .info-header {
@@ -285,22 +303,6 @@ div.event-parent-leave {
 .info-list li {
   font-size: 0.9rem;
   line-height: 1.1rem;
-}
-
-.year-selector {
-  display: flex;
-  flex-direction: column;
-}
-
-.year-selector-text {
-  font-size: 2.2rem;
-  font-weight: 500;
-  color: #6600ff;
-  margin: 0;
-}
-
-.arrows {
-  margin-left: -15px;
 }
 
 /* Absence reasons */
