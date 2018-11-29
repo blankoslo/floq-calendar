@@ -1,6 +1,7 @@
 import React from 'react';
 import { Map } from 'immutable';
 import getDate from 'date-fns/get_date';
+import isFuture from 'date-fns/is_future';
 import isWeekend from 'date-fns/is_weekend';
 import classNames from 'classnames';
 import AbsenceReasons from './AbsenceReasons';
@@ -9,13 +10,15 @@ class Date extends React.PureComponent {
 
   constructor(props) {
     super(props)
+    const future = this.props.date ? isFuture(this.props.date) : false;
     this.state = {
-      editable: true,
+      future: future,
+      editable: future,
     }
   }
 
   componentDidMount() {
-    if (this.props.events) {
+    if (this.props.date && this.props.events) {
       this.checkIfHoliday();
     }
   }
@@ -27,7 +30,6 @@ class Date extends React.PureComponent {
   }
 
   render() {
-
     if (!this.props.date) {
       return <div className='date date-disabled' />;
     }
@@ -50,6 +52,7 @@ class Date extends React.PureComponent {
 
     return (
       <div className={dateClassNames}>
+        {this.state.future ? null : <div className='date-past' />}
         <div
           className='date-inner'
           onClick={this.handleClick}
