@@ -2,6 +2,8 @@ import { createSelector } from 'reselect';
 import { List, Map } from 'immutable';
 import dateFns from 'date-fns';
 import getYear from 'date-fns/get_year';
+import format from 'date-fns/format';
+import nbLocale from 'date-fns/locale/nb';
 
 export const reasonToEventClassName = (reason) => {
   switch (reason) {
@@ -42,6 +44,19 @@ export const reasonToEventName = (reason) => {
       return reason;
   }
 };
+
+export const dateRangeToDateString = (array) => {
+  if (array.length < 1) {
+    return '';
+  }
+  else if (array.length === 1) {
+    return format(array[0], 'D. MMMM', { locale: nbLocale });
+  }
+  else if (format(array[0], 'M') === format(array[array.length - 1], 'M')) {
+    return format(array[0], 'D') + '. til ' + format(array[array.length - 1], 'D. MMMM', { locale: nbLocale });
+  }
+  return format(array[0], 'D. MMMM', { locale: nbLocale }) + ' til ' + format(array[array.length - 1], 'D. MMMM', { locale: nbLocale });
+}
 
 export const currentEmployee = createSelector(
   (state) => state.currentEmployee,

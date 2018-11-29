@@ -5,7 +5,7 @@ import isFriday from 'date-fns/is_friday';
 import nbLocale from 'date-fns/locale/nb';
 import getYear from 'date-fns/get_year';
 
-import { reasonToEventName } from '../selectors';
+import { reasonToEventName, dateRangeToDateString } from '../selectors';
 
 class AbsenceInfo extends React.PureComponent {
 
@@ -39,7 +39,7 @@ class AbsenceInfo extends React.PureComponent {
             <ul className='info-list'>
               {this.state.past.map(el => {
                 const key = Object.keys(el)[0];
-                const dates = this.getText(el[key]);
+                const dates = this.dateRangeToDateString(el[key]);
                 return (
                   <li key={dates}>
                     <span>{reasonToEventName(key)}</span> {dates}
@@ -53,7 +53,7 @@ class AbsenceInfo extends React.PureComponent {
             <ul className='info-list'>
               {this.state.future.map(el => {
                 const key = Object.keys(el)[0];
-                const dates = this.getText(el[key]);
+                const dates = this.dateRangeToDateString(el[key]);
                 return (
                   <li key={dates}>
                     <span>{reasonToEventName(key)}</span> {dates}
@@ -65,16 +65,6 @@ class AbsenceInfo extends React.PureComponent {
         </div>
       </div>
     );
-  }
-
-  getText = (array) => {
-    if (array.length === 1) {
-      return format(array[0], 'D. MMMM', { locale: nbLocale });
-    }
-    else if (format(array[0], 'M') === format(array[array.length - 1], 'M')) {
-      return format(array[0], 'D') + '. til ' + format(array[array.length - 1], 'D. MMMM', { locale: nbLocale });
-    }
-    return format(array[0], 'D. MMMM', { locale: nbLocale }) + ' til ' + format(array[array.length - 1], 'D. MMMM', { locale: nbLocale });
   }
 
   getAbsenceStrings = () => {

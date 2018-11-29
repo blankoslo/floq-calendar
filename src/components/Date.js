@@ -50,18 +50,21 @@ class Date extends React.PureComponent {
 
     return (
       <div className={dateClassNames}>
-        {this.props.showAbsenceReasonContainer ?
-          <div className='cross' onClick={this.props.cancel}> X </div>
-          : null}
         <div
           className='date-inner'
           onClick={this.handleClick}
           onMouseOver={this.hover}
           onMouseOut={this.stopHover}
         >
+        {this.props.clicked ? 
+          <div className={'date-number'}>
+            {this.props.dateString ? this.props.dateString : ''}
+          </div>
+          :
           <div className={'date-number'}>
             {getDate(this.props.date)}
           </div>
+          }
           <div className={'date-text'}>
             {this.props.events && this.props.events.map((x) => x.event).join()}
           </div>
@@ -71,6 +74,8 @@ class Date extends React.PureComponent {
             saveAbsence={this.props.saveAbsence}
             absenceReasons={this.props.absenceReasons}
             removeAbsence={this.props.removeAbsence}
+            cancel={this.props.cancel}
+            dateString={this.props.dateString}
           /> : null}
       </div>
     );

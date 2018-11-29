@@ -117,7 +117,7 @@ class App extends React.PureComponent {
                 currentEvents={this.props.currentEvents}
               />
             </div>
-            <div className={this.state.selectDatesMode ? 'select-dates-mode' : ''} />
+            <div className={this.state.selectDatesMode ? 'overlay' : ''} />
           </div>
         </div>
       </MuiThemeProvider>

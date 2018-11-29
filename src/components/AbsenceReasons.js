@@ -5,13 +5,13 @@ import { reasonToEventClassName } from '../selectors';
 class AbsenceReasons extends React.PureComponent {
 
   render() {
+
     return (
       <ul className='absence-reasons'>
-        <li
-          className='absence-reasons-nothing'
-          onClick={this.props.removeAbsence}
-        >
-          Ingenting
+        <div className='cross' onClick={this.props.cancel}> X </div>
+        <li className='absence-reasons-summary'>
+          <h5>{this.props.dateString}</h5>
+          <p>Velg type fravær</p>
         </li>
         {this.props.absenceReasons.map((x) => (
           <li
@@ -22,6 +22,12 @@ class AbsenceReasons extends React.PureComponent {
             {x.name}
           </li>
         ))}
+        <li
+          className='absence-reasons-nothing'
+          onClick={this.props.removeAbsence}
+        >
+          Ingenting
+        </li>
       </ul>
     );
   }

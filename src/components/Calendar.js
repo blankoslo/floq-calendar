@@ -3,7 +3,7 @@ import { Range, List } from 'immutable';
 import dateFns from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
 
-import { getCurrentAbsenceUpdates } from '../selectors';
+import { getCurrentAbsenceUpdates, dateRangeToDateString } from '../selectors';
 
 import CalendarDate from './Date';
 
@@ -72,9 +72,12 @@ class Calendar extends React.Component {
                         stopHoverDate={this.stopHoverDate}
                         absenceReasons={this.props.absenceReasons}
                         showAbsenceReasonContainer={dateFns.isEqual(date, this.state.endDate)}
+                        chooseReasonMode={this.state.endDate ? true : false}
                         saveAbsence={this.saveAbsence}
                         removeAbsence={this.removeAbsence}
                         cancel={this.cancel}
+                        dateString={dateFns.isEqual(date, this.state.startDate) ?
+                          dateRangeToDateString(this.state.selected) : ''}
                       />
                     );
                   })}
@@ -114,12 +117,12 @@ class Calendar extends React.Component {
 
   stopHoverDate = () => {
     if (!this.state.endDate) {
-      this.setState({ selected: [] });
+      this.setState({ selected: [this.state.startDate] });
     }
   }
 
   selectStartDate = (date) => {
-    this.setState({ startDate: date });
+    this.setState({ startDate: date, selected: [date] });
   }
 
   selectEndDate = (date) => {
