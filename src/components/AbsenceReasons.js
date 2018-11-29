@@ -6,17 +6,17 @@ class AbsenceReasons extends React.PureComponent {
 
   render() {
     return (
-      <div className='absence-reasons'>
+      <ul className='absence-reasons'>
         {this.props.absenceReasons.map((x) => (
-          <div
+          <li
             key={x.id}
             className={`event-${reasonToEventClassName(x.id)}`}
             onClick={() => this.props.saveAbsence(x.id)}
           >
             {x.name}
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     );
   }
 }

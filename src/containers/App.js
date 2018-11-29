@@ -75,32 +75,34 @@ class App extends React.PureComponent {
             <div className='employee-container'>
               {this.props.currentEmployee ? this.props.currentEmployee.name : ''}
             </div>
-            <div className='year-selector'>
-              <IconButton
-                iconClassName='material-icons'
-                onClick={() => this.props.selectPreviousYear()}
-                iconStyle={{ fontSize: 12, color: '#3c1345' }}
-              >
-                arrow_back
-              </IconButton>
-              <h1 className={'year-selector-text'}>
-                {this.props.currentYear.toString()}
-              </h1>
-              <IconButton
-                iconClassName='material-icons'
-                onClick={() => this.props.selectNextYear(1)}
-                iconStyle={{ fontSize: 12, color: '#3c1345' }}
-              >
-                arrow_forward
-              </IconButton>
-            </div>
             <div id='main'>
+              {/* 
               <AbsenceInfo
                 currentEmployee={this.props.currentEmployee}
                 year={this.props.currentYear}
                 absence={this.props.currentEmployee ?
                   this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
               />
+              */}
+              <div className='year-selector'>
+                <IconButton
+                  iconClassName='material-icons'
+                  onClick={() => this.props.selectPreviousYear()}
+                  iconStyle={{ fontSize: 12, color: '#3c1345' }}
+                >
+                  arrow_back
+              </IconButton>
+                <h1 className={'year-selector-text'}>
+                  {this.props.currentYear.toString()}
+                </h1>
+                <IconButton
+                  iconClassName='material-icons'
+                  onClick={() => this.props.selectNextYear(1)}
+                  iconStyle={{ fontSize: 12, color: '#3c1345' }}
+                >
+                  arrow_forward
+              </IconButton>
+              </div>
               <Calendar
                 openLayover={this.openLayover}
                 closeLayover={this.closeLayover}

@@ -21,8 +21,11 @@ div#container {
 }
 
 div#main {
-  padding: 0 1rem;
   display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 @media only screen and (max-width: 1100px) {
@@ -36,6 +39,17 @@ div#main {
   color: #3c1345;
   justify-content: flex-end;
   padding: 0.2rem 1.2rem 0 0;
+}
+
+.year-selector {
+  display: flex;
+}
+
+.year-selector-text {
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #3c1345;
+  margin: auto 0;
 }
 
 .select-dates-mode {
@@ -206,51 +220,45 @@ div#main {
 
 /* Events */
 
-div.year-calendar div.event-weekend .date-text,
-div.year-calendar div.event-holiday .date-text,
-div.year-calendar div.event-weekend .date-number,
-div.year-calendar div.event-holiday .date-number {
+.year-calendar .event-weekend .date-text,
+.year-calendar .event-holiday .date-text,
+.year-calendar .event-weekend .date-number,
+.year-calendar .event-holiday .date-number {
   color: #e12b38;
 }
 
-div.year-calendar div.event-vacation,
-div.event-vacation {
+.event-vacation {
   color: #3c1345;
   background-color: #38fbfe;
 }
 
-div.year-calendar div.event-sick,
-div.event-sick {
+.event-sick {
   color: #3c1345;
   background-color: #fff081;
 }
 
-div.year-calendar div.event-sick-child,
-div.event-sick-child {
+.event-sick-child {
   color: #3c1345;
   background-color: #fff081;
 }
 
-div.year-calendar div.event-leave,
-div.event-leave{
+.event-leave{
   color: #3c1345;
   background-color: #12eb81;
 }
 
-div.year-calendar div.event-leave-with-pay,
-div.event-leave-with-pay {
+.event-leave-with-pay {
   color: #fff081;
   background-color: #fe386e;
 }
 
-div.year-calendar div.event-leave-without-pay,
-div.event-leave-without-pay {
+.event-leave-without-pay {
   color: #fff;
   background-color: #3c1345;
 }
 
-div.year-calendar div.event-parent-leave,
-div.event-parent-leave {
+
+.event-parent-leave {
   color: #fff081;
   background-color: #fe386e;
 }
@@ -261,17 +269,6 @@ div.event-parent-leave {
   padding: 0.3rem 0;
   display: flex;
   flex-direction: column;
-}
-
-.year-selector {
-  display: flex;
-}
-
-.year-selector-text {
-  font-size: 1.8rem;
-  font-weight: 500;
-  color: #3c1345;
-  margin: auto 0;
 }
 
 .info-box-container {
@@ -311,14 +308,17 @@ div.event-parent-leave {
 .absence-reasons {
   z-index: 5;
   position: absolute;
-  top: calc(4.8rem + 1px);
+  top: calc(6rem + 1px);
   right: -1px;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
 }
 
-.absence-reasons div {
+.absence-reasons li {
   margin-bottom: 2px;
+  font-size: 1.2rem;
   padding: 0.3rem;
-  font-size: 0.8rem;
-  width: 150px;
+  width: 20rem;
   cursor: pointer;
 }

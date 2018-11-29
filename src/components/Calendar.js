@@ -45,9 +45,9 @@ class Calendar extends React.Component {
               key={`${this.props.year}-${month}`}
               className='month'
             >
-              <h5 className='month-header'>
+              <h4 className='month-header'>
                 {this.getMonthText(firstDateOfMonth)} {emojis[month]}
-              </h5>
+              </h4>
               <div className='calendar'>
                 <div className='calendar-header'>
                   {daysOfWeek.map((x) =>
