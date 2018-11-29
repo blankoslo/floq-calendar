@@ -73,6 +73,7 @@ class Calendar extends React.Component {
                         absenceReasons={this.props.absenceReasons}
                         showAbsenceReasonContainer={dateFns.isEqual(date, this.state.endDate)}
                         saveAbsence={this.saveAbsence}
+                        removeAbsence={this.removeAbsence}
                         cancel={this.cancel}
                       />
                     );
@@ -139,7 +140,7 @@ class Calendar extends React.Component {
     this.setState({ startDate: undefined, endDate: undefined, selected: [] });
   }
 
-  cancel = () => {
+  removeAbsence = () => {
     this.props.closeLayover();
 
     this.state.selected
@@ -148,6 +149,11 @@ class Calendar extends React.Component {
         && !dateFns.isWeekend(date))
       .forEach(date => this.props.removeAbsence(this.props.currentEmployee.id, date));
 
+    this.setState({ startDate: undefined, endDate: undefined, selected: [] });
+  }
+
+  cancel = () => {
+    this.props.closeLayover();
     this.setState({ startDate: undefined, endDate: undefined, selected: [] });
   }
 

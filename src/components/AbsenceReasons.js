@@ -7,6 +7,12 @@ class AbsenceReasons extends React.PureComponent {
   render() {
     return (
       <ul className='absence-reasons'>
+        <li
+          className='absence-reasons-nothing'
+          onClick={this.props.removeAbsence}
+        >
+          Ingenting
+        </li>
         {this.props.absenceReasons.map((x) => (
           <li
             key={x.id}

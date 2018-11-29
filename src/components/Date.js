@@ -70,6 +70,7 @@ class Date extends React.PureComponent {
           <AbsenceReasons
             saveAbsence={this.props.saveAbsence}
             absenceReasons={this.props.absenceReasons}
+            removeAbsence={this.props.removeAbsence}
           /> : null}
       </div>
     );
