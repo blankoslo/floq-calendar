@@ -158,7 +158,7 @@ class Calendar extends React.Component {
   getMonthDates = (firstDateOfMonth) => {
     const dates = [];
 
-    Range(0, this.getPadDays(dateFns.getDay(firstDateOfMonth)))
+    Range(0, this.getPadDays(dateFns.getISODay(firstDateOfMonth)))
       .forEach(() => dates.push(null));
 
     const lastDayOfMonth = dateFns.lastDayOfMonth(firstDateOfMonth);
@@ -168,7 +168,7 @@ class Calendar extends React.Component {
       lastDayOfMonth
     ).map(date => dates.push(date));
 
-    Range(0, this.getPadDaysEnd(dateFns.getDay(lastDayOfMonth)))
+    Range(0, this.getPadDaysEnd(dateFns.getISODay(lastDayOfMonth)))
       .forEach(() => dates.push(null));
 
     return dates;
