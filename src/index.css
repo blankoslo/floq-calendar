@@ -206,6 +206,10 @@ div#main {
   color: #fff !important;
 }
 
+.date-clicked .date-text {
+  color: #6600ff !important;
+}
+
 .date-clicked:hover {
   background-color: #6600ff !important;
 }

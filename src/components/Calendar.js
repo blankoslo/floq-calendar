@@ -61,6 +61,8 @@ class Calendar extends React.Component {
                     const isClicked = dateFns.isEqual(date, this.state.startDate) ||
                       this.state.selected.find(d => dateFns.isEqual(d, date));
 
+                    const dateRangeString = dateRangeToDateString(this.state.selected);
+
                     return (
                       <CalendarDate
                         key={dateString + '-' + i}
@@ -76,8 +78,8 @@ class Calendar extends React.Component {
                         saveAbsence={this.saveAbsence}
                         removeAbsence={this.removeAbsence}
                         cancel={this.cancel}
-                        dateString={dateFns.isEqual(date, this.state.startDate) ?
-                          dateRangeToDateString(this.state.selected) : ''}
+                        dateString={dateFns.isEqual(date, this.state.startDate) ? dateRangeString : ''}
+                        dateRangeString={dateRangeString}
                       />
                     );
                   })}

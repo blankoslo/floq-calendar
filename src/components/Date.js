@@ -75,7 +75,7 @@ class Date extends React.PureComponent {
             absenceReasons={this.props.absenceReasons}
             removeAbsence={this.props.removeAbsence}
             cancel={this.props.cancel}
-            dateString={this.props.dateString}
+            dateString={this.props.dateRangeString}
           /> : null}
       </div>
     );
