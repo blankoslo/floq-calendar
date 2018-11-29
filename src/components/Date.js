@@ -56,15 +56,12 @@ class Date extends React.PureComponent {
           onMouseOver={this.hover}
           onMouseOut={this.stopHover}
         >
-        {this.props.clicked ? 
-          <div className={'date-number'}>
-            {this.props.dateString ? this.props.dateString : ''}
-          </div>
-          :
-          <div className={'date-number'}>
-            {getDate(this.props.date)}
-          </div>
-          }
+          {this.props.clicked ?
+            <div className={'date-number'}>
+              {this.props.dateString}
+            </div> : <div className={'date-number'}>
+              {getDate(this.props.date)}
+            </div>}
           <div className={'date-text'}>
             {this.props.events && this.props.events.map((x) => x.event).join()}
           </div>
