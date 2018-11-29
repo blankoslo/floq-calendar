@@ -102,8 +102,7 @@ class Calendar extends React.Component {
   }
 
   hoverDate = (date) => {
-    if (this.state.startDate && !this.state.endDate &&
-      (dateFns.isAfter(date, this.state.startDate) || dateFns.isEqual(date, this.state.startDate))) {
+    if (this.state.startDate && !this.state.endDate && dateFns.isAfter(date, this.state.startDate)) {
       this.setState({
         selected: dateFns.eachDay(
           this.state.startDate,
@@ -128,28 +127,27 @@ class Calendar extends React.Component {
     this.props.openLayover();
   }
 
-  saveAbsence = (reason) => {
+  getSelectedDatesAndResetState = () => {
     this.props.closeLayover();
-
-    this.state.selected
-      .filter(date => !this.props.currentEvents
-        .get(dateFns.format(date, 'YYYY-M-D'), List()).some((x) => x.eventClassName === 'holiday')
-        && !dateFns.isWeekend(date))
-      .forEach(date => this.props.addAbsence(this.props.currentEmployee.id, date, reason));
-
     this.setState({ startDate: undefined, endDate: undefined, selected: [] });
+
+    const array = this.state.selected.find(d => d === this.state.startDate) ?
+      this.state.selected : [...this.state.selected, this.state.startDate];
+
+    return array.filter(date =>
+      !this.props.currentEvents.get(dateFns.format(date, 'YYYY-M-D'), List())
+        .some((x) => x.eventClassName === 'holiday')
+      && !dateFns.isWeekend(date), List());
+  }
+
+  saveAbsence = (reason) => {
+    this.getSelectedDatesAndResetState()
+      .forEach(date => this.props.addAbsence(this.props.currentEmployee.id, date, reason));
   }
 
   removeAbsence = () => {
-    this.props.closeLayover();
-
-    this.state.selected
-      .filter(date => !this.props.currentEvents
-        .get(dateFns.format(date, 'YYYY-M-D'), List()).some((x) => x.eventClassName === 'holiday')
-        && !dateFns.isWeekend(date))
+    this.getSelectedDatesAndResetState()
       .forEach(date => this.props.removeAbsence(this.props.currentEmployee.id, date));
-
-    this.setState({ startDate: undefined, endDate: undefined, selected: [] });
   }
 
   cancel = () => {
