@@ -1,5 +1,4 @@
 import React from 'react';
-import IconButton from 'material-ui/IconButton';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import format from 'date-fns/format';
 import isFriday from 'date-fns/is_friday';
@@ -34,25 +33,6 @@ class AbsenceInfo extends React.PureComponent {
   render() {
     return (
       <div className='info'>
-        <div className='year-selector'>
-          <IconButton
-            iconClassName='material-icons'
-            onClick={this.props.prevYear}
-            iconStyle={{ fontSize: 12, color: '#3c1345' }}
-          >
-            arrow_back
-              </IconButton>
-          <h1 className={'year-selector-text'}>
-            {this.props.year.toString()}
-          </h1>
-          <IconButton
-            iconClassName='material-icons'
-            onClick={this.props.nextYear}
-            iconStyle={{ fontSize: 12, color: '#3c1345' }}
-          >
-            arrow_forward
-              </IconButton>
-        </div>
         <div className='info-box-container'>
           <div className='info-box'>
             <h6 className='info-header'> Tidligere Fravær </h6>

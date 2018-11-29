@@ -34,7 +34,6 @@ div#main {
 .employee-container {
   display: flex;
   color: #3c1345;
-  font-size: 0.8rem;
   justify-content: flex-end;
   padding: 0.2rem 1.2rem 0 0;
 }
@@ -102,7 +101,8 @@ div#main {
 }
 
 .month {
-  width: 24rem;
+  width: 34rem;
+  max-width: 90vw;
   margin: 1rem 1rem 1rem 0;
 }
 
@@ -118,7 +118,7 @@ div#main {
   font-size: 0.8rem;
 }
 
-div.calendar div.calendar-dates {
+.calendar-dates {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -130,10 +130,6 @@ div.calendar div.calendar-dates {
   margin: 0;
 }
 
-div.calendar {
-  display: inline-block;
-}
-
 /* Calendar date */
 
 .date {
@@ -141,7 +137,7 @@ div.calendar {
   display: flex;
   box-sizing: border-box;
   width: calc(100% / 5);
-  height: 4.8rem;
+  height: 6rem;
   border: 1px solid #f5f6f5;
   background-color: #fff;
   color: #6600ff;
@@ -168,11 +164,11 @@ div.calendar {
 .date-number {
   margin-top: 0.4rem;
   margin-left: 0.4rem;
+  font-size: 1.2rem;
 }
 
 .date-text {
-  font-size: 0.7rem;
-  line-height: 0.7rem;
+  line-height: 0.9rem;
   margin-bottom: 0.4rem;
   margin-left: 0.4rem;
 }
