@@ -279,7 +279,6 @@ div#main {
 .info-header {
   color: #3c1345;
   margin: 0.2rem 0;
-  font-size: 0.9rem;
   font-weight: 600;
 }
 
@@ -290,7 +289,6 @@ div#main {
 }
 
 .info-list li {
-  font-size: 0.9rem;
   line-height: 1.4rem;
 }
 

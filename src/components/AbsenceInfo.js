@@ -1,9 +1,6 @@
 import React from 'react';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
-import format from 'date-fns/format';
 import isFriday from 'date-fns/is_friday';
-import nbLocale from 'date-fns/locale/nb';
-import getYear from 'date-fns/get_year';
 
 import { reasonToEventName, dateRangeToDateString } from '../selectors';
 
@@ -12,8 +9,7 @@ class AbsenceInfo extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      past: [],
-      future: []
+      dates: [],
     }
   }
 
@@ -24,7 +20,7 @@ class AbsenceInfo extends React.PureComponent {
   }
 
   componentDidUpdate(prev) {
-    if ((this.props.absence !== prev.absence || this.props.year !== prev.year) && this.props.absence.size > 0) {
+    if (this.props.absence !== prev.absence && this.props.absence.size > 0) {
       this.getAbsenceStrings();
     }
   }
@@ -33,67 +29,39 @@ class AbsenceInfo extends React.PureComponent {
   render() {
     return (
       <div className='info'>
-        <div className='info-box-container'>
-          <div className='info-box'>
-            <h6 className='info-header'> Tidligere Fravær </h6>
-            <ul className='info-list'>
-              {this.state.past.map(el => {
-                const key = Object.keys(el)[0];
-                const dates = this.dateRangeToDateString(el[key]);
-                return (
-                  <li key={dates}>
-                    <span>{reasonToEventName(key)}</span> {dates}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-          <div className='info-box'>
-            <h6 className='info-header'> Kommende Fravær </h6>
-            <ul className='info-list'>
-              {this.state.future.map(el => {
-                const key = Object.keys(el)[0];
-                const dates = this.dateRangeToDateString(el[key]);
-                return (
-                  <li key={dates}>
-                    <span>{reasonToEventName(key)}</span> {dates}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+        <div className='info-box'>
+          <h6 className='info-header'> Planlagt Fravær </h6>
+          <ul className='info-list'>
+            {this.state.dates.map(el => {
+              const key = Object.keys(el)[0];
+              const dates = dateRangeToDateString(el[key]);
+              return (
+                <li key={dates}>
+                  <span>{reasonToEventName(key)}</span> {dates}
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     );
   }
 
   getAbsenceStrings = () => {
-    const pastAndFutureDates = this.getPastAndFutureDates(this.props.absence.valueSeq().flatten());
-    const past = this.group(pastAndFutureDates[0]);
-    const future = this.group(pastAndFutureDates[1]);
-
-    this.setState({ past: past, future: future });
+    const dates = this.group(this.getFutureDates(this.props.absence.valueSeq().flatten()));
+    this.setState({ dates: dates });
   }
 
-  getPastAndFutureDates = (arr) => {
+  getFutureDates = (arr) => {
     const today = new Date();
 
-    let future = {};
-    let past = {};
-
-    arr.forEach(element => {
-      if (getYear(element.date) !== this.props.year) {
-        return;
+    return arr.reduce((acc, curr) => {
+      const diff = differenceInCalendarDays(today, curr.date);
+      if (diff <= 0) {
+        return { ...acc, [diff]: curr };
       }
-      const diff = differenceInCalendarDays(today, element.date);
-      if (diff > 0) {
-        past = { ...past, [diff]: element }
-      }
-      else {
-        future = { ...future, [diff]: element }
-      }
-    });
-    return [past, future];
+      return acc;
+    }, {});
   }
 
   group = (obj) => {

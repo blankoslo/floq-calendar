@@ -76,14 +76,12 @@ class App extends React.PureComponent {
               {this.props.currentEmployee ? this.props.currentEmployee.name : ''}
             </div>
             <div id='main'>
-              {/* 
               <AbsenceInfo
                 currentEmployee={this.props.currentEmployee}
                 year={this.props.currentYear}
                 absence={this.props.currentEmployee ?
                   this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
               />
-              */}
               <div className='year-selector'>
                 <IconButton
                   iconClassName='material-icons'
