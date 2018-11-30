@@ -44,6 +44,12 @@ export const loadAbsence = (absence) => ({
   absence
 });
 
+export const LOAD_HOLIDAY_DAYS = 'LOAD_HOLIDAY_DAYS';
+export const loadHolidayDays = (days) => ({
+  type: LOAD_HOLIDAY_DAYS,
+  days
+});
+
 export const ADD_ABSENCE = 'ADD_ABSENCE';
 export const addAbsence = (employeeId, date, reason) => ({
   type: ADD_ABSENCE,

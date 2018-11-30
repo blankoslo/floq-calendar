@@ -6,7 +6,7 @@ import dateFns from 'date-fns';
 import parse from 'date-fns/parse';
 
 import {
-  loadAbsenceReasons, loadEmployees, loadHolidays, loadAbsence
+  loadAbsenceReasons, loadEmployees, loadHolidays, loadAbsence, loadHolidayDays
 } from '../actions';
 
 export const getApiConfig = () => ({
@@ -53,6 +53,29 @@ const fetchHolidaysEpic = action$ => action$
     name: y.name
   })))
   .map(loadHolidays);
+
+export const FETCH_HOLIDAY_DAYS = 'FETCH_HOLIDAY_DAYS';
+export const fetchHolidayDays = () => ({
+  type: FETCH_HOLIDAY_DAYS
+});
+
+const fetchHolidayDaysEpic = action$ => action$
+  .ofType(FETCH_HOLIDAY_DAYS)
+  .mergeMap((x) => Observable.ajax({
+    url: `${getApiConfig().apiHost}/vacation_days_by_year`,
+    method: 'GET',
+    responseType: 'json',
+    headers: {
+      'Authorization': 'Bearer ' + getApiConfig().apiToken
+    }
+  }))
+  .map((x) => List(x.response).map((y) => ({
+    employeeId: y.employee.toString(),
+    year: y.year,
+    availableDays: y.days_earnt - y.days_spent
+  })))
+  .map((x) => x.groupBy((y) => y.employeeId))
+  .map(loadHolidayDays);
 
 export const FETCH_EMPLOYEES = 'FETCH_EMPLOYEES';
 export const fetchEmployees = () => ({
@@ -182,5 +205,6 @@ export default combineEpics(
   fetchHolidaysEpic,
   fetchEmployeesEpic,
   fetchAbsenceEpic,
-  updateAbsenceEpic
+  updateAbsenceEpic,
+  fetchHolidayDaysEpic
 );
