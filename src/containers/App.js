@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Map } from 'immutable';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getYear from 'date-fns/get_year';
-import IconButton from 'material-ui/IconButton';
 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
@@ -73,30 +72,13 @@ class App extends React.PureComponent {
               <AbsenceInfo
                 currentEmployee={this.props.currentEmployee}
                 year={this.props.currentYear}
+                selectPreviousYear={() => this.props.selectPreviousYear()}
+                selectNextYear={() => this.props.selectNextYear(1)}
                 absence={this.props.currentEmployee ?
                   this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
                 holidayDays={this.props.currentEmployee ?
                   this.props.holidayDays.get(this.props.currentEmployee.id, Map()) : undefined}
               />
-              <div className='year-selector'>
-                <IconButton
-                  iconClassName='material-icons'
-                  onClick={() => this.props.selectPreviousYear()}
-                  iconStyle={{ fontSize: 12, color: '#3c1345' }}
-                >
-                  arrow_back
-              </IconButton>
-                <h1 className={'year-selector-text'}>
-                  {this.props.currentYear.toString()}
-                </h1>
-                <IconButton
-                  iconClassName='material-icons'
-                  onClick={() => this.props.selectNextYear(1)}
-                  iconStyle={{ fontSize: 12, color: '#3c1345' }}
-                >
-                  arrow_forward
-              </IconButton>
-              </div>
               <Calendar
                 openLayover={this.openLayover}
                 closeLayover={this.closeLayover}
