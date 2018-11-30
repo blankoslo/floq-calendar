@@ -2,6 +2,7 @@ import React from 'react';
 import { Range, List } from 'immutable';
 import dateFns from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
+import isFuture from 'date-fns/is_future';
 
 import { getCurrentAbsenceUpdates, dateRangeToDateString } from '../selectors';
 
@@ -40,6 +41,7 @@ class Calendar extends React.Component {
       <div className='year-calendar'>
         {Range(0, 12).map(month => {
           const firstDateOfMonth = new Date(this.props.year, month, 1);
+          const lastDayOfMonth = dateFns.lastDayOfMonth(firstDateOfMonth);
           return (
             <div
               key={`${this.props.year}-${month}`}
@@ -55,7 +57,7 @@ class Calendar extends React.Component {
                   )}
                 </div>
                 <div className='calendar-dates'>
-                  {this.getMonthDates(firstDateOfMonth).map((date, i) => {
+                  {this.getMonthDates(firstDateOfMonth, lastDayOfMonth).map((date, i) => {
                     const dateString = this.props.year + '-' + (month + 1) + '-' + dateFns.getDate(date);
 
                     const isClicked = dateFns.isEqual(date, this.state.startDate) ||
@@ -85,6 +87,7 @@ class Calendar extends React.Component {
                   })}
                 </div>
               </div>
+              {isFuture(lastDayOfMonth) ? null : <div className='month-past'/>}
             </div>
           );
         })}
@@ -164,13 +167,11 @@ class Calendar extends React.Component {
     return dateFns.format(date, 'MMMM', { locale: nbLocale });
   }
 
-  getMonthDates = (firstDateOfMonth) => {
+  getMonthDates = (firstDateOfMonth, lastDayOfMonth) => {
     const dates = [];
 
     Range(0, this.getPadDays(dateFns.getISODay(firstDateOfMonth)))
       .forEach(() => dates.push(null));
-
-    const lastDayOfMonth = dateFns.lastDayOfMonth(firstDateOfMonth);
 
     dateFns.eachDay(
       firstDateOfMonth,

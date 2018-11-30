@@ -123,6 +123,16 @@ div#main {
   width: 34rem;
   max-width: 90vw;
   margin: 1rem 1rem 1rem 0;
+  position: relative;
+}
+
+.month-past {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f5f6f59c;
 }
 
 .calendar-header {
@@ -142,6 +152,7 @@ div#main {
   flex-wrap: wrap;
   justify-content: space-around;
   position: relative;
+  z-index: 2;
 }
 
 .month-header {
@@ -170,7 +181,7 @@ div#main {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #ffffff80;
+  background-color: #ffffff9c;
 }
 
 .date-disabled {
