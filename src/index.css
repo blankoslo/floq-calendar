@@ -66,50 +66,7 @@ div#main {
   left: 0;
   right: 0;
   bottom: 0;
-}
-
-/* Header */
-
-.header {
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
-  z-index: 10;
-  background-color: #fff;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.header-inner {
-  display: flex;
-  max-width: 800px;
-  margin: auto;
-  overflow-x: scroll;
-}
-
-.absence-bar {
-  flex: 1;
-  margin: 0.4rem 1rem;
-}
-
-.absence-color {
-  height: 8px;
-  min-width: 5rem;
-}
-
-.absence-days {
-  margin: 0.6em 0;
-  font-weight: 600;
-  color: #3c1345;
-  font-size: 1rem;
-}
-
-.absence-days-reason {
-  margin: 0;
-  color: #3c1345;
-  font-size: 0.9rem;
-  line-height: 0.9rem;
+  z-index: 2;
 }
 
 /* Calendar */
@@ -152,7 +109,6 @@ div#main {
   flex-wrap: wrap;
   justify-content: space-around;
   position: relative;
-  z-index: 2;
 }
 
 .month-header {
@@ -320,6 +276,11 @@ div#main {
 
 .info-list li span {
   text-decoration: underline;
+}
+
+.absence-color {
+  height: 8px;
+  min-width: 5rem;
 }
 
 /* Absence reasons */
