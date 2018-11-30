@@ -4,12 +4,13 @@ import dateFns from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
 import isFuture from 'date-fns/is_future';
 
-import { getCurrentAbsenceUpdates, dateRangeToDateString } from '../selectors';
+import { getCurrentAbsenceUpdates, dateRangeToDateString, monthToRef } from '../selectors';
 
 import CalendarDate from './Date';
 
 const emojis = ['', '', '', '🐣', '', '', '☀️', '', '', '', '', '🎄']
 const daysOfWeek = ['ma', 'ti', 'on', 'to', 'fr'];
+const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
 class Calendar extends React.Component {
 
@@ -38,61 +39,75 @@ class Calendar extends React.Component {
 
   render() {
     return (
-      <div className='year-calendar'>
-        {Range(0, 12).map(month => {
-          const firstDateOfMonth = new Date(this.props.year, month, 1);
-          const lastDayOfMonth = dateFns.lastDayOfMonth(firstDateOfMonth);
-          const future = isFuture(lastDayOfMonth);
-          return (
-            <div
-              key={`${this.props.year}-${month}`}
-              className='month'
-            >
-              <h4 className={future ? 'month-header' : 'month-header-past'}>
-                {this.getMonthText(firstDateOfMonth)} {emojis[month]}
-              </h4>
-              <div className='calendar'>
-                <div className='calendar-header'>
-                  {daysOfWeek.map((x) =>
-                    <div className='calendar-header-day' key={x}>{x}</div>
-                  )}
-                </div>
-                <div className='calendar-dates'>
-                  {this.getMonthDates(firstDateOfMonth, lastDayOfMonth).map((date, i) => {
-                    const dateString = this.props.year + '-' + (month + 1) + '-' + dateFns.getDate(date);
+      <div className='wrapper'>
+        <div className='year-calendar'>
+          {Range(0, 12).map(month => {
+            const firstDateOfMonth = new Date(this.props.year, month, 1);
+            const lastDayOfMonth = dateFns.lastDayOfMonth(firstDateOfMonth);
+            const future = isFuture(lastDayOfMonth);
+            return (
+              <div
+                key={`${this.props.year}-${month}`}
+                ref={monthToRef(month)}
+                className='month'
+              >
+                <h4 className={future ? 'month-header' : 'month-header-past'}>
+                  {this.getMonthText(firstDateOfMonth)} {emojis[month]}
+                </h4>
+                <div className='calendar'>
+                  <div className='calendar-header'>
+                    {daysOfWeek.map((x) =>
+                      <div className='calendar-header-day' key={x}>{x}</div>
+                    )}
+                  </div>
+                  <div className='calendar-dates'>
+                    {this.getMonthDates(firstDateOfMonth, lastDayOfMonth).map((date, i) => {
+                      const dateString = this.props.year + '-' + (month + 1) + '-' + dateFns.getDate(date);
 
-                    const isClicked = dateFns.isEqual(date, this.state.startDate) ||
-                      this.state.selected.find(d => dateFns.isEqual(d, date));
+                      const isClicked = dateFns.isEqual(date, this.state.startDate) ||
+                        this.state.selected.find(d => dateFns.isEqual(d, date));
 
-                    const dateRangeString = dateRangeToDateString(this.state.selected);
+                      const dateRangeString = dateRangeToDateString(this.state.selected);
 
-                    return (
-                      <CalendarDate
-                        key={dateString + '-' + i}
-                        date={date}
-                        events={this.props.currentEvents.get(dateString)}
-                        clicked={isClicked}
-                        clickDate={this.clickDate}
-                        hoverDate={this.hoverDate}
-                        stopHoverDate={this.stopHoverDate}
-                        absenceReasons={this.props.absenceReasons}
-                        showAbsenceReasonContainer={dateFns.isEqual(date, this.state.endDate)}
-                        chooseReasonMode={this.state.endDate ? true : false}
-                        saveAbsence={this.saveAbsence}
-                        removeAbsence={this.removeAbsence}
-                        cancel={this.cancel}
-                        dateString={dateFns.isEqual(date, this.state.startDate) ? dateRangeString : ''}
-                        dateRangeString={dateRangeString}
-                      />
-                    );
-                  })}
+                      return (
+                        <CalendarDate
+                          key={dateString + '-' + i}
+                          date={date}
+                          events={this.props.currentEvents.get(dateString)}
+                          clicked={isClicked}
+                          clickDate={this.clickDate}
+                          hoverDate={this.hoverDate}
+                          stopHoverDate={this.stopHoverDate}
+                          absenceReasons={this.props.absenceReasons}
+                          showAbsenceReasonContainer={dateFns.isEqual(date, this.state.endDate)}
+                          chooseReasonMode={this.state.endDate ? true : false}
+                          saveAbsence={this.saveAbsence}
+                          removeAbsence={this.removeAbsence}
+                          cancel={this.cancel}
+                          dateString={dateFns.isEqual(date, this.state.startDate) ? dateRangeString : ''}
+                          dateRangeString={dateRangeString}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+        <div className='scrollbar'>
+          {months.map((m, i) =>
+            <p key={m + '-' + i} onClick={() => this.scroll(i)}>
+              {m}
+            </p>
+          )}
+        </div>
       </div>
     );
+  }
+
+  scroll = (month) => {
+    this.refs[monthToRef(month)].scrollIntoView();
   }
 
   clickDate = (date) => {

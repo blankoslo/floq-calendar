@@ -45,6 +45,23 @@ export const reasonToEventName = (reason) => {
   }
 };
 
+export const monthToRef = (number) => {
+  switch (number) {
+    case 0: return 'jan';
+    case 1: return 'feb';
+    case 2: return 'mars';
+    case 3: return 'april';
+    case 4: return 'mai';
+    case 5: return 'juni';
+    case 6: return 'juli';
+    case 7: return 'aug';
+    case 8: return 'sept';
+    case 9: return 'okt';
+    case 10: return 'nov';
+    default: return 'des';
+  }
+};
+
 export const dateRangeToDateString = (array) => {
   if (array.length < 1) {
     return '';

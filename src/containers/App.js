@@ -63,38 +63,36 @@ class App extends React.PureComponent {
   render() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div id='outer'>
-          <div id='container'>
-            <div className='employee-container'>
-              {this.props.currentEmployee ? this.props.currentEmployee.name : ''}
-            </div>
-            <div id='main'>
-              <AbsenceInfo
-                currentEmployee={this.props.currentEmployee}
-                year={this.props.currentYear}
-                selectPreviousYear={() => this.props.selectPreviousYear()}
-                selectNextYear={() => this.props.selectNextYear(1)}
-                absence={this.props.currentEmployee ?
-                  this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
-                holidayDays={this.props.currentEmployee ?
-                  this.props.holidayDays.get(this.props.currentEmployee.id, Map()) : undefined}
-              />
-              <Calendar
-                openLayover={this.openLayover}
-                closeLayover={this.closeLayover}
-                currentEmployee={this.props.currentEmployee}
-                absence={this.props.absence}
-                originalAbsence={this.props.originalAbsence}
-                updateAbsence={this.props.updateAbsence}
-                year={this.props.currentYear}
-                absenceReasons={this.props.absenceReasons}
-                addAbsence={this.props.addAbsence}
-                removeAbsence={this.props.removeAbsence}
-                currentEvents={this.props.currentEvents}
-              />
-            </div>
-            <div className={this.state.selectDatesMode ? 'overlay' : ''} />
+        <div id='container'>
+          <div className='employee-container'>
+            {this.props.currentEmployee ? this.props.currentEmployee.name : ''}
           </div>
+          <div id='main'>
+            <AbsenceInfo
+              currentEmployee={this.props.currentEmployee}
+              year={this.props.currentYear}
+              selectPreviousYear={() => this.props.selectPreviousYear()}
+              selectNextYear={() => this.props.selectNextYear(1)}
+              absence={this.props.currentEmployee ?
+                this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
+              holidayDays={this.props.currentEmployee ?
+                this.props.holidayDays.get(this.props.currentEmployee.id, Map()) : undefined}
+            />
+            <Calendar
+              openLayover={this.openLayover}
+              closeLayover={this.closeLayover}
+              currentEmployee={this.props.currentEmployee}
+              absence={this.props.absence}
+              originalAbsence={this.props.originalAbsence}
+              updateAbsence={this.props.updateAbsence}
+              year={this.props.currentYear}
+              absenceReasons={this.props.absenceReasons}
+              addAbsence={this.props.addAbsence}
+              removeAbsence={this.props.removeAbsence}
+              currentEvents={this.props.currentEvents}
+            />
+          </div>
+          <div className={this.state.selectDatesMode ? 'overlay' : ''} />
         </div>
       </MuiThemeProvider>
     );

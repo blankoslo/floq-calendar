@@ -14,27 +14,27 @@ h6 {
   height: calc(100vh - 56px);
 }
 
-div#outer {
-  width: 100%;
-  height: 100%;
-}
-
 div#container {
-  width: 100%;
   display: inline-block;
   background-color: #f5f6f5;
+  position: relative;
+  width: 100%;
+}
+
+.wrapper {
+  max-width: 2000px;
+  margin: 0 auto 0 200px;
+  display: flex;
+  align-items: start;
 }
 
 div#main {
   display: flex;
   flex-direction: column;
-  padding: 0 1rem;
-  max-width: 2000px;
-  margin: 0 auto 0 200px;
 }
 
 @media only screen and (max-width: 768px) {
-  div#main {
+  .wrapper {
     margin: 0 auto;
   }
 }
@@ -67,6 +67,28 @@ div#main {
   right: 0;
   bottom: 0;
   z-index: 2;
+}
+
+/* Scrollbar */
+
+.scrollbar {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 40%;
+  right: 0;
+  z-index: 2;
+  padding: 6px;
+  border-radius: 10px;
+}
+
+.scrollbar p {
+  margin: 0;
+  line-height: 1.4rem;
+  color: #6415fb;
+}
+
+::-webkit-scrollbar { 
+  display: none; 
 }
 
 /* Calendar */
