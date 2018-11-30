@@ -79,6 +79,7 @@ div#main {
   z-index: 2;
   padding: 6px;
   border-radius: 10px;
+  display: none;
 }
 
 .scrollbar p {
@@ -371,5 +372,8 @@ div#main {
   }
   .absence-reasons-summary {
     display: list-item;
+  }
+  .scrollbar {
+    display: block;
   }
 }
