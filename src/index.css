@@ -79,17 +79,8 @@ div#main {
 .month {
   width: 34rem;
   max-width: 90vw;
-  margin: 1rem 1rem 1rem 0;
+  margin: 1rem 0.5rem;
   position: relative;
-}
-
-.month-past {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #f5f6f59c;
 }
 
 .calendar-header {
@@ -114,6 +105,12 @@ div#main {
 .month-header {
   color: #3c1345;
   border-bottom: 1px solid #9b9b9b;
+  margin: 0;
+}
+
+.month-header-past {
+  color: #3c1345ab;
+  border-bottom: 1px solid #d5d5d5;
   margin: 0;
 }
 
@@ -343,9 +340,6 @@ div#main {
 }
 
 @media only screen and (max-width: 768px) {
-  .date {
-    position: static;
-  }
   .absence-reasons {
     position: fixed;
     width: 94%;

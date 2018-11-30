@@ -42,12 +42,13 @@ class Calendar extends React.Component {
         {Range(0, 12).map(month => {
           const firstDateOfMonth = new Date(this.props.year, month, 1);
           const lastDayOfMonth = dateFns.lastDayOfMonth(firstDateOfMonth);
+          const future = isFuture(lastDayOfMonth);
           return (
             <div
               key={`${this.props.year}-${month}`}
               className='month'
             >
-              <h4 className='month-header'>
+              <h4 className={future ? 'month-header' : 'month-header-past'}>
                 {this.getMonthText(firstDateOfMonth)} {emojis[month]}
               </h4>
               <div className='calendar'>
@@ -87,7 +88,6 @@ class Calendar extends React.Component {
                   })}
                 </div>
               </div>
-              {isFuture(lastDayOfMonth) ? null : <div className='month-past'/>}
             </div>
           );
         })}
