@@ -41,11 +41,14 @@ class AbsenceInfo extends React.PureComponent {
   render() {
     return (
       <div className='info'>
+        <h5 className='employee-container'>
+          {this.props.currentEmployee ? this.props.currentEmployee.name.toUpperCase() : ''}
+        </h5>
         <div className='year-selector'>
           <IconButton
             iconClassName='material-icons'
             onClick={this.props.selectPreviousYear}
-            iconStyle={{ fontSize: 12, color: '#3c1345' }}>
+            iconStyle={{ fontSize: 18, color: '#6600ff' }}>
             arrow_back
             </IconButton>
           <h1 className={'year-selector-text'}>
@@ -54,18 +57,17 @@ class AbsenceInfo extends React.PureComponent {
           <IconButton
             iconClassName='material-icons'
             onClick={this.props.selectNextYear}
-            iconStyle={{ fontSize: 12, color: '#3c1345' }}>
+            iconStyle={{ fontSize: 18, color: '#6600ff' }}>
             arrow_forward
           </IconButton>
         </div>
         <div className='info-box'>
-          <div className={`absence-color event-vacation`} />
-          <h5 className='info-header'> Feriestatus </h5>
-          <p><strong>{this.state.holidayDays.planned}</strong> planlagt</p>
-          <p>av <strong>{this.state.holidayDays.available}</strong> tilgjengelige</p>
+          <h5> FERIE </h5>
+          <p><strong>{this.state.holidayDays.planned}</strong> planlagte feriedager</p>
+          <p>av <strong>{this.state.holidayDays.available} dager</strong> tilgjengelig</p>
         </div>
         <div className='info-box'>
-          <h5 className='info-header'> Planlagt Fravær </h5>
+          <h5> KOMMENDE FRAVÆR </h5>
           <ul className='info-list'>
             {this.state.dates.map(el => {
               const key = Object.keys(el)[0];
@@ -97,8 +99,10 @@ class AbsenceInfo extends React.PureComponent {
   }
 
   calcTotalAvailable = () => {
-    return this.props.holidayDays
+    const tot = this.props.holidayDays
       .reduce((acc, curr) => acc + curr.availableDays, 0);
+
+    return (Math.round(tot * 100) / 100).toLocaleString('nb-NO')
   }
 
   getAbsenceStrings = () => {

@@ -21,40 +21,21 @@ div#container {
   width: 100%;
 }
 
-.wrapper {
-  max-width: 2000px;
-  margin: 0 auto 0 200px;
-  display: flex;
-  align-items: start;
-}
-
 div#main {
   display: flex;
-  flex-direction: column;
+}
+
+.wrapper {
+  max-width: 2000px;
+  display: flex;
+  align-items: start;
+  margin: 1rem 3rem;
 }
 
 @media only screen and (max-width: 768px) {
   .wrapper {
-    margin: 0 auto;
+    
   }
-}
-
-.employee-container {
-  display: flex;
-  color: #3c1345;
-  justify-content: flex-end;
-  padding: 0.2rem 1.2rem 0 0;
-}
-
-.year-selector {
-  display: flex;
-}
-
-.year-selector-text {
-  font-size: 2.2rem;
-  font-weight: 500;
-  color: #3c1345;
-  margin: auto 0;
 }
 
 .overlay {
@@ -67,29 +48,6 @@ div#main {
   right: 0;
   bottom: 0;
   z-index: 2;
-}
-
-/* Scrollbar */
-
-.scrollbar {
-  position: sticky;
-  position: -webkit-sticky;
-  top: 40%;
-  right: 0;
-  z-index: 2;
-  padding: 6px;
-  border-radius: 10px;
-  display: none;
-}
-
-.scrollbar p {
-  margin: 0;
-  line-height: 1.4rem;
-  color: #6415fb;
-}
-
-::-webkit-scrollbar { 
-  display: none; 
 }
 
 /* Calendar */
@@ -135,6 +93,29 @@ div#main {
   color: #3c1345ab;
   border-bottom: 1px solid #d5d5d5;
   margin: 0;
+}
+
+/* Scrollbar */
+
+.scrollbar {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 40%;
+  right: 0;
+  z-index: 2;
+  padding: 6px;
+  border-radius: 10px;
+  display: none;
+}
+
+.scrollbar p {
+  margin: 0;
+  line-height: 1.4rem;
+  color: #6415fb;
+}
+
+::-webkit-scrollbar { 
+  display: none; 
 }
 
 /* Calendar date */
@@ -260,6 +241,25 @@ div#main {
   padding: 0.3rem 0;
   display: flex;
   flex-direction: column;
+  background: #fff;
+  color: #3c1345;
+}
+
+.employee-container {}
+
+.year-selector {
+  display: flex;
+}
+
+.year-selector-text {
+  font-size: 3rem;
+  font-weight: 500;
+  color: #6600ff;
+  margin: auto 0;
+}
+
+.info h5 {
+  color: #9b9b9b;
 }
 
 .info-box-container {
@@ -273,14 +273,8 @@ div#main {
 }
 
 .info-box p {
-  margin: 0;
+  margin: 1rem 0;
   font-size: 1.4rem;
-}
-
-.info-header {
-  color: #3c1345;
-  margin: 0.2rem 0;
-  font-weight: 600;
 }
 
 .info-list {
@@ -296,11 +290,6 @@ div#main {
 
 .info-list li span {
   text-decoration: underline;
-}
-
-.absence-color {
-  height: 8px;
-  min-width: 5rem;
 }
 
 /* Absence reasons */

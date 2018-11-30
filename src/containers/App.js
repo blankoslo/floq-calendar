@@ -64,9 +64,6 @@ class App extends React.PureComponent {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div id='container'>
-          <div className='employee-container'>
-            {this.props.currentEmployee ? this.props.currentEmployee.name : ''}
-          </div>
           <div id='main'>
             <AbsenceInfo
               currentEmployee={this.props.currentEmployee}
