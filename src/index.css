@@ -296,6 +296,11 @@ div#main {
   min-width: 24em;
 }
 
+.info-box p {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
 .info-header {
   color: #3c1345;
   margin: 0.2rem 0;
@@ -306,10 +311,11 @@ div#main {
   list-style: none;
   padding-left: 0;
   margin: 0.2rem 0;
+  font-size: 1.3rem;
 }
 
 .info-list li {
-  line-height: 1.4rem;
+  line-height: 1.6rem;
 }
 
 .info-list li span {

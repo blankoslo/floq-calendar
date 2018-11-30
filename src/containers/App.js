@@ -13,7 +13,7 @@ const muiTheme = getMuiTheme({
 
 import {
   fetchAbsenceReasons, fetchEmployees, fetchHolidays, fetchAbsence,
-  updateAbsence
+  updateAbsence, fetchHolidayDays
 } from '../epics';
 
 import {
@@ -44,6 +44,7 @@ class App extends React.PureComponent {
     this.props.fetchEmployees();
     this.props.fetchAbsenceReasons();
     this.props.fetchAbsence();
+    this.props.fetchHolidayDays();
 
     const now = new Date();
     this.props.setCurrentYear(getYear(now));
@@ -81,6 +82,8 @@ class App extends React.PureComponent {
                 year={this.props.currentYear}
                 absence={this.props.currentEmployee ?
                   this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
+                holidayDays={this.props.currentEmployee ?
+                  this.props.holidayDays.get(this.props.currentEmployee.id, Map()) : undefined}
               />
               <div className='year-selector'>
                 <IconButton
@@ -130,7 +133,8 @@ const mapStateToProps = (state) => ({
   absenceReasons: state.absenceReasons,
   originalAbsence: state.originalAbsence,
   absence: state.absence,
-  currentEvents: currentEvents(state)
+  currentEvents: currentEvents(state),
+  holidayDays: state.holidayDays
 });
 
 const mapDispatchToProps = {
@@ -144,7 +148,8 @@ const mapDispatchToProps = {
   fetchHolidays,
   fetchEmployees,
   fetchAbsence,
-  updateAbsence
+  updateAbsence,
+  fetchHolidayDays
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

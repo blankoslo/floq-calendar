@@ -1,5 +1,7 @@
 import React from 'react';
+import { List } from 'immutable';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
+import isFuture from 'date-fns/is_future';
 import isFriday from 'date-fns/is_friday';
 
 import { reasonToEventName, dateRangeToDateString } from '../selectors';
@@ -10,18 +12,27 @@ class AbsenceInfo extends React.PureComponent {
     super(props)
     this.state = {
       dates: [],
+      holidayDays: {
+        available: 0,
+        planned: 0,
+      }
     }
   }
 
   componentDidMount() {
-    if (this.props.absence && this.props.absence.size > 0) {
+    if (this.props.absence && this.props.holidayDays) {
       this.getAbsenceStrings();
+      this.calculateHolidayDays();
     }
   }
 
   componentDidUpdate(prev) {
-    if (this.props.absence !== prev.absence && this.props.absence.size > 0) {
+    if (this.props.absence !== prev.absence) {
       this.getAbsenceStrings();
+      this.calculateHolidayDays();
+    }
+    if (this.props.holidayDays !== prev.holidayDays) {
+      this.calculateHolidayDays();
     }
   }
 
@@ -30,7 +41,13 @@ class AbsenceInfo extends React.PureComponent {
     return (
       <div className='info'>
         <div className='info-box'>
-          <h6 className='info-header'> Planlagt Fravær </h6>
+          <div className={`absence-color event-vacation`} />
+          <h5 className='info-header'> Feriestatus </h5>
+          <p><strong>{this.state.holidayDays.planned}</strong> planlagt</p>
+          <p>av <strong>{this.state.holidayDays.available}</strong> tilgjengelige</p>
+        </div>
+        <div className='info-box'>
+          <h5 className='info-header'> Planlagt Fravær </h5>
           <ul className='info-list'>
             {this.state.dates.map(el => {
               const key = Object.keys(el)[0];
@@ -47,7 +64,27 @@ class AbsenceInfo extends React.PureComponent {
     );
   }
 
+  calculateHolidayDays = () => {
+    const availableDays = this.calcTotalAvailable();
+
+    const plannedDays = List(this.props.absence.valueSeq().flatten()
+      .filter(x => isFuture(x.date) && x.reason === 'FER1000')).size;
+
+    this.setState({
+      holidayDays: {
+        planned: plannedDays,
+        available: availableDays
+      }
+    });
+  }
+
+  calcTotalAvailable = () => {
+    return this.props.holidayDays
+      .reduce((acc, curr) => acc + curr.availableDays, 0);
+  }
+
   getAbsenceStrings = () => {
+    if (this.props.absence.size < 1) return;
     const dates = this.group(this.getFutureDates(this.props.absence.valueSeq().flatten()));
     this.setState({ dates: dates });
   }
