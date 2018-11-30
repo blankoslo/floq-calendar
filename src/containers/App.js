@@ -26,7 +26,6 @@ import {
   currentEmployee, currentEvents
 } from '../selectors';
 
-import Header from '../components/Header';
 import AbsenceInfo from '../components/AbsenceInfo';
 import Calendar from '../components/Calendar';
 
@@ -66,12 +65,6 @@ class App extends React.PureComponent {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div id='outer'>
-          <Header
-            year={this.props.currentYear}
-            absenceReasons={this.props.absenceReasons}
-            absence={this.props.currentEmployee ?
-              this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
-          />
           <div id='container'>
             <div className='employee-container'>
               {this.props.currentEmployee ? this.props.currentEmployee.name : ''}
