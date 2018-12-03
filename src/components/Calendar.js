@@ -22,6 +22,8 @@ class Calendar extends React.Component {
       endDate: undefined,
       selected: [],
     }
+
+    this.monthRefs = {}
   }
 
   componentDidUpdate(prev) {
@@ -48,7 +50,7 @@ class Calendar extends React.Component {
             return (
               <div
                 key={`${this.props.year}-${month}`}
-                ref={monthToRef(month)}
+                ref={(i) => this.monthRefs[monthToRef(month)] = i}
                 className='month'
               >
                 <h4 className={future ? 'month-header' : 'month-header-past'}>
@@ -107,7 +109,7 @@ class Calendar extends React.Component {
   }
 
   scroll = (month) => {
-    this.refs[monthToRef(month)].scrollIntoView();
+    this.monthRefs[monthToRef(month)].scrollIntoView();
   }
 
   clickDate = (date) => {
