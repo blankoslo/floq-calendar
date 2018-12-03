@@ -138,7 +138,7 @@ export const pastAbsence = createSelector(
     pastAbsence.get(currentEmployee && currentEmployee.id, List())
       .filter((x) => getYear(x.date) === currentYear)
       .map((x) => [dateFns.format(x.date, 'YYYY-M-D'), List([{
-        date: dateFns.format(x.date, 'YYYY-M-D'),
+        date: x.date,
         minutes: x.minutes,
         event: absenceReasons.get(x.reason),
         eventClassName: reasonToEventClassName(x.reason)

@@ -8,7 +8,7 @@ class Date extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    const future = this.props.date ? isFuture(this.props.date) || isToday(this.props.date) : false;
+    const future = this.props.date ? isFuture(this.props.date) || isToday(this.props.date) : false;
     this.state = {
       future: future,
       editable: future,
