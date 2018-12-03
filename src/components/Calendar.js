@@ -39,6 +39,14 @@ class Calendar extends React.Component {
     }
   }
 
+  componentDidMount() {
+    setTimeout(() => {
+      if (this.monthRefs) {
+        this.monthRefs[monthToRef(dateFns.getMonth(new Date()))].scrollIntoView();
+      }
+    }, 200);
+  }
+
   render() {
     return (
       <div className='wrapper'>
