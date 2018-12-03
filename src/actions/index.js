@@ -64,3 +64,9 @@ export const removeAbsence = (employeeId, date) => ({
   employeeId,
   date
 });
+
+export const LOAD_ABSENCE_SPENT = 'LOAD_ABSENCE_SPENT';
+export const loadAbsenceSpent = (absence) => ({
+  type: LOAD_ABSENCE_SPENT,
+  absence
+});

@@ -193,7 +193,7 @@ div#main {
   position: sticky;
   position: -webkit-sticky;
   top: 25%;
-  right: 0;
+  right: 3px;
   z-index: 2;
   border-radius: 10px;
   display: none;

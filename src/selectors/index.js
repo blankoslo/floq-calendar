@@ -2,6 +2,8 @@ import { createSelector } from 'reselect';
 import { List, Map } from 'immutable';
 import dateFns from 'date-fns';
 import getYear from 'date-fns/get_year';
+import isFuture from 'date-fns/is_future';
+import isToday from 'date-fns/is_today';
 import format from 'date-fns/format';
 import nbLocale from 'date-fns/locale/nb';
 
@@ -127,21 +129,41 @@ export const holidays = createSelector(
   )
 );
 
-export const currentEvents = createSelector(
+export const pastAbsence = createSelector(
   currentEmployee,
   (state) => state.currentYear,
+  (state) => state.absenceSpent,
+  absenceReasonMap,
+  (currentEmployee, currentYear, pastAbsence, absenceReasons) => (
+    pastAbsence.get(currentEmployee && currentEmployee.id, List())
+      .filter((x) => getYear(x.date) === currentYear)
+      .map((x) => [dateFns.format(x.date, 'YYYY-M-D'), List([{
+        date: dateFns.format(x.date, 'YYYY-M-D'),
+        minutes: x.minutes,
+        event: absenceReasons.get(x.reason),
+        eventClassName: reasonToEventClassName(x.reason)
+      }])])
+  )
+);
+
+export const currentEvents = createSelector(
+  currentEmployee,
   holidays,
   (state) => state.absence,
   absenceReasonMap,
-  (currentEmployee, currentYear, holidays, absence, absenceReasons) =>
-    Map(holidays.concat(
-      absence.get(currentEmployee && currentEmployee.id, Map())
-        .entrySeq()
-        .filter(([k, v]) => k.startsWith(currentYear.toString()))
-        .map(([k, v]) => [k, v.map((y) => ({
-          date: y.date,
-          event: absenceReasons.get(y.reason),
-          eventClassName: reasonToEventClassName(y.reason)
-        }))])
-    ))
+  pastAbsence,
+  (currentEmployee, holidays, absence, absenceReasons, pastAbsence) => (
+    Map(holidays
+      .concat(pastAbsence)
+      .concat(
+        absence.get(currentEmployee && currentEmployee.id, Map())
+          .entrySeq()
+          .filter(([k, v]) => isFuture(k) || isToday(k))
+          .map(([k, v]) => [k, v.map((y) => ({
+            date: y.date,
+            event: absenceReasons.get(y.reason),
+            eventClassName: reasonToEventClassName(y.reason)
+          }))])
+      ))
+  )
 );

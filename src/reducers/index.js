@@ -13,7 +13,8 @@ import {
   LOAD_ABSENCE,
   ADD_ABSENCE,
   REMOVE_ABSENCE,
-  LOAD_HOLIDAY_DAYS
+  LOAD_HOLIDAY_DAYS,
+  LOAD_ABSENCE_SPENT
 } from '../actions';
 
 import { getApiConfig } from '../epics';
@@ -106,6 +107,14 @@ export default combineReducers({
     switch (action.type) {
       case LOAD_HOLIDAY_DAYS:
         return action.days;
+      default:
+        return state;
+    }
+  },
+  absenceSpent: (state = Map(), action) => {
+    switch (action.type) {
+      case LOAD_ABSENCE_SPENT:
+        return action.absence;
       default:
         return state;
     }
