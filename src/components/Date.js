@@ -1,16 +1,14 @@
 import React from 'react';
 import { Map } from 'immutable';
-import getDate from 'date-fns/get_date';
-import isFuture from 'date-fns/is_future';
-import isWeekend from 'date-fns/is_weekend';
 import classNames from 'classnames';
 import AbsenceReasons from './AbsenceReasons';
+import { getDate, isToday, isFuture, isWeekend } from 'date-fns';
 
 class Date extends React.PureComponent {
 
   constructor(props) {
     super(props)
-    const future = this.props.date ? isFuture(this.props.date) : false;
+    const future = this.props.date ? isFuture(this.props.date) || isToday(this.props.date) : false;
     this.state = {
       future: future,
       editable: future,
