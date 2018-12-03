@@ -30,12 +30,7 @@ div#main {
   display: flex;
   align-items: start;
   margin: 1rem 3rem;
-}
-
-@media only screen and (max-width: 768px) {
-  .wrapper {
-    
-  }
+  flex: 2 1 75%;
 }
 
 .overlay {
@@ -48,6 +43,103 @@ div#main {
   right: 0;
   bottom: 0;
   z-index: 2;
+}
+
+/* Infobox */
+
+.info {
+  display: flex;
+  align-items: flex-start;
+  flex: 1 2 25%;
+  max-width: 500px;
+  position: relative;
+  background: #fff;
+  color: #3c1345;
+}
+
+.info-inner {
+  padding: 0.3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+
+.employee-container {
+}
+
+.year-selector {
+  display: flex;
+}
+
+.year-selector-text {
+  font-size: 3rem;
+  font-weight: 500;
+  color: #6600ff;
+  margin: auto 0;
+}
+
+.info h5 {
+  color: #9b9b9b;
+}
+
+.info-box {
+  padding: 3rem 0;
+  min-width: 24em;
+}
+
+.info-box p {
+  margin: 1rem 0;
+  font-size: 1.4rem;
+}
+
+.vacation-box {
+  font-family: "Courier New", Courier, monospace;
+}
+
+.vacation-box div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.vacation-box-pink {
+  color: #fe386e;
+}
+
+.vacation-box-purple {
+  color: #6600ff;
+}
+
+.vacation-box-dotted {
+  border-bottom: 1px dashed #3c1345;
+}
+
+.vacation-box-line {
+  border-bottom: 1px solid #3c1345;
+}
+
+.vacation-box-double {
+  border-bottom: 3px double #3c1345;
+}
+
+.vacation-box-number {
+  font-size: 2rem !important;
+}
+
+.info-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.2rem 0;
+  font-size: 1.3rem;
+}
+
+.info-list li {
+  line-height: 1.6rem;
+}
+
+.info-list li span {
+  text-decoration: underline;
 }
 
 /* Calendar */
@@ -100,10 +192,9 @@ div#main {
 .scrollbar {
   position: sticky;
   position: -webkit-sticky;
-  top: 40%;
+  top: 25%;
   right: 0;
   z-index: 2;
-  padding: 6px;
   border-radius: 10px;
   display: none;
 }
@@ -114,8 +205,8 @@ div#main {
   color: #6415fb;
 }
 
-::-webkit-scrollbar { 
-  display: none; 
+::-webkit-scrollbar {
+  display: none;
 }
 
 /* Calendar date */
@@ -235,63 +326,6 @@ div#main {
   background-color: #fe386e;
 }
 
-/* Absence info */
-
-.info {
-  padding: 0.3rem 0;
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  color: #3c1345;
-}
-
-.employee-container {}
-
-.year-selector {
-  display: flex;
-}
-
-.year-selector-text {
-  font-size: 3rem;
-  font-weight: 500;
-  color: #6600ff;
-  margin: auto 0;
-}
-
-.info h5 {
-  color: #9b9b9b;
-}
-
-.info-box-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.info-box {
-  margin-right: 1rem;
-  min-width: 24em;
-}
-
-.info-box p {
-  margin: 1rem 0;
-  font-size: 1.4rem;
-}
-
-.info-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0.2rem 0;
-  font-size: 1.3rem;
-}
-
-.info-list li {
-  line-height: 1.6rem;
-}
-
-.info-list li span {
-  text-decoration: underline;
-}
-
 /* Absence reasons */
 
 .absence-reasons {
@@ -351,7 +385,26 @@ div#main {
   top: -5px;
 }
 
-@media only screen and (max-width: 768px) {
+
+/* RESPONSIVE */
+
+@media only screen and (max-width: 950px) {
+  #main {
+    flex-direction: column;
+  }
+  .info-inner {
+    padding: 0.5rem;
+  }
+  .info-box {
+    min-width: auto;
+    padding: 1rem 0;
+  }
+  .wrapper {
+    margin: 1rem 0.5rem;
+  }
+  .date {
+    height: 4rem;
+  }
   .absence-reasons {
     position: fixed;
     width: 94%;
@@ -364,5 +417,8 @@ div#main {
   }
   .scrollbar {
     display: block;
+  }
+  .absence-box {
+    display: none;
   }
 }
