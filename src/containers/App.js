@@ -12,7 +12,7 @@ const muiTheme = getMuiTheme({
 
 import {
   fetchAbsenceReasons, fetchEmployees, fetchHolidays, fetchAbsence,
-  updateAbsence
+  updateAbsence, fetchHolidayDays, fetchAbsenceSpent
 } from '../epics';
 
 import {
@@ -25,7 +25,6 @@ import {
   currentEmployee, currentEvents
 } from '../selectors';
 
-import Header from '../components/Header';
 import AbsenceInfo from '../components/AbsenceInfo';
 import Calendar from '../components/Calendar';
 
@@ -43,6 +42,8 @@ class App extends React.PureComponent {
     this.props.fetchEmployees();
     this.props.fetchAbsenceReasons();
     this.props.fetchAbsence();
+    this.props.fetchHolidayDays();
+    this.props.fetchAbsenceSpent();
 
     const now = new Date();
     this.props.setCurrentYear(getYear(now));
@@ -63,42 +64,33 @@ class App extends React.PureComponent {
   render() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div id='outer'>
-          <Header
-            year={this.props.currentYear}
-            absenceReasons={this.props.absenceReasons}
-            absence={this.props.currentEmployee ?
-              this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
-          />
-          <div id='container'>
-            <div className='employee-container'>
-              {this.props.currentEmployee ? this.props.currentEmployee.name : ''}
-            </div>
-            <div id='main'>
-              <AbsenceInfo
-                currentEmployee={this.props.currentEmployee}
-                year={this.props.currentYear}
-                prevYear={() => this.props.selectPreviousYear()}
-                nextYear={() => this.props.selectNextYear(1)}
-                absence={this.props.currentEmployee ?
-                  this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
-              />
-              <Calendar
-                openLayover={this.openLayover}
-                closeLayover={this.closeLayover}
-                currentEmployee={this.props.currentEmployee}
-                absence={this.props.absence}
-                originalAbsence={this.props.originalAbsence}
-                updateAbsence={this.props.updateAbsence}
-                year={this.props.currentYear}
-                absenceReasons={this.props.absenceReasons}
-                addAbsence={this.props.addAbsence}
-                removeAbsence={this.props.removeAbsence}
-                currentEvents={this.props.currentEvents}
-              />
-            </div>
-            <div className={this.state.selectDatesMode ? 'select-dates-mode' : ''} />
+        <div id='container'>
+          <div id='main'>
+            <AbsenceInfo
+              currentEmployee={this.props.currentEmployee}
+              year={this.props.currentYear}
+              selectPreviousYear={() => this.props.selectPreviousYear()}
+              selectNextYear={() => this.props.selectNextYear(1)}
+              absence={this.props.currentEmployee ?
+                this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
+              holidayDays={this.props.currentEmployee ?
+                this.props.holidayDays.get(this.props.currentEmployee.id, Map()) : undefined}
+            />
+            <Calendar
+              openLayover={this.openLayover}
+              closeLayover={this.closeLayover}
+              currentEmployee={this.props.currentEmployee}
+              absence={this.props.absence}
+              originalAbsence={this.props.originalAbsence}
+              updateAbsence={this.props.updateAbsence}
+              year={this.props.currentYear}
+              absenceReasons={this.props.absenceReasons}
+              addAbsence={this.props.addAbsence}
+              removeAbsence={this.props.removeAbsence}
+              currentEvents={this.props.currentEvents}
+            />
           </div>
+          <div className={this.state.selectDatesMode ? 'overlay' : ''} />
         </div>
       </MuiThemeProvider>
     );
@@ -112,7 +104,8 @@ const mapStateToProps = (state) => ({
   absenceReasons: state.absenceReasons,
   originalAbsence: state.originalAbsence,
   absence: state.absence,
-  currentEvents: currentEvents(state)
+  currentEvents: currentEvents(state),
+  holidayDays: state.holidayDays
 });
 
 const mapDispatchToProps = {
@@ -126,7 +119,9 @@ const mapDispatchToProps = {
   fetchHolidays,
   fetchEmployees,
   fetchAbsence,
-  updateAbsence
+  updateAbsence,
+  fetchHolidayDays,
+  fetchAbsenceSpent
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

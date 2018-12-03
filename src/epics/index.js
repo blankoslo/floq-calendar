@@ -6,7 +6,8 @@ import dateFns from 'date-fns';
 import parse from 'date-fns/parse';
 
 import {
-  loadAbsenceReasons, loadEmployees, loadHolidays, loadAbsence
+  loadAbsenceReasons, loadEmployees, loadHolidays,
+  loadAbsence, loadHolidayDays, loadAbsenceSpent
 } from '../actions';
 
 export const getApiConfig = () => ({
@@ -53,6 +54,30 @@ const fetchHolidaysEpic = action$ => action$
     name: y.name
   })))
   .map(loadHolidays);
+
+export const FETCH_HOLIDAY_DAYS = 'FETCH_HOLIDAY_DAYS';
+export const fetchHolidayDays = () => ({
+  type: FETCH_HOLIDAY_DAYS
+});
+
+const fetchHolidayDaysEpic = action$ => action$
+  .ofType(FETCH_HOLIDAY_DAYS)
+  .mergeMap((x) => Observable.ajax({
+    url: `${getApiConfig().apiHost}/vacation_days_by_year`,
+    method: 'GET',
+    responseType: 'json',
+    headers: {
+      'Authorization': 'Bearer ' + getApiConfig().apiToken
+    }
+  }))
+  .map((x) => List(x.response).map((y) => ({
+    employeeId: y.employee.toString(),
+    year: y.year,
+    spent: y.days_spent,
+    earnt: y.days_earnt
+  })))
+  .map((x) => x.groupBy((y) => y.employeeId))
+  .map(loadHolidayDays);
 
 export const FETCH_EMPLOYEES = 'FETCH_EMPLOYEES';
 export const fetchEmployees = () => ({
@@ -167,6 +192,33 @@ const removeAbsenceAsync = (removes, employeeId) => {
   })) || Observable.of(null)
 };
 
+export const FETCH_ABSENCE_SPENT = 'FETCH_ABSENCE_SPENT';
+export const fetchAbsenceSpent = () => ({
+  type: FETCH_ABSENCE_SPENT
+});
+
+const fetchAbsenceSpentAsync = () =>
+  Observable.ajax({
+    url: `${getApiConfig().apiHost}/absence_spent`,
+    method: 'GET',
+    responseType: 'json',
+    headers: {
+      'Authorization': 'Bearer ' + getApiConfig().apiToken
+    }
+  })
+    .map((x) => List(x.response).map((y) => ({
+      employeeId: y.employee_id.toString(),
+      date: parse(y.date),
+      reason: y.reason,
+      minutes: y.minutes
+    })))
+    .map((x) => x.groupBy((y) => y.employeeId));
+
+const fetchAbsenceSpentEpic = action$ => action$
+  .ofType(FETCH_ABSENCE_SPENT)
+  .mergeMap(fetchAbsenceSpentAsync)
+  .map(loadAbsenceSpent);
+
 const updateAbsenceEpic = action$ => action$
   .ofType(UPDATE_ABSENCE)
   .mergeMap((x) => Observable.zip(
@@ -182,5 +234,7 @@ export default combineEpics(
   fetchHolidaysEpic,
   fetchEmployeesEpic,
   fetchAbsenceEpic,
-  updateAbsenceEpic
+  updateAbsenceEpic,
+  fetchHolidayDaysEpic,
+  fetchAbsenceSpentEpic
 );

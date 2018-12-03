@@ -2,13 +2,15 @@ import React from 'react';
 import { Range, List } from 'immutable';
 import dateFns from 'date-fns';
 import nbLocale from 'date-fns/locale/nb';
+import isFuture from 'date-fns/is_future';
 
-import { getCurrentAbsenceUpdates } from '../selectors';
+import { getCurrentAbsenceUpdates, dateRangeToDateString, monthToRef } from '../selectors';
 
 import CalendarDate from './Date';
 
 const emojis = ['', '', '', '🐣', '', '', '☀️', '', '', '', '', '🎄']
 const daysOfWeek = ['ma', 'ti', 'on', 'to', 'fr'];
+const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
 
 class Calendar extends React.Component {
 
@@ -37,53 +39,75 @@ class Calendar extends React.Component {
 
   render() {
     return (
-      <div className='year-calendar'>
-        {Range(0, 12).map(month => {
-          const firstDateOfMonth = new Date(this.props.year, month, 1);
-          return (
-            <div
-              key={`${this.props.year}-${month}`}
-              className='month'
-            >
-              <h5 className='month-header'>
-                {this.getMonthText(firstDateOfMonth)} {emojis[month]}
-              </h5>
-              <div className='calendar'>
-                <div className='calendar-header'>
-                  {daysOfWeek.map((x) =>
-                    <div className='calendar-header-day' key={x}>{x}</div>
-                  )}
-                </div>
-                <div className='calendar-dates'>
-                  {this.getMonthDates(firstDateOfMonth).map((date, i) => {
-                    const dateString = this.props.year + '-' + (month + 1) + '-' + dateFns.getDate(date);
+      <div className='wrapper'>
+        <div className='year-calendar'>
+          {Range(0, 12).map(month => {
+            const firstDateOfMonth = new Date(this.props.year, month, 1);
+            const lastDayOfMonth = dateFns.lastDayOfMonth(firstDateOfMonth);
+            const future = isFuture(lastDayOfMonth);
+            return (
+              <div
+                key={`${this.props.year}-${month}`}
+                ref={monthToRef(month)}
+                className='month'
+              >
+                <h4 className={future ? 'month-header' : 'month-header-past'}>
+                  {this.getMonthText(firstDateOfMonth)} {emojis[month]}
+                </h4>
+                <div className='calendar'>
+                  <div className='calendar-header'>
+                    {daysOfWeek.map((x) =>
+                      <div className='calendar-header-day' key={x}>{x}</div>
+                    )}
+                  </div>
+                  <div className='calendar-dates'>
+                    {this.getMonthDates(firstDateOfMonth, lastDayOfMonth).map((date, i) => {
+                      const dateString = this.props.year + '-' + (month + 1) + '-' + dateFns.getDate(date);
 
-                    const isClicked = dateFns.isEqual(date, this.state.startDate) ||
-                      this.state.selected.find(d => dateFns.isEqual(d, date));
+                      const isClicked = dateFns.isEqual(date, this.state.startDate) ||
+                        this.state.selected.find(d => dateFns.isEqual(d, date));
 
-                    return (
-                      <CalendarDate
-                        key={dateString + '-' + i}
-                        date={date}
-                        events={this.props.currentEvents.get(dateString)}
-                        clicked={isClicked}
-                        clickDate={this.clickDate}
-                        hoverDate={this.hoverDate}
-                        stopHoverDate={this.stopHoverDate}
-                        absenceReasons={this.props.absenceReasons}
-                        showAbsenceReasonContainer={dateFns.isEqual(date, this.state.endDate)}
-                        saveAbsence={this.saveAbsence}
-                        cancel={this.cancel}
-                      />
-                    );
-                  })}
+                      const dateRangeString = dateRangeToDateString(this.state.selected);
+
+                      return (
+                        <CalendarDate
+                          key={dateString + '-' + i}
+                          date={date}
+                          events={this.props.currentEvents.get(dateString)}
+                          clicked={isClicked}
+                          clickDate={this.clickDate}
+                          hoverDate={this.hoverDate}
+                          stopHoverDate={this.stopHoverDate}
+                          absenceReasons={this.props.absenceReasons}
+                          showAbsenceReasonContainer={dateFns.isEqual(date, this.state.endDate)}
+                          chooseReasonMode={this.state.endDate ? true : false}
+                          saveAbsence={this.saveAbsence}
+                          removeAbsence={this.removeAbsence}
+                          cancel={this.cancel}
+                          dateString={dateFns.isEqual(date, this.state.startDate) ? dateRangeString : ''}
+                          dateRangeString={dateRangeString}
+                        />
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+        <div className='scrollbar'>
+          {months.map((m, i) =>
+            <p key={m + '-' + i} onClick={() => this.scroll(i)}>
+              {m}
+            </p>
+          )}
+        </div>
       </div>
     );
+  }
+
+  scroll = (month) => {
+    this.refs[monthToRef(month)].scrollIntoView();
   }
 
   clickDate = (date) => {
@@ -101,8 +125,7 @@ class Calendar extends React.Component {
   }
 
   hoverDate = (date) => {
-    if (this.state.startDate && !this.state.endDate &&
-      (dateFns.isAfter(date, this.state.startDate) || dateFns.isEqual(date, this.state.startDate))) {
+    if (this.state.startDate && !this.state.endDate && dateFns.isAfter(date, this.state.startDate)) {
       this.setState({
         selected: dateFns.eachDay(
           this.state.startDate,
@@ -114,12 +137,12 @@ class Calendar extends React.Component {
 
   stopHoverDate = () => {
     if (!this.state.endDate) {
-      this.setState({ selected: [] });
+      this.setState({ selected: [this.state.startDate] });
     }
   }
 
   selectStartDate = (date) => {
-    this.setState({ startDate: date });
+    this.setState({ startDate: date, selected: [date] });
   }
 
   selectEndDate = (date) => {
@@ -127,27 +150,31 @@ class Calendar extends React.Component {
     this.props.openLayover();
   }
 
-  saveAbsence = (reason) => {
+  getSelectedDatesAndResetState = () => {
     this.props.closeLayover();
-
-    this.state.selected
-      .filter(date => !this.props.currentEvents
-        .get(dateFns.format(date, 'YYYY-M-D'), List()).some((x) => x.eventClassName === 'holiday')
-        && !dateFns.isWeekend(date))
-      .forEach(date => this.props.addAbsence(this.props.currentEmployee.id, date, reason));
-
     this.setState({ startDate: undefined, endDate: undefined, selected: [] });
+
+    const array = this.state.selected.find(d => d === this.state.startDate) ?
+      this.state.selected : [...this.state.selected, this.state.startDate];
+
+    return array.filter(date =>
+      !this.props.currentEvents.get(dateFns.format(date, 'YYYY-M-D'), List())
+        .some((x) => x.eventClassName === 'holiday')
+      && !dateFns.isWeekend(date), List());
+  }
+
+  saveAbsence = (reason) => {
+    this.getSelectedDatesAndResetState()
+      .forEach(date => this.props.addAbsence(this.props.currentEmployee.id, date, reason));
+  }
+
+  removeAbsence = () => {
+    this.getSelectedDatesAndResetState()
+      .forEach(date => this.props.removeAbsence(this.props.currentEmployee.id, date));
   }
 
   cancel = () => {
     this.props.closeLayover();
-
-    this.state.selected
-      .filter(date => !this.props.currentEvents
-        .get(dateFns.format(date, 'YYYY-M-D'), List()).some((x) => x.eventClassName === 'holiday')
-        && !dateFns.isWeekend(date))
-      .forEach(date => this.props.removeAbsence(this.props.currentEmployee.id, date));
-
     this.setState({ startDate: undefined, endDate: undefined, selected: [] });
   }
 
@@ -155,20 +182,18 @@ class Calendar extends React.Component {
     return dateFns.format(date, 'MMMM', { locale: nbLocale });
   }
 
-  getMonthDates = (firstDateOfMonth) => {
+  getMonthDates = (firstDateOfMonth, lastDayOfMonth) => {
     const dates = [];
 
-    Range(0, this.getPadDays(dateFns.getDay(firstDateOfMonth)))
+    Range(0, this.getPadDays(dateFns.getISODay(firstDateOfMonth)))
       .forEach(() => dates.push(null));
-
-    const lastDayOfMonth = dateFns.lastDayOfMonth(firstDateOfMonth);
 
     dateFns.eachDay(
       firstDateOfMonth,
       lastDayOfMonth
     ).map(date => dates.push(date));
 
-    Range(0, this.getPadDaysEnd(dateFns.getDay(lastDayOfMonth)))
+    Range(0, this.getPadDaysEnd(dateFns.getISODay(lastDayOfMonth)))
       .forEach(() => dates.push(null));
 
     return dates;

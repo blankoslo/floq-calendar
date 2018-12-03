@@ -1,21 +1,22 @@
 import React from 'react';
 import { Map } from 'immutable';
-import getDate from 'date-fns/get_date';
-import isWeekend from 'date-fns/is_weekend';
 import classNames from 'classnames';
 import AbsenceReasons from './AbsenceReasons';
+import { getDate, isToday, isFuture, isWeekend } from 'date-fns';
 
 class Date extends React.PureComponent {
 
   constructor(props) {
     super(props)
+    const future = this.props.date ? isFuture(this.props.date) || isToday(this.props.date) : false;
     this.state = {
-      editable: true,
+      future: future,
+      editable: future,
     }
   }
 
   componentDidMount() {
-    if (this.props.events) {
+    if (this.props.date && this.props.events) {
       this.checkIfHoliday();
     }
   }
@@ -27,7 +28,6 @@ class Date extends React.PureComponent {
   }
 
   render() {
-
     if (!this.props.date) {
       return <div className='date date-disabled' />;
     }
@@ -50,18 +50,19 @@ class Date extends React.PureComponent {
 
     return (
       <div className={dateClassNames}>
-        {this.props.showAbsenceReasonContainer ?
-          <div className='cross' onClick={this.props.cancel}> X </div>
-          : null}
+        {this.state.future ? null : <div className='date-past' />}
         <div
           className='date-inner'
           onClick={this.handleClick}
           onMouseOver={this.hover}
           onMouseOut={this.stopHover}
         >
-          <div className={'date-number'}>
-            {getDate(this.props.date)}
-          </div>
+          {this.props.clicked ?
+            <div className={'date-number'}>
+              {this.props.dateString}
+            </div> : <div className={'date-number'}>
+              {getDate(this.props.date)}
+            </div>}
           <div className={'date-text'}>
             {this.props.events && this.props.events.map((x) => x.event).join()}
           </div>
@@ -70,6 +71,9 @@ class Date extends React.PureComponent {
           <AbsenceReasons
             saveAbsence={this.props.saveAbsence}
             absenceReasons={this.props.absenceReasons}
+            removeAbsence={this.props.removeAbsence}
+            cancel={this.props.cancel}
+            dateString={this.props.dateRangeString}
           /> : null}
       </div>
     );

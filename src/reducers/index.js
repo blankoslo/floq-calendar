@@ -12,7 +12,9 @@ import {
   LOAD_EMPLOYEES,
   LOAD_ABSENCE,
   ADD_ABSENCE,
-  REMOVE_ABSENCE
+  REMOVE_ABSENCE,
+  LOAD_HOLIDAY_DAYS,
+  LOAD_ABSENCE_SPENT
 } from '../actions';
 
 import { getApiConfig } from '../epics';
@@ -97,6 +99,22 @@ export default combineReducers({
         return state.update(action.employeeId,
           (x) => x.update(dateFns.format(action.date, 'YYYY-M-D'),
             (y) => List()));
+      default:
+        return state;
+    }
+  },
+  holidayDays: (state = Map(), action) => {
+    switch (action.type) {
+      case LOAD_HOLIDAY_DAYS:
+        return action.days;
+      default:
+        return state;
+    }
+  },
+  absenceSpent: (state = Map(), action) => {
+    switch (action.type) {
+      case LOAD_ABSENCE_SPENT:
+        return action.absence;
       default:
         return state;
     }

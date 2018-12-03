@@ -2,6 +2,10 @@ import { createSelector } from 'reselect';
 import { List, Map } from 'immutable';
 import dateFns from 'date-fns';
 import getYear from 'date-fns/get_year';
+import isFuture from 'date-fns/is_future';
+import isToday from 'date-fns/is_today';
+import format from 'date-fns/format';
+import nbLocale from 'date-fns/locale/nb';
 
 export const reasonToEventClassName = (reason) => {
   switch (reason) {
@@ -42,6 +46,36 @@ export const reasonToEventName = (reason) => {
       return reason;
   }
 };
+
+export const monthToRef = (number) => {
+  switch (number) {
+    case 0: return 'jan';
+    case 1: return 'feb';
+    case 2: return 'mars';
+    case 3: return 'april';
+    case 4: return 'mai';
+    case 5: return 'juni';
+    case 6: return 'juli';
+    case 7: return 'aug';
+    case 8: return 'sept';
+    case 9: return 'okt';
+    case 10: return 'nov';
+    default: return 'des';
+  }
+};
+
+export const dateRangeToDateString = (array) => {
+  if (array.length < 1) {
+    return '';
+  }
+  else if (array.length === 1) {
+    return format(array[0], 'D. MMMM', { locale: nbLocale });
+  }
+  else if (format(array[0], 'M') === format(array[array.length - 1], 'M')) {
+    return format(array[0], 'D') + '. til ' + format(array[array.length - 1], 'D. MMMM', { locale: nbLocale });
+  }
+  return format(array[0], 'D. MMMM', { locale: nbLocale }) + ' til ' + format(array[array.length - 1], 'D. MMMM', { locale: nbLocale });
+}
 
 export const currentEmployee = createSelector(
   (state) => state.currentEmployee,
@@ -95,21 +129,41 @@ export const holidays = createSelector(
   )
 );
 
-export const currentEvents = createSelector(
+export const pastAbsence = createSelector(
   currentEmployee,
   (state) => state.currentYear,
+  (state) => state.absenceSpent,
+  absenceReasonMap,
+  (currentEmployee, currentYear, pastAbsence, absenceReasons) => (
+    pastAbsence.get(currentEmployee && currentEmployee.id, List())
+      .filter((x) => getYear(x.date) === currentYear)
+      .map((x) => [dateFns.format(x.date, 'YYYY-M-D'), List([{
+        date: x.date,
+        minutes: x.minutes,
+        event: absenceReasons.get(x.reason),
+        eventClassName: reasonToEventClassName(x.reason)
+      }])])
+  )
+);
+
+export const currentEvents = createSelector(
+  currentEmployee,
   holidays,
   (state) => state.absence,
   absenceReasonMap,
-  (currentEmployee, currentYear, holidays, absence, absenceReasons) =>
-    Map(holidays.concat(
-      absence.get(currentEmployee && currentEmployee.id, Map())
-        .entrySeq()
-        .filter(([k, v]) => k.startsWith(currentYear.toString()))
-        .map(([k, v]) => [k, v.map((y) => ({
-          date: y.date,
-          event: absenceReasons.get(y.reason),
-          eventClassName: reasonToEventClassName(y.reason)
-        }))])
-    ))
+  pastAbsence,
+  (currentEmployee, holidays, absence, absenceReasons, pastAbsence) => (
+    Map(holidays
+      .concat(pastAbsence)
+      .concat(
+        absence.get(currentEmployee && currentEmployee.id, Map())
+          .entrySeq()
+          .filter(([k, v]) => isFuture(k) || isToday(k))
+          .map(([k, v]) => [k, v.map((y) => ({
+            date: y.date,
+            event: absenceReasons.get(y.reason),
+            eventClassName: reasonToEventClassName(y.reason)
+          }))])
+      ))
+  )
 );

@@ -9,38 +9,32 @@ h6 {
   font-family: "WorkSans-Regular";
 }
 
-div#outer {
-  width: 100%;
-  height: 100%;
+#app {
+  overflow-y: scroll;
+  height: calc(100vh - 56px);
 }
 
 div#container {
-  width: 100%;
   display: inline-block;
   background-color: #f5f6f5;
+  position: relative;
+  width: 100%;
 }
 
 div#main {
-  padding: 0 1rem;
   display: flex;
 }
 
-@media only screen and (max-width: 1100px) {
-  div#main {
-    flex-wrap: wrap;
-  }
-}
-
-.employee-container {
+.wrapper {
+  max-width: 2000px;
   display: flex;
-  color: #3c1345;
-  font-size: 0.8rem;
-  justify-content: flex-end;
-  padding: 0.2rem 1.2rem 0 0;
+  align-items: start;
+  margin: 1rem 3rem;
+  flex: 2 1 75%;
 }
 
-.select-dates-mode {
-  background-color: #3c13457e;
+.overlay {
+  background-color: rgba(60, 19, 69, 0.8);
   position: fixed;
   width: 100%;
   height: 100000px;
@@ -48,50 +42,104 @@ div#main {
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 2;
 }
 
-/* Header */
+/* Infobox */
 
-.header {
+.info {
+  display: flex;
+  align-items: flex-start;
+  flex: 1 2 25%;
+  max-width: 500px;
+  position: relative;
+  background: #fff;
+  color: #3c1345;
+}
+
+.info-inner {
+  padding: 0.3rem 2rem;
+  display: flex;
+  flex-direction: column;
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  z-index: 10;
-  background-color: #fff;
-  padding: 1rem;
+}
+
+.employee-container {
+}
+
+.year-selector {
+  display: flex;
+}
+
+.year-selector-text {
+  font-size: 3rem;
+  font-weight: 500;
+  color: #6600ff;
+  margin: auto 0;
+}
+
+.info h5 {
+  color: #9b9b9b;
+}
+
+.info-box {
+  padding: 3rem 0;
+  min-width: 24em;
+}
+
+.info-box p {
+  margin: 1rem 0;
+  font-size: 1.4rem;
+}
+
+.vacation-box {
+  font-family: "Courier New", Courier, monospace;
+}
+
+.vacation-box div {
   display: flex;
   justify-content: space-between;
 }
 
-.header-inner {
-  display: flex;
-  max-width: 800px;
-  margin: auto;
-  overflow-x: scroll;
+.vacation-box-pink {
+  color: #fe386e;
 }
 
-.absence-bar {
-  flex: 1;
-  margin: 0.4rem 1rem;
+.vacation-box-purple {
+  color: #6600ff;
 }
 
-.absence-color {
-  height: 8px;
-  min-width: 5rem;
+.vacation-box-dotted {
+  border-bottom: 1px dashed #3c1345;
 }
 
-.absence-days {
-  margin: 0.6em 0;
-  font-weight: 600;
-  color: #3c1345;
-  font-size: 1rem;
+.vacation-box-line {
+  border-bottom: 1px solid #3c1345;
 }
 
-.absence-days-reason {
-  margin: 0;
-  color: #3c1345;
-  font-size: 0.9rem;
-  line-height: 0.9rem;
+.vacation-box-double {
+  border-bottom: 3px double #3c1345;
+}
+
+.vacation-box-number {
+  font-size: 2rem !important;
+}
+
+.info-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.2rem 0;
+  font-size: 1.3rem;
+}
+
+.info-list li {
+  line-height: 1.6rem;
+}
+
+.info-list li span {
+  text-decoration: underline;
 }
 
 /* Calendar */
@@ -102,8 +150,10 @@ div#main {
 }
 
 .month {
-  width: 24rem;
-  margin: 1rem 1rem 1rem 0;
+  width: 34rem;
+  max-width: 90vw;
+  margin: 1rem 0.5rem;
+  position: relative;
 }
 
 .calendar-header {
@@ -118,10 +168,11 @@ div#main {
   font-size: 0.8rem;
 }
 
-div.calendar div.calendar-dates {
+.calendar-dates {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  position: relative;
 }
 
 .month-header {
@@ -130,8 +181,32 @@ div.calendar div.calendar-dates {
   margin: 0;
 }
 
-div.calendar {
-  display: inline-block;
+.month-header-past {
+  color: #3c1345ab;
+  border-bottom: 1px solid #d5d5d5;
+  margin: 0;
+}
+
+/* Scrollbar */
+
+.scrollbar {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 25%;
+  right: 3px;
+  z-index: 2;
+  border-radius: 10px;
+  display: none;
+}
+
+.scrollbar p {
+  margin: 0;
+  line-height: 1.4rem;
+  color: #6415fb;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 /* Calendar date */
@@ -141,11 +216,20 @@ div.calendar {
   display: flex;
   box-sizing: border-box;
   width: calc(100% / 5);
-  height: 4.8rem;
+  height: 6rem;
   border: 1px solid #f5f6f5;
   background-color: #fff;
   color: #6600ff;
   cursor: default;
+}
+
+.date-past {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff9c;
 }
 
 .date-disabled {
@@ -168,146 +252,78 @@ div.calendar {
 .date-number {
   margin-top: 0.4rem;
   margin-left: 0.4rem;
+  font-size: 1.2rem;
 }
 
 .date-text {
-  font-size: 0.7rem;
-  line-height: 0.7rem;
+  line-height: 0.9rem;
   margin-bottom: 0.4rem;
   margin-left: 0.4rem;
 }
 
 .date-clicked {
   background-color: #6600ff !important;
-  border: 1px solid #6600ff !important;
-  z-index: 10;
+  border: 0;
+  border-right: 1px solid #6600ff !important;
+  border-left: 1px solid #6600ff !important;
+  margin: 1px 0;
+  z-index: 8;
 }
 
 .date-clicked .date-number {
   color: #fff !important;
 }
 
+.date-clicked .date-text {
+  color: #6600ff !important;
+}
+
 .date-clicked:hover {
   background-color: #6600ff !important;
 }
 
-.cross {
-  z-index: 5;
-  position: absolute;
-  background: #fff;
-  color: #7d7d7d;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-family: "Comic Sans MS";
-  right: -10px;
-  top: -10px;
-}
-
 /* Events */
 
-div.year-calendar div.event-weekend .date-text,
-div.year-calendar div.event-holiday .date-text,
-div.year-calendar div.event-weekend .date-number,
-div.year-calendar div.event-holiday .date-number {
+.year-calendar .event-weekend .date-text,
+.year-calendar .event-holiday .date-text,
+.year-calendar .event-weekend .date-number,
+.year-calendar .event-holiday .date-number {
   color: #e12b38;
 }
 
-div.year-calendar div.event-vacation,
-div.event-vacation {
+.event-vacation {
   color: #3c1345;
   background-color: #38fbfe;
 }
 
-div.year-calendar div.event-sick,
-div.event-sick {
+.event-sick {
   color: #3c1345;
   background-color: #fff081;
 }
 
-div.year-calendar div.event-sick-child,
-div.event-sick-child {
+.event-sick-child {
   color: #3c1345;
   background-color: #fff081;
 }
 
-div.year-calendar div.event-leave,
-div.event-leave{
-  color: #3c1345;
-  background-color: #12eb81;
-}
-
-div.year-calendar div.event-leave-with-pay,
-div.event-leave-with-pay {
-  color: #fff081;
-  background-color: #fe386e;
-}
-
-div.year-calendar div.event-leave-without-pay,
-div.event-leave-without-pay {
+.event-leave {
   color: #fff;
   background-color: #3c1345;
 }
 
-div.year-calendar div.event-parent-leave,
-div.event-parent-leave {
+.event-leave-with-pay {
   color: #fff081;
   background-color: #fe386e;
 }
 
-/* Absence info */
-
-.info {
-  padding: 0.3rem 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.year-selector {
-  display: flex;
-}
-
-.year-selector-text {
-  font-size: 1.8rem;
-  font-weight: 500;
+.event-leave-without-pay {
   color: #3c1345;
-  margin: auto 0;
+  background-color: #12eb81;
 }
 
-.info-box-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.info-box {
-  margin-right: 1rem;
-  min-width: 24em;
-}
-
-.info-header {
-  color: #3c1345;
-  margin: 0.2rem 0;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.info-list {
-  list-style: none;
-  padding-left: 0;
-  margin: 0.2rem 0;
-}
-
-.info-list li {
-  font-size: 0.9rem;
-  line-height: 1.4rem;
-}
-
-.info-list li span {
-  text-decoration: underline;
+.event-parent-leave {
+  color: #fff081;
+  background-color: #fe386e;
 }
 
 /* Absence reasons */
@@ -315,14 +331,94 @@ div.event-parent-leave {
 .absence-reasons {
   z-index: 5;
   position: absolute;
-  top: calc(4.8rem + 1px);
+  top: calc(6rem - 1px);
   right: -1px;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  width: 240px;
+  background: #fff;
 }
 
-.absence-reasons div {
+.absence-reasons li {
   margin-bottom: 2px;
-  padding: 0.3rem;
-  font-size: 0.8rem;
-  width: 150px;
+  font-size: 1.2rem;
+  padding: 0.6rem 1rem;
   cursor: pointer;
+}
+
+.absence-reasons-summary {
+  display: none;
+  background-color: #fff;
+}
+
+.absence-reasons-summary h5 {
+  margin: 0.3rem 0;
+}
+
+.absence-reasons-summary p {
+  margin: 0;
+  color: #000;
+}
+
+.absence-reasons-nothing {
+  background-color: #efe5ff;
+  color: #3c1345;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cross {
+  background-color: #3c1345;
+  color: #fff;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  position: absolute;
+  right: -25px;
+  top: -5px;
+}
+
+
+/* RESPONSIVE */
+
+@media only screen and (max-width: 950px) {
+  #main {
+    flex-direction: column;
+  }
+  .info-inner {
+    padding: 0.5rem;
+  }
+  .info-box {
+    min-width: auto;
+    padding: 1rem 0;
+  }
+  .wrapper {
+    margin: 1rem 0.5rem;
+  }
+  .date {
+    height: 4rem;
+  }
+  .absence-reasons {
+    position: fixed;
+    width: 94%;
+    right: 3%;
+    bottom: 3%;
+    top: auto;
+  }
+  .absence-reasons-summary {
+    display: list-item;
+  }
+  .scrollbar {
+    display: block;
+  }
+  .absence-box {
+    display: none;
+  }
 }
