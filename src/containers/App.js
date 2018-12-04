@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Map } from 'immutable';
+import { Map, List } from 'immutable';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getYear from 'date-fns/get_year';
 
@@ -74,7 +74,7 @@ class App extends React.PureComponent {
               absence={this.props.currentEmployee ?
                 this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
               holidayDays={this.props.currentEmployee ?
-                this.props.holidayDays.get(this.props.currentEmployee.id, Map()) : undefined}
+                this.props.holidayDays.get(this.props.currentEmployee.id, List()) : undefined}
             />
             <Calendar
               openLayover={this.openLayover}
