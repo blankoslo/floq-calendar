@@ -10,19 +10,19 @@ h6 {
 }
 
 #app {
-  overflow-y: scroll;
-  height: calc(100vh - 56px);
+  background-color: #f5f6f5;
 }
 
-div#container {
-  display: inline-block;
-  background-color: #f5f6f5;
+#container {
   position: relative;
+  overflow-y: scroll;
+  height: calc(100vh - 56px);
   width: 100%;
 }
 
-div#main {
+#main {
   display: flex;
+  position: relative;
 }
 
 .wrapper {
@@ -30,17 +30,18 @@ div#main {
   display: flex;
   align-items: start;
   margin: 1rem 3rem;
-  flex: 2 1 75%;
+  flex: 2 1 85%;
+  background-color: #f5f6f5;
 }
 
 .overlay {
   background-color: rgba(60, 19, 69, 0.8);
-  position: fixed;
+  position: absolute;
   width: 100%;
-  height: 100000px;
   top: 0;
   left: 0;
   right: 0;
+  height: 100%;
   bottom: 0;
   z-index: 2;
 }
@@ -50,15 +51,15 @@ div#main {
 .info {
   display: flex;
   align-items: flex-start;
-  flex: 1 2 25%;
-  max-width: 500px;
+  flex: 1 2 15%;
   position: relative;
   background: #fff;
   color: #3c1345;
+  min-width: 250px;
 }
 
 .info-inner {
-  padding: 0.3rem 2rem;
+  padding: 0.3rem 1rem;
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -71,6 +72,7 @@ div#main {
 
 .year-selector {
   display: flex;
+  justify-content: center;
 }
 
 .year-selector-text {
@@ -86,7 +88,6 @@ div#main {
 
 .info-box {
   padding: 3rem 0;
-  min-width: 24em;
 }
 
 .info-box p {
@@ -150,7 +151,7 @@ div#main {
 }
 
 .month {
-  width: 34rem;
+  width: 24rem;
   max-width: 90vw;
   margin: 1rem 0.5rem;
   position: relative;
@@ -216,7 +217,7 @@ div#main {
   display: flex;
   box-sizing: border-box;
   width: calc(100% / 5);
-  height: 6rem;
+  height: 4rem;
   border: 1px solid #f5f6f5;
   background-color: #fff;
   color: #6600ff;
@@ -331,7 +332,7 @@ div#main {
 .absence-reasons {
   z-index: 5;
   position: absolute;
-  top: calc(6rem - 1px);
+  top: calc(4rem - 1px);
   right: -1px;
   list-style: none;
   padding-left: 0;
@@ -391,6 +392,7 @@ div#main {
 @media only screen and (max-width: 950px) {
   #main {
     flex-direction: column;
+    height: auto;
   }
   .info-inner {
     padding: 0.5rem;
@@ -401,9 +403,6 @@ div#main {
   }
   .wrapper {
     margin: 1rem 0.5rem;
-  }
-  .date {
-    height: 4rem;
   }
   .absence-reasons {
     position: fixed;
@@ -420,5 +419,18 @@ div#main {
   }
   .absence-box {
     display: none;
+  }
+}
+
+
+@media only screen and (min-width: 2400px) {
+  .month {
+    width: 32rem;
+  }
+  .date {
+    height: 5rem;
+  }
+  .absence-reasons {
+    top: calc(5rem - 1px);
   }
 }
