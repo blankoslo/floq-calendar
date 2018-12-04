@@ -72,11 +72,11 @@ class AbsenceInfo extends React.PureComponent {
             </div>
             <div className='vacation-box-pink vacation-box-dotted'>
               <p>Brukt</p>
-              <p className='vacation-box-number'>-{this.state.holidayDays.used}</p>
+              <p className='vacation-box-number'>{this.state.holidayDays.used !== 0 ? - this.state.holidayDays.used : 0}</p>
             </div>
             <div className='vacation-box-pink vacation-box-line'>
               <p>Planlagt</p>
-              <p className='vacation-box-number'>-{this.state.holidayDays.planned}</p>
+              <p className='vacation-box-number'>{this.state.holidayDays.planned !== 0 ? - this.state.holidayDays.planned : 0}</p>
             </div>
             <div className='vacation-box-purple vacation-box-double'>
               <p>SUM igjen</p>
