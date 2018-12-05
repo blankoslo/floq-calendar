@@ -26,6 +26,25 @@ export const reasonToEventClassName = (reason) => {
   }
 };
 
+export const reasonToEventGroup = (reason) => {
+  switch (reason) {
+    case 'FER1000':
+      return 'vacation';
+    case 'SYK1001':
+    case 'SYK1002':
+      return 'sick';
+    case 'PER1000':
+    case 'PER1002':
+      return 'leave';
+    case 'PER1001':
+      return 'leave-without-pay';
+    case 'AVS':
+      return 'avs';
+    default:
+      return reason;
+  }
+};
+
 export const reasonToEventName = (reason) => {
   switch (reason) {
     case 'FER1000':
@@ -145,6 +164,19 @@ export const pastAbsence = createSelector(
       }])])
   )
 );
+
+export const absenceReasonGroups = createSelector(
+  absenceReasonMap,
+  (absenceReasons) => (
+    Map(absenceReasons.reduce((acc, value, key) => {
+      const item = { [key]: reasonToEventName(key) };
+      const group = reasonToEventGroup(key);
+      return {
+        ...acc,
+        [group]: acc[group] ? acc[group].concat(item) : List([item])
+      }
+    }, {}))
+  ));
 
 export const currentEvents = createSelector(
   currentEmployee,
