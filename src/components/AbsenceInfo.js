@@ -44,9 +44,9 @@ class AbsenceInfo extends React.PureComponent {
     return (
       <div className='info'>
         <div className='info-inner'>
-          <h5 className='employee-container'>
+          <h6 className='employee-container'>
             {this.props.currentEmployee ? this.props.currentEmployee.name.toUpperCase() : ''}
-          </h5>
+          </h6>
           <div className='year-selector'>
             <IconButton
               iconClassName='material-icons'

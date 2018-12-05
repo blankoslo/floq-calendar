@@ -68,9 +68,6 @@ h6 {
   top: 0;
 }
 
-.employee-container {
-}
-
 .year-selector {
   display: flex;
   justify-content: center;
@@ -85,6 +82,13 @@ h6 {
 
 .info h5 {
   color: #9b9b9b;
+}
+
+.info h6 {
+  color: #9b9b9b;
+  font-size: 0.9rem;
+  margin: 0 0 0.2rem 0;
+  text-align: center;
 }
 
 .info-box {
@@ -464,6 +468,9 @@ h6 {
 }
 
 @media only screen and (min-width: 1800px) {
+  #container {
+    height: calc(100vh - 64px);
+  }
   .month {
     width: 18vw;
   }
