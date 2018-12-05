@@ -88,12 +88,19 @@ h6 {
 }
 
 .info-box {
-  padding: 3rem 0;
+  padding: 2rem 0;
 }
 
 .info-box p {
   margin: 1rem 0;
   font-size: 1.4rem;
+}
+
+.info-box ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.2rem 0;
+  font-size: 1.3rem;
 }
 
 .vacation-box {
@@ -129,11 +136,21 @@ h6 {
   font-size: 2rem !important;
 }
 
-.info-list {
-  list-style: none;
-  padding-left: 0;
+.absence-codes {
+
+}
+
+.absence-code {
+  margin: 1.2rem 0;
+}
+
+.absence-code p {
   margin: 0.2rem 0;
-  font-size: 1.3rem;
+}
+
+.absence-code-color {
+  flex: 1;
+  height: 8px;
 }
 
 .info-list li {
@@ -305,17 +322,12 @@ h6 {
   background: #fff081;
 }
 
-.event-sick-child {
-  color: #3c1345;
-  background: #fff081;
-}
-
-.event-leave {
+.event-avs {
   color: #3c1345;
   background: #12eb81;
 }
 
-.event-leave-with-pay {
+.event-leave {
   color: #3c1345;
   background: #fe386e;
 }
@@ -323,11 +335,6 @@ h6 {
 .event-leave-without-pay {
   color: #fff;
   background: #3c1345;
-}
-
-.event-parent-leave {
-  color: #3c1345;
-  background: #fe386e;
 }
 
 .event-vacation-partial {
@@ -342,22 +349,10 @@ h6 {
   background: -webkit-linear-gradient(45deg, #fff0818a 50%, #fff081 50%);
 }
 
-.event-sick-child-partial {
-  color: #3c1345;
-  background: #fff081;
-  background: -webkit-linear-gradient(45deg, #fff0818a 50%, #fff081 50%);
-}
-
-.event-leave-partial {
+.event-avs-partial {
   color: #3c1345;
   background: #12eb81;
   background: -webkit-linear-gradient(45deg, #12eb818a 50%, #12eb81 50%);
-}
-
-.event-leave-with-pay-partial {
-  color: #3c1345;
-  background: #fe386e;
-  background: -webkit-linear-gradient(45deg, #fe386d8a 50%, #fe386e 50%);
 }
 
 .event-leave-without-pay-partial {
@@ -366,7 +361,7 @@ h6 {
   background: -webkit-linear-gradient(45deg, #3c13458a 50%, #3c1345 50%);
 }
 
-.event-parent-leave-partial {
+.event-leave-partial {
   color: #3c1345;
   background: #fe386e;
   background: -webkit-linear-gradient(45deg, #fe386d8a 50%, #fe386e 50%);

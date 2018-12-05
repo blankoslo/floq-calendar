@@ -22,7 +22,7 @@ import {
 } from '../actions';
 
 import {
-  currentEmployee, currentEvents
+  currentEmployee, currentEvents, absenceReasonGroups
 } from '../selectors';
 
 import AbsenceInfo from '../components/AbsenceInfo';
@@ -75,6 +75,7 @@ class App extends React.PureComponent {
                 this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
               holidayDays={this.props.currentEmployee ?
                 this.props.holidayDays.get(this.props.currentEmployee.id, List()) : undefined}
+              absenceReasonGroups={this.props.absenceReasonGroups}
             />
             <Calendar
               openLayover={this.openLayover}
@@ -102,6 +103,7 @@ const mapStateToProps = (state) => ({
   currentYear: state.currentYear,
   employees: state.employees,
   absenceReasons: state.absenceReasons,
+  absenceReasonGroups: absenceReasonGroups(state),
   originalAbsence: state.originalAbsence,
   absence: state.absence,
   currentEvents: currentEvents(state),

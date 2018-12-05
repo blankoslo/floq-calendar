@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { reasonToEventClassName } from '../selectors';
+import { reasonToEventGroup, reasonToEventName } from '../selectors';
 
 class AbsenceReasons extends React.PureComponent {
 
   render() {
-
     return (
       <ul className='absence-reasons'>
         <div className='cross' onClick={this.props.cancel}> X </div>
@@ -16,10 +15,10 @@ class AbsenceReasons extends React.PureComponent {
         {this.props.absenceReasons.map((x) => (
           <li
             key={x.id}
-            className={`event-${reasonToEventClassName(x.id)}`}
+            className={`event-${reasonToEventGroup(x.id)}`}
             onClick={() => this.props.saveAbsence(x.id)}
           >
-            {x.name}
+            {reasonToEventName(x.id)}
           </li>
         ))}
         <li

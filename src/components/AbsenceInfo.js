@@ -85,6 +85,21 @@ class AbsenceInfo extends React.PureComponent {
               <p className='vacation-box-number'>{(Math.round((this.state.holidayDays.available) * 100) / 100).toLocaleString('nb-NO')}</p>
             </div>
           </div>
+          <div className='info-box absence-codes'>
+            <h5> FARGEKODER </h5>
+            <div>
+              {this.props.absenceReasonGroups.entrySeq().map(([key, value]) => {
+                return (
+                  <div key={key} className='absence-code'>
+                    <div className={`event-${key} absence-code-color`} />
+                    {value.valueSeq().map(reason =>
+                      <p>{reason}</p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
           <div className='info-box absence-box'>
             <h5> KOMMENDE FRAVÆR </h5>
             <ul className='info-list'>

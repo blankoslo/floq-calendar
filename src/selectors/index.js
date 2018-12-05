@@ -7,25 +7,6 @@ import isToday from 'date-fns/is_today';
 import format from 'date-fns/format';
 import nbLocale from 'date-fns/locale/nb';
 
-export const reasonToEventClassName = (reason) => {
-  switch (reason) {
-    case 'FER1000':
-      return 'vacation';
-    case 'SYK1001':
-      return 'sick';
-    case 'SYK1002':
-      return 'sick-child';
-    case 'PER1000':
-      return 'leave-with-pay';
-    case 'PER1002':
-      return 'parent-leave';
-    case 'PER1001':
-      return 'leave-without-pay';
-    default:
-      return 'leave';
-  }
-};
-
 export const reasonToEventGroup = (reason) => {
   switch (reason) {
     case 'FER1000':
@@ -160,7 +141,7 @@ export const pastAbsence = createSelector(
         date: x.date,
         minutes: x.minutes,
         event: absenceReasons.get(x.reason),
-        eventClassName: x.minutes < 450 ? reasonToEventClassName(x.reason) + '-partial' : reasonToEventClassName(x.reason)
+        eventClassName: x.minutes < 450 ? reasonToEventGroup(x.reason) + '-partial' : reasonToEventGroup(x.reason)
       }])])
   )
 );
@@ -173,7 +154,7 @@ export const absenceReasonGroups = createSelector(
       const group = reasonToEventGroup(key);
       return {
         ...acc,
-        [group]: acc[group] ? acc[group].concat(item) : List([item])
+        [group]: acc[group] ? acc[group].merge(item) : Map(item)
       }
     }, {}))
   ));
@@ -194,7 +175,7 @@ export const currentEvents = createSelector(
           .map(([k, v]) => [k, v.map((y) => ({
             date: y.date,
             event: absenceReasons.get(y.reason),
-            eventClassName: reasonToEventClassName(y.reason)
+            eventClassName: reasonToEventGroup(y.reason)
           }))])
       ))
   )
