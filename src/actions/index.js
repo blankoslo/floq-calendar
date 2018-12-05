@@ -70,3 +70,14 @@ export const loadAbsenceSpent = (absence) => ({
   type: LOAD_ABSENCE_SPENT,
   absence
 });
+
+export const SET_ACTIVE_ABSENCE_REASON = 'SET_ACTIVE_ABSENCE_REASON';
+export const setActiveAbsenceReason = (id) => ({
+  type: SET_ACTIVE_ABSENCE_REASON,
+  id
+});
+
+export const REMOVE_ACTIVE_ABSENCE_REASON = 'REMOVE_ACTIVE_ABSENCE_REASON';
+export const removeActiveAbsenceReason = () => ({
+  type: REMOVE_ACTIVE_ABSENCE_REASON,
+});
