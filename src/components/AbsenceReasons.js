@@ -26,7 +26,7 @@ class AbsenceReasons extends React.PureComponent {
           className='absence-reasons-nothing'
           onClick={this.props.removeAbsence}
         >
-          Ingenting
+          Fjærn fravær
         </li>
       </ul>
     );
