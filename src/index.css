@@ -92,7 +92,7 @@ h6 {
 }
 
 .info-box {
-  padding: 2rem 0;
+  padding: 3.5rem 0;
 }
 
 .info-box p {
@@ -107,9 +107,6 @@ h6 {
   font-size: 1.3rem;
 }
 
-.vacation-box {
-  font-family: "Courier New", Courier, monospace;
-}
 
 .vacation-box div {
   display: flex;
@@ -155,6 +152,10 @@ h6 {
 .absence-code-color {
   flex: 1;
   height: 8px;
+}
+
+.absence-code-inactive {
+  opacity: 0.2;
 }
 
 .info-list li {
