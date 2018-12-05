@@ -141,7 +141,7 @@ export const pastAbsence = createSelector(
         date: x.date,
         minutes: x.minutes,
         event: absenceReasons.get(x.reason),
-        eventClassName: reasonToEventClassName(x.reason)
+        eventClassName: x.minutes < 450 ? reasonToEventClassName(x.reason) + '-partial' : reasonToEventClassName(x.reason)
       }])])
   )
 );
