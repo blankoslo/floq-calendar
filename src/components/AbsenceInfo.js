@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { List, Range } from 'immutable';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import isFuture from 'date-fns/is_future';
@@ -7,6 +8,7 @@ import getYear from 'date-fns/get_year';
 import IconButton from 'material-ui/IconButton';
 
 import { reasonToEventName, dateRangeToDateString } from '../selectors';
+import AbsenceColorCodes from './AbsenceColorCodes';
 
 class AbsenceInfo extends React.PureComponent {
 
@@ -85,20 +87,11 @@ class AbsenceInfo extends React.PureComponent {
               <p className='vacation-box-number'>{(Math.round((this.state.holidayDays.available) * 100) / 100).toLocaleString('nb-NO')}</p>
             </div>
           </div>
-          <div className='info-box absence-codes'>
-            <h5> FARGEKODER </h5>
-            <div>
-              {this.props.absenceReasonGroups.entrySeq().map(([key, value]) => {
-                return (
-                  <div key={key} className='absence-code'>
-                    <div className={`event-${key} absence-code-color`} />
-                    {value.valueSeq().map(reason =>
-                      <p>{reason}</p>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+          <div className='info-box'>
+            <AbsenceColorCodes
+              absenceReasonGroups={this.props.absenceReasonGroups}
+              activeAbsenceReason={this.props.activeAbsenceReason}
+            />
           </div>
           <div className='info-box absence-box'>
             <h5> KOMMENDE FRAVÆR </h5>
@@ -210,4 +203,9 @@ class AbsenceInfo extends React.PureComponent {
   }
 };
 
-export default AbsenceInfo;
+
+const mapStateToProps = (state) => ({
+  activeAbsenceReason: state.activeAbsenceReason
+});
+
+export default connect(mapStateToProps, {})(AbsenceInfo);
