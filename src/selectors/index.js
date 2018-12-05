@@ -140,6 +140,7 @@ export const pastAbsence = createSelector(
       .map((x) => [dateFns.format(x.date, 'YYYY-M-D'), List([{
         date: x.date,
         minutes: x.minutes,
+        eventId: x.reason,
         event: absenceReasons.get(x.reason),
         eventClassName: x.minutes < 450 ? reasonToEventGroup(x.reason) + '-partial' : reasonToEventGroup(x.reason)
       }])])
@@ -174,6 +175,7 @@ export const currentEvents = createSelector(
           .filter(([k, v]) => isFuture(k) || isToday(k))
           .map(([k, v]) => [k, v.map((y) => ({
             date: y.date,
+            eventId: y.reason,
             event: absenceReasons.get(y.reason),
             eventClassName: reasonToEventGroup(y.reason)
           }))])
