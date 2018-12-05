@@ -48,6 +48,11 @@ class Date extends React.PureComponent {
       'date-clicked': this.props.clicked,
     });
 
+    const hours = this.props.events && this.props.events
+      .filter(x => x.minutes > 0 && x.minutes < 450)
+      .map(x => x.minutes / 60)
+      .join();
+
     return (
       <div className={dateClassNames}>
         {this.state.future ? null : <div className='date-past' />}
@@ -63,9 +68,9 @@ class Date extends React.PureComponent {
             </div> : <div className={'date-number'}>
               {getDate(this.props.date)}
             </div>}
-          <div className={'date-text'}>
-            {this.props.events && this.props.events.map((x) => x.event).join()}
-          </div>
+          <p className={'date-text'}>
+            {hours ? hours + ' t' : null}
+          </p>
         </div>
         {this.props.showAbsenceReasonContainer ?
           <AbsenceReasons
