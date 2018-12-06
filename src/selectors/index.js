@@ -7,22 +7,22 @@ import isToday from 'date-fns/is_today';
 import format from 'date-fns/format';
 import nbLocale from 'date-fns/locale/nb';
 
-export const reasonToEventClassName = (reason) => {
+export const reasonToEventGroup = (reason) => {
   switch (reason) {
     case 'FER1000':
       return 'vacation';
     case 'SYK1001':
-      return 'sick';
     case 'SYK1002':
-      return 'sick-child';
+      return 'sick';
     case 'PER1000':
-      return 'leave-with-pay';
     case 'PER1002':
-      return 'parent-leave';
+      return 'leave';
     case 'PER1001':
       return 'leave-without-pay';
+    case 'AVS':
+      return 'avs';
     default:
-      return 'leave';
+      return reason;
   }
 };
 
@@ -140,11 +140,25 @@ export const pastAbsence = createSelector(
       .map((x) => [dateFns.format(x.date, 'YYYY-M-D'), List([{
         date: x.date,
         minutes: x.minutes,
+        eventId: x.reason,
         event: absenceReasons.get(x.reason),
-        eventClassName: reasonToEventClassName(x.reason)
+        eventClassName: x.minutes < 450 ? reasonToEventGroup(x.reason) + '-partial' : reasonToEventGroup(x.reason)
       }])])
   )
 );
+
+export const absenceReasonGroups = createSelector(
+  absenceReasonMap,
+  (absenceReasons) => (
+    Map(absenceReasons.reduce((acc, value, key) => {
+      const item = { [key]: reasonToEventName(key) };
+      const group = reasonToEventGroup(key);
+      return {
+        ...acc,
+        [group]: acc[group] ? acc[group].merge(item) : Map(item)
+      }
+    }, {}))
+  ));
 
 export const currentEvents = createSelector(
   currentEmployee,
@@ -161,8 +175,9 @@ export const currentEvents = createSelector(
           .filter(([k, v]) => isFuture(k) || isToday(k))
           .map(([k, v]) => [k, v.map((y) => ({
             date: y.date,
+            eventId: y.reason,
             event: absenceReasons.get(y.reason),
-            eventClassName: reasonToEventClassName(y.reason)
+            eventClassName: reasonToEventGroup(y.reason)
           }))])
       ))
   )

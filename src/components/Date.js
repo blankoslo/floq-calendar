@@ -1,8 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Map } from 'immutable';
 import classNames from 'classnames';
 import AbsenceReasons from './AbsenceReasons';
 import { getDate, isToday, isFuture, isWeekend } from 'date-fns';
+
+import {
+  setActiveAbsenceReason, removeActiveAbsenceReason
+} from '../actions';
 
 class Date extends React.PureComponent {
 
@@ -12,18 +17,19 @@ class Date extends React.PureComponent {
     this.state = {
       future: future,
       editable: future,
+      absenceReason: '',
     }
   }
 
   componentDidMount() {
     if (this.props.date && this.props.events) {
-      this.checkIfHoliday();
+      this.setStates();
     }
   }
 
   componentDidUpdate(prev) {
     if (this.props.events && prev.events !== this.props.events) {
-      this.checkIfHoliday();
+      this.setStates();
     }
   }
 
@@ -48,14 +54,21 @@ class Date extends React.PureComponent {
       'date-clicked': this.props.clicked,
     });
 
+    const hours = this.props.events && this.props.events
+      .filter(x => x.minutes > 0 && x.minutes < 450)
+      .map(x => x.minutes / 60)
+      .join();
+
     return (
-      <div className={dateClassNames}>
+      <div
+        className={dateClassNames}
+        onMouseOver={this.hover}
+        onMouseOut={this.stopHover}
+      >
         {this.state.future ? null : <div className='date-past' />}
         <div
           className='date-inner'
           onClick={this.handleClick}
-          onMouseOver={this.hover}
-          onMouseOut={this.stopHover}
         >
           {this.props.clicked ?
             <div className={'date-number'}>
@@ -63,9 +76,9 @@ class Date extends React.PureComponent {
             </div> : <div className={'date-number'}>
               {getDate(this.props.date)}
             </div>}
-          <div className={'date-text'}>
-            {this.props.events && this.props.events.map((x) => x.event).join()}
-          </div>
+          <p className={'date-text'}>
+            {hours ? hours + ' t' : null}
+          </p>
         </div>
         {this.props.showAbsenceReasonContainer ?
           <AbsenceReasons
@@ -86,18 +99,39 @@ class Date extends React.PureComponent {
   }
 
   hover = () => {
+    if (this.state.absenceReason) {
+      this.props.setActiveAbsenceReason(this.state.absenceReason);
+    }
     this.props.hoverDate(this.props.date);
   }
 
   stopHover = () => {
+    if (this.state.absenceReason) {
+      this.props.removeActiveAbsenceReason();
+    }
     this.props.stopHoverDate();
   }
 
-  checkIfHoliday = () => {
+  setStates = () => {
+    if (this.props.events.some((x) => x.eventId)) {
+      this.setState({ absenceReason: this.props.events.map(x => x.eventId).join() });
+    }
+    else {
+      this.setState({ absenceReason: '' });
+      this.props.removeActiveAbsenceReason();
+    }
     if (this.props.events.some((x) => x.eventClassName === 'holiday')) {
       this.setState({ editable: false });
     }
   }
 }
 
-export default Date;
+
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = {
+  setActiveAbsenceReason,
+  removeActiveAbsenceReason,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Date);

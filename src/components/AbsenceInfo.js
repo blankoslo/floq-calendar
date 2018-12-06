@@ -1,5 +1,6 @@
 import React from 'react';
-import { List } from 'immutable';
+import { connect } from 'react-redux';
+import { List, Range } from 'immutable';
 import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import isFuture from 'date-fns/is_future';
 import isFriday from 'date-fns/is_friday';
@@ -7,6 +8,7 @@ import getYear from 'date-fns/get_year';
 import IconButton from 'material-ui/IconButton';
 
 import { reasonToEventName, dateRangeToDateString } from '../selectors';
+import AbsenceColorCodes from './AbsenceColorCodes';
 
 class AbsenceInfo extends React.PureComponent {
 
@@ -44,9 +46,9 @@ class AbsenceInfo extends React.PureComponent {
     return (
       <div className='info'>
         <div className='info-inner'>
-          <h5 className='employee-container'>
+          <h6 className='employee-container'>
             {this.props.currentEmployee ? this.props.currentEmployee.name.toUpperCase() : ''}
-          </h5>
+          </h6>
           <div className='year-selector'>
             <IconButton
               iconClassName='material-icons'
@@ -68,20 +70,28 @@ class AbsenceInfo extends React.PureComponent {
             <h5> FERIE </h5>
             <div className='vacation-box-purple vacation-box-dotted'>
               <p>Totalt tilgjengelig</p>
-              <p className='vacation-box-number'>{this.state.holidayDays.totAvailable}</p>
+              <p className='vacation-box-number'>{(Math.round((this.state.holidayDays.totAvailable) * 100) / 100).toLocaleString('nb-NO')}</p>
             </div>
             <div className='vacation-box-pink vacation-box-dotted'>
               <p>Brukt</p>
-              <p className='vacation-box-number'>-{this.state.holidayDays.used}</p>
+              <p className='vacation-box-number'>{this.state.holidayDays.used !== 0 ?
+                '-' + (Math.round((this.state.holidayDays.used) * 100) / 100).toLocaleString('nb-NO')
+                : 0}</p>
             </div>
             <div className='vacation-box-pink vacation-box-line'>
               <p>Planlagt</p>
-              <p className='vacation-box-number'>-{this.state.holidayDays.planned}</p>
+              <p className='vacation-box-number'>{this.state.holidayDays.planned !== 0 ? '-' + this.state.holidayDays.planned : 0}</p>
             </div>
             <div className='vacation-box-purple vacation-box-double'>
               <p>SUM igjen</p>
-              <p className='vacation-box-number'>{this.state.holidayDays.available}</p>
+              <p className='vacation-box-number'>{(Math.round((this.state.holidayDays.available) * 100) / 100).toLocaleString('nb-NO')}</p>
             </div>
+          </div>
+          <div className='info-box'>
+            <AbsenceColorCodes
+              absenceReasonGroups={this.props.absenceReasonGroups}
+              activeAbsenceReason={this.props.activeAbsenceReason}
+            />
           </div>
           <div className='info-box absence-box'>
             <h5> KOMMENDE FRAVÆR </h5>
@@ -103,47 +113,47 @@ class AbsenceInfo extends React.PureComponent {
   }
 
   calculateHolidayDays = () => {
-    const plannedDays = this.calcPlannedDays();
-
+    const plannedDays = this.calcPlannedDaysInYear(this.props.year);
+    const totAvailable = this.calcTotalAvailableForYear();
+    const used = this.calcUsedDays();
     this.setState({
       holidayDays: {
-        used: this.calcUsedDays(),
+        used: used,
         planned: plannedDays,
         totAvailable: this.calcTotalAvailableForYear(),
-        available: this.calcCurrentlyAvailable(plannedDays),
+        available: totAvailable - plannedDays - used,
       }
     });
   }
 
-  calcPlannedDays = () => {
+  calcPlannedDaysInYear = (year) => {
     return List(this.props.absence.valueSeq().flatten()
       .filter(x => isFuture(x.date) && x.reason === 'FER1000'
-        && getYear(x.date) <= this.props.year)).size;
+        && getYear(x.date) === year)).size;
   }
 
   calcTotalAvailableForYear = () => {
-    const tot = this.props.holidayDays
+    let tot = this.props.holidayDays
       .reduce((acc, curr) => {
         if (curr.year === this.props.year) return acc + curr.earnt;
         else if (curr.year > this.props.year) return acc;
         else return acc + (curr.earnt - curr.spent);
       }, 0);
-    return (Math.round(tot * 100) / 100).toLocaleString('nb-NO')
-  }
 
-  calcCurrentlyAvailable = (planned) => {
-    const tot = this.props.holidayDays
-      .reduce((acc, curr) => {
-        if (curr.year <= this.props.year) return acc + (curr.earnt - curr.spent);
-        return acc;
-      }, 0);
-    return (Math.round((tot - planned) * 100) / 100).toLocaleString('nb-NO');
+    const currentYear = getYear(new Date());
+    if (currentYear < this.props.year) {
+      const diff = this.props.year - currentYear;
+      tot += (25 * diff);
+      Range(1, diff + 1)
+        .forEach(x => tot -= this.calcPlannedDaysInYear(this.props.year - x));
+    }
+    return tot;
   }
 
   calcUsedDays = () => {
     const tot = this.props.holidayDays.find(el => el.year === this.props.year);
     if (tot) {
-      return (Math.round(tot.spent * 100) / 100).toLocaleString('nb-NO')
+      return tot.spent;
     }
     return 0;
   }
@@ -193,4 +203,9 @@ class AbsenceInfo extends React.PureComponent {
   }
 };
 
-export default AbsenceInfo;
+
+const mapStateToProps = (state) => ({
+  activeAbsenceReason: state.activeAbsenceReason
+});
+
+export default connect(mapStateToProps, {})(AbsenceInfo);

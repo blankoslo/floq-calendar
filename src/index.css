@@ -10,19 +10,19 @@ h6 {
 }
 
 #app {
-  overflow-y: scroll;
-  height: calc(100vh - 56px);
+  background: #f5f6f5;
 }
 
-div#container {
-  display: inline-block;
-  background-color: #f5f6f5;
+#container {
   position: relative;
+  overflow-y: scroll;
+  height: calc(100vh - 56px);
   width: 100%;
 }
 
-div#main {
+#main {
   display: flex;
+  position: relative;
 }
 
 .wrapper {
@@ -30,14 +30,14 @@ div#main {
   display: flex;
   align-items: start;
   margin: 1rem 3rem;
-  flex: 2 1 75%;
+  flex: 2 1 85%;
+  background: #f5f6f5;
 }
 
 .overlay {
-  background-color: rgba(60, 19, 69, 0.8);
+  background: rgba(60, 19, 69, 0.8);
   position: fixed;
   width: 100%;
-  height: 100000px;
   top: 0;
   left: 0;
   right: 0;
@@ -50,27 +50,27 @@ div#main {
 .info {
   display: flex;
   align-items: flex-start;
-  flex: 1 2 25%;
-  max-width: 500px;
+  flex: 1 2 15%;
   position: relative;
   background: #fff;
   color: #3c1345;
+  min-width: 300px;
+  max-width: 500px;
 }
 
 .info-inner {
-  padding: 0.3rem 2rem;
+  padding: 0.3rem 1rem;
   display: flex;
+  flex: 1;
   flex-direction: column;
   position: sticky;
   position: -webkit-sticky;
   top: 0;
 }
 
-.employee-container {
-}
-
 .year-selector {
   display: flex;
+  justify-content: center;
 }
 
 .year-selector-text {
@@ -84,9 +84,15 @@ div#main {
   color: #9b9b9b;
 }
 
+.info h6 {
+  color: #9b9b9b;
+  font-size: 0.9rem;
+  margin: 0 0 0.2rem 0;
+  text-align: center;
+}
+
 .info-box {
-  padding: 3rem 0;
-  min-width: 24em;
+  padding: 2rem 0;
 }
 
 .info-box p {
@@ -94,9 +100,13 @@ div#main {
   font-size: 1.4rem;
 }
 
-.vacation-box {
-  font-family: "Courier New", Courier, monospace;
+.info-box ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.2rem 0;
+  font-size: 1.3rem;
 }
+
 
 .vacation-box div {
   display: flex;
@@ -127,11 +137,25 @@ div#main {
   font-size: 2rem !important;
 }
 
-.info-list {
-  list-style: none;
-  padding-left: 0;
+.absence-codes {
+
+}
+
+.absence-code {
+  margin: 1.2rem 0;
+}
+
+.absence-code p {
   margin: 0.2rem 0;
-  font-size: 1.3rem;
+}
+
+.absence-code-color {
+  flex: 1;
+  height: 8px;
+}
+
+.absence-code-inactive {
+  opacity: 0.2;
 }
 
 .info-list li {
@@ -150,7 +174,7 @@ div#main {
 }
 
 .month {
-  width: 34rem;
+  width: 24rem;
   max-width: 90vw;
   margin: 1rem 0.5rem;
   position: relative;
@@ -216,9 +240,9 @@ div#main {
   display: flex;
   box-sizing: border-box;
   width: calc(100% / 5);
-  height: 6rem;
+  height: 4rem;
   border: 1px solid #f5f6f5;
-  background-color: #fff;
+  background: #fff;
   color: #6600ff;
   cursor: default;
 }
@@ -229,16 +253,17 @@ div#main {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: #ffffff9c;
+  background: #ffffff7e;
 }
 
 .date-disabled {
-  background-color: #f5f6f5 !important;
+  background: #f5f6f5 !important;
 }
 
 .date-editable:hover {
   cursor: pointer;
-  background-color: #efe5ff !important;
+  background: #efe5ff !important;
+  color: #000 !important;
 }
 
 .date-inner {
@@ -252,17 +277,18 @@ div#main {
 .date-number {
   margin-top: 0.4rem;
   margin-left: 0.4rem;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .date-text {
-  line-height: 0.9rem;
   margin-bottom: 0.4rem;
   margin-left: 0.4rem;
+  line-height: 0.9rem;
+  font-size: 1.1rem;
 }
 
 .date-clicked {
-  background-color: #6600ff !important;
+  background: #6600ff !important;
   border: 0;
   border-right: 1px solid #6600ff !important;
   border-left: 1px solid #6600ff !important;
@@ -271,7 +297,7 @@ div#main {
 }
 
 .date-clicked .date-number {
-  color: #fff !important;
+  color: #fff081 !important;
 }
 
 .date-clicked .date-text {
@@ -279,7 +305,7 @@ div#main {
 }
 
 .date-clicked:hover {
-  background-color: #6600ff !important;
+  background: #6600ff !important;
 }
 
 /* Events */
@@ -293,37 +319,57 @@ div#main {
 
 .event-vacation {
   color: #3c1345;
-  background-color: #38fbfe;
+  background: #38fbfe;
 }
 
 .event-sick {
   color: #3c1345;
-  background-color: #fff081;
+  background: #fff081;
 }
 
-.event-sick-child {
+.event-avs {
   color: #3c1345;
-  background-color: #fff081;
+  background: #12eb81;
 }
 
 .event-leave {
-  color: #fff;
-  background-color: #3c1345;
-}
-
-.event-leave-with-pay {
-  color: #fff081;
-  background-color: #fe386e;
+  color: #3c1345;
+  background: #fe386e;
 }
 
 .event-leave-without-pay {
-  color: #3c1345;
-  background-color: #12eb81;
+  color: #fff;
+  background: #3c1345;
 }
 
-.event-parent-leave {
-  color: #fff081;
-  background-color: #fe386e;
+.event-vacation-partial {
+  color: #3c1345;
+  background: #fff081;
+  background: -webkit-linear-gradient(45deg, #38fbfe8a 50%, #38fbfe 50%);
+}
+
+.event-sick-partial {
+  color: #3c1345;
+  background: #fff081;
+  background: -webkit-linear-gradient(45deg, #fff0818a 50%, #fff081 50%);
+}
+
+.event-avs-partial {
+  color: #3c1345;
+  background: #12eb81;
+  background: -webkit-linear-gradient(45deg, #12eb818a 50%, #12eb81 50%);
+}
+
+.event-leave-without-pay-partial {
+  color: #fff;
+  background: #3c1345;
+  background: -webkit-linear-gradient(45deg, #3c13458a 50%, #3c1345 50%);
+}
+
+.event-leave-partial {
+  color: #3c1345;
+  background: #fe386e;
+  background: -webkit-linear-gradient(45deg, #fe386d8a 50%, #fe386e 50%);
 }
 
 /* Absence reasons */
@@ -331,13 +377,13 @@ div#main {
 .absence-reasons {
   z-index: 5;
   position: absolute;
-  top: calc(6rem - 1px);
+  top: calc(4rem - 1px);
   right: -1px;
   list-style: none;
   padding-left: 0;
   margin: 0;
   width: 240px;
-  background: #fff;
+  background: #3c1345;
 }
 
 .absence-reasons li {
@@ -349,7 +395,7 @@ div#main {
 
 .absence-reasons-summary {
   display: none;
-  background-color: #fff;
+  background: #fff;
 }
 
 .absence-reasons-summary h5 {
@@ -362,14 +408,13 @@ div#main {
 }
 
 .absence-reasons-nothing {
-  background-color: #efe5ff;
+  background: #efe5ff;
   color: #3c1345;
-  display: flex;
-  justify-content: space-between;
+  text-align: right;
 }
 
 .cross {
-  background-color: #3c1345;
+  background: #3c1345;
   color: #fff;
   width: 25px;
   height: 25px;
@@ -385,12 +430,15 @@ div#main {
   top: -5px;
 }
 
-
 /* RESPONSIVE */
 
 @media only screen and (max-width: 950px) {
   #main {
     flex-direction: column;
+    height: auto;
+  }
+  .info {
+    max-width: none;
   }
   .info-inner {
     padding: 0.5rem;
@@ -401,9 +449,6 @@ div#main {
   }
   .wrapper {
     margin: 1rem 0.5rem;
-  }
-  .date {
-    height: 4rem;
   }
   .absence-reasons {
     position: fixed;
@@ -420,5 +465,35 @@ div#main {
   }
   .absence-box {
     display: none;
+  }
+}
+
+@media only screen and (min-width: 1800px) {
+  #container {
+    height: calc(100vh - 64px);
+  }
+  .month {
+    width: 18vw;
+  }
+  .date {
+    height: calc(18vw / 5);
+  }
+  .absence-reasons {
+    top: calc(18vw / 5 - 1px);
+  }
+  .info-box {
+    padding: 3.5rem 0;
+  }
+}
+
+@media only screen and (min-width: 2400px) {
+  .month {
+    width: 16vw;
+  }
+  .date {
+    height: calc(16vw / 5);
+  }
+  .absence-reasons {
+    top: calc(16vw / 5 - 1px);
   }
 }
