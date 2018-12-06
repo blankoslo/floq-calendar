@@ -5,10 +5,10 @@ import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import isFuture from 'date-fns/is_future';
 import isFriday from 'date-fns/is_friday';
 import getYear from 'date-fns/get_year';
-import IconButton from 'material-ui/IconButton';
 
 import { reasonToEventName, dateRangeToDateString } from '../selectors';
 import AbsenceColorCodes from './AbsenceColorCodes';
+import YearSelector from './YearSelector';
 
 class AbsenceInfo extends React.PureComponent {
 
@@ -49,23 +49,11 @@ class AbsenceInfo extends React.PureComponent {
           <h6 className='employee-container'>
             {this.props.currentEmployee ? this.props.currentEmployee.name.toUpperCase() : ''}
           </h6>
-          <div className='year-selector'>
-            <IconButton
-              iconClassName='material-icons'
-              onClick={this.props.selectPreviousYear}
-              iconStyle={{ fontSize: 18, color: '#6600ff' }}>
-              arrow_back
-            </IconButton>
-            <h1 className={'year-selector-text'}>
-              {this.props.year.toString()}
-            </h1>
-            <IconButton
-              iconClassName='material-icons'
-              onClick={this.props.selectNextYear}
-              iconStyle={{ fontSize: 18, color: '#6600ff' }}>
-              arrow_forward
-          </IconButton>
-          </div>
+          <YearSelector
+            year={this.props.year}
+            selectPreviousYear={this.props.selectPreviousYear}
+            selectNextYear={this.props.selectNextYear}
+          />
           <div className='info-box vacation-box'>
             <h5> FERIE </h5>
             <div className='vacation-box-purple vacation-box-dotted'>
