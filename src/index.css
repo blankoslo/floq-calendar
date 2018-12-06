@@ -409,26 +409,21 @@ h6 {
 }
 
 .absence-reasons-nothing {
+  margin-bottom: 0 !important;
+  padding: 0 !important;
   background: #efe5ff;
   color: #3c1345;
-  text-align: right;
+  display: flex;
 }
 
-.cross {
-  background: #3c1345;
-  color: #fff;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 1rem;
-  position: absolute;
-  right: -25px;
-  top: -5px;
+.absence-reasons-nothing div {
+  flex: 1;
+  text-align: center;
+  padding: 0.6rem 1rem;
+}
+
+.absence-reasons-nothing div:first-child {
+  background:#dcd0ed;
 }
 
 /* RESPONSIVE */
