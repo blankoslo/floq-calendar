@@ -9,6 +9,7 @@ import getYear from 'date-fns/get_year';
 import { reasonToEventName, dateRangeToDateString } from '../selectors';
 import AbsenceColorCodes from './AbsenceColorCodes';
 import YearSelector from './YearSelector';
+import FutureAbsence from './FutureAbsence';
 
 class AbsenceInfo extends React.PureComponent {
 
@@ -81,19 +82,10 @@ class AbsenceInfo extends React.PureComponent {
               activeAbsenceReason={this.props.activeAbsenceReason}
             />
           </div>
-          <div className='info-box absence-box'>
-            <h5> KOMMENDE FRAVÆR </h5>
-            <ul className='info-list'>
-              {this.state.dates.map(el => {
-                const key = Object.keys(el)[0];
-                const dates = dateRangeToDateString(el[key]);
-                return (
-                  <li key={dates}>
-                    <span>{reasonToEventName(key)}</span> {dates}
-                  </li>
-                );
-              })}
-            </ul>
+          <div className='info-box'>
+            <FutureAbsence
+              dates={this.state.dates}
+            />
           </div>
         </div>
       </div>
