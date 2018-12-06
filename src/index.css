@@ -171,10 +171,11 @@ h6 {
 .year-calendar {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .month {
-  width: 24rem;
+  width: 20rem;
   max-width: 90vw;
   margin: 1rem 0.5rem;
   position: relative;
@@ -240,7 +241,7 @@ h6 {
   display: flex;
   box-sizing: border-box;
   width: calc(100% / 5);
-  height: 4rem;
+  height: 3.5rem;
   border: 1px solid #f5f6f5;
   background: #fff;
   color: #6600ff;
@@ -473,27 +474,15 @@ h6 {
     height: calc(100vh - 64px);
   }
   .month {
-    width: 18vw;
+    width: 15vw;
   }
   .date {
-    height: calc(18vw / 5);
+    height: calc(15vw / 5);
   }
   .absence-reasons {
-    top: calc(18vw / 5 - 1px);
+    top: calc(15vw / 5 - 1px);
   }
   .info-box {
     padding: 3.5rem 0;
-  }
-}
-
-@media only screen and (min-width: 2400px) {
-  .month {
-    width: 16vw;
-  }
-  .date {
-    height: calc(16vw / 5);
-  }
-  .absence-reasons {
-    top: calc(16vw / 5 - 1px);
   }
 }
