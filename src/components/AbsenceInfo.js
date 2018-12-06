@@ -6,10 +6,10 @@ import isFuture from 'date-fns/is_future';
 import isFriday from 'date-fns/is_friday';
 import getYear from 'date-fns/get_year';
 
-import { reasonToEventName, dateRangeToDateString } from '../selectors';
 import AbsenceColorCodes from './AbsenceColorCodes';
 import YearSelector from './YearSelector';
 import FutureAbsence from './FutureAbsence';
+import VacationInfo from './VacationInfo';
 
 class AbsenceInfo extends React.PureComponent {
 
@@ -55,26 +55,10 @@ class AbsenceInfo extends React.PureComponent {
             selectPreviousYear={this.props.selectPreviousYear}
             selectNextYear={this.props.selectNextYear}
           />
-          <div className='info-box vacation-box'>
-            <h5> FERIE </h5>
-            <div className='vacation-box-purple vacation-box-dotted'>
-              <p>Totalt tilgjengelig</p>
-              <p className='vacation-box-number'>{(Math.round((this.state.holidayDays.totAvailable) * 100) / 100).toLocaleString('nb-NO')}</p>
-            </div>
-            <div className='vacation-box-pink vacation-box-dotted'>
-              <p>Brukt</p>
-              <p className='vacation-box-number'>{this.state.holidayDays.used !== 0 ?
-                '-' + (Math.round((this.state.holidayDays.used) * 100) / 100).toLocaleString('nb-NO')
-                : 0}</p>
-            </div>
-            <div className='vacation-box-pink vacation-box-line'>
-              <p>Planlagt</p>
-              <p className='vacation-box-number'>{this.state.holidayDays.planned !== 0 ? '-' + this.state.holidayDays.planned : 0}</p>
-            </div>
-            <div className='vacation-box-purple vacation-box-double'>
-              <p>SUM igjen</p>
-              <p className='vacation-box-number'>{(Math.round((this.state.holidayDays.available) * 100) / 100).toLocaleString('nb-NO')}</p>
-            </div>
+          <div className='info-box'>
+            <VacationInfo
+              holidayDays={this.state.holidayDays}
+            />
           </div>
           <div className='info-box'>
             <AbsenceColorCodes
