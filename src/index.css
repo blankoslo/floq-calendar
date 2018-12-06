@@ -92,7 +92,7 @@ h6 {
 }
 
 .info-box {
-  padding: 3.5rem 0;
+  padding: 2rem 0;
 }
 
 .info-box p {
@@ -480,6 +480,9 @@ h6 {
   }
   .absence-reasons {
     top: calc(18vw / 5 - 1px);
+  }
+  .info-box {
+    padding: 3.5rem 0;
   }
 }
 
