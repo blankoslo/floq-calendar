@@ -6,10 +6,16 @@ import isFuture from 'date-fns/is_future';
 import isFriday from 'date-fns/is_friday';
 import getYear from 'date-fns/get_year';
 
-import AbsenceColorCodes from './AbsenceColorCodes';
-import YearSelector from './YearSelector';
-import FutureAbsence from './FutureAbsence';
-import VacationInfo from './VacationInfo';
+import {
+  selectPreviousYear, selectNextYear,
+} from '../actions';
+
+import { absenceReasonGroups } from '../selectors';
+
+import AbsenceColorCodes from '../components/AbsenceColorCodes';
+import YearSelector from '../components/YearSelector';
+import FutureAbsence from '../components/FutureAbsence';
+import VacationInfo from '../components/VacationInfo';
 
 class AbsenceInfo extends React.PureComponent {
 
@@ -52,8 +58,8 @@ class AbsenceInfo extends React.PureComponent {
           </h6>
           <YearSelector
             year={this.props.year}
-            selectPreviousYear={this.props.selectPreviousYear}
-            selectNextYear={this.props.selectNextYear}
+            selectPreviousYear={() => this.props.selectPreviousYear()}
+            selectNextYear={() => this.props.selectNextYear(1)}
           />
           <div className='info-box'>
             <VacationInfo
@@ -167,9 +173,15 @@ class AbsenceInfo extends React.PureComponent {
   }
 };
 
+const mapDispatchToProps = {
+  selectPreviousYear,
+  selectNextYear,
+};
 
 const mapStateToProps = (state) => ({
-  activeAbsenceReason: state.activeAbsenceReason
+  activeAbsenceReason: state.activeAbsenceReason,
+  year: state.currentYear,
+  absenceReasonGroups: absenceReasonGroups(state),
 });
 
-export default connect(mapStateToProps, {})(AbsenceInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(AbsenceInfo);
