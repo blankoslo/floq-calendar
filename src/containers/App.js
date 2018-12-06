@@ -17,12 +17,11 @@ import {
 
 import {
   selectCurrentEmployee, setCurrentYear,
-  selectPreviousYear, selectNextYear,
   addAbsence, removeAbsence
 } from '../actions';
 
 import {
-  currentEmployee, currentEvents, absenceReasonGroups
+  currentEmployee, currentEvents
 } from '../selectors';
 
 import AbsenceInfo from './AbsenceInfo';
@@ -99,7 +98,6 @@ const mapStateToProps = (state) => ({
   currentYear: state.currentYear,
   employees: state.employees,
   absenceReasons: state.absenceReasons,
-  absenceReasonGroups: absenceReasonGroups(state),
   originalAbsence: state.originalAbsence,
   absence: state.absence,
   currentEvents: currentEvents(state),
@@ -109,8 +107,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   selectCurrentEmployee,
   setCurrentYear,
-  selectPreviousYear,
-  selectNextYear,
   addAbsence,
   removeAbsence,
   fetchAbsenceReasons,
