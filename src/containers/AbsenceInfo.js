@@ -6,18 +6,14 @@ import isFuture from 'date-fns/is_future';
 import isFriday from 'date-fns/is_friday';
 import getYear from 'date-fns/get_year';
 
-import {
-  selectPreviousYear, selectNextYear,
-} from '../actions';
+import { selectPreviousYear, selectNextYear } from '../actions';
 
 import { absenceReasonGroups } from '../selectors';
 
-import AbsenceColorCodes from '../components/AbsenceColorCodes';
-import YearSelector from '../components/YearSelector';
-import FutureAbsence from '../components/FutureAbsence';
-import VacationInfo from '../components/VacationInfo';
+import AbsenceInfoBig from '../components/AbsenceInfoBig';
+import AbsenceInfoSmall from '../components/AbsenceInfoSmall';
 
-class AbsenceInfo extends React.PureComponent {
+class AbsenceInfo extends React.Component {
 
   constructor(props) {
     super(props)
@@ -28,7 +24,9 @@ class AbsenceInfo extends React.PureComponent {
         available: 0,
         planned: 0,
         used: 0,
-      }
+      },
+      displayVacation: false,
+      displayColorCodes: false
     }
   }
 
@@ -50,35 +48,29 @@ class AbsenceInfo extends React.PureComponent {
   }
 
   render() {
+    if (window.innerWidth < 950) {
+      return (
+        <AbsenceInfoSmall
+          year={this.props.year}
+          selectPreviousYear={() => this.props.selectPreviousYear()}
+          selectNextYear={() => this.props.selectNextYear(1)}
+          absenceReasonGroups={this.props.absenceReasonGroups}
+          activeAbsenceReason={this.props.activeAbsenceReason}
+          holidayDays={this.state.holidayDays}
+        />
+      );
+    }
+
     return (
-      <div className='info'>
-        <div className='info-inner'>
-          <h6 className='employee-container'>
-            {this.props.currentEmployee ? this.props.currentEmployee.name.toUpperCase() : ''}
-          </h6>
-          <YearSelector
-            year={this.props.year}
-            selectPreviousYear={() => this.props.selectPreviousYear()}
-            selectNextYear={() => this.props.selectNextYear(1)}
-          />
-          <div className='info-box'>
-            <VacationInfo
-              holidayDays={this.state.holidayDays}
-            />
-          </div>
-          <div className='info-box'>
-            <AbsenceColorCodes
-              absenceReasonGroups={this.props.absenceReasonGroups}
-              activeAbsenceReason={this.props.activeAbsenceReason}
-            />
-          </div>
-          <div className='info-box'>
-            <FutureAbsence
-              dates={this.state.dates}
-            />
-          </div>
-        </div>
-      </div>
+      <AbsenceInfoBig
+        year={this.props.year}
+        selectPreviousYear={() => this.props.selectPreviousYear()}
+        selectNextYear={() => this.props.selectNextYear(1)}
+        absenceReasonGroups={this.props.absenceReasonGroups}
+        activeAbsenceReason={this.props.activeAbsenceReason}
+        holidayDays={this.state.holidayDays}
+        dates={this.state.dates}
+      />
     );
   }
 
@@ -170,6 +162,18 @@ class AbsenceInfo extends React.PureComponent {
       result.push({ [expectedType]: curr });
     }
     return result;
+  }
+
+  openVacationDropdown = () => {
+    this.setState({ displayVacation: true, displayColorCodes: false });
+  }
+
+  openColorCodeDropdown = () => {
+    this.setState({ displayVacation: false, displayColorCodes: true });
+  }
+
+  closeDropdown = () => {
+    this.setState({ displayVacation: false, displayColorCodes: false });
   }
 };
 
