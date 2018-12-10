@@ -17,15 +17,14 @@ import {
 
 import {
   selectCurrentEmployee, setCurrentYear,
-  selectPreviousYear, selectNextYear,
   addAbsence, removeAbsence
 } from '../actions';
 
 import {
-  currentEmployee, currentEvents, absenceReasonGroups
+  currentEmployee, currentEvents
 } from '../selectors';
 
-import AbsenceInfo from '../components/AbsenceInfo';
+import AbsenceInfo from './AbsenceInfo';
 import Calendar from '../components/Calendar';
 
 class App extends React.PureComponent {
@@ -68,14 +67,10 @@ class App extends React.PureComponent {
           <div id='main'>
             <AbsenceInfo
               currentEmployee={this.props.currentEmployee}
-              year={this.props.currentYear}
-              selectPreviousYear={() => this.props.selectPreviousYear()}
-              selectNextYear={() => this.props.selectNextYear(1)}
               absence={this.props.currentEmployee ?
                 this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
               holidayDays={this.props.currentEmployee ?
                 this.props.holidayDays.get(this.props.currentEmployee.id, List()) : undefined}
-              absenceReasonGroups={this.props.absenceReasonGroups}
             />
             <Calendar
               openLayover={this.openLayover}
@@ -103,7 +98,6 @@ const mapStateToProps = (state) => ({
   currentYear: state.currentYear,
   employees: state.employees,
   absenceReasons: state.absenceReasons,
-  absenceReasonGroups: absenceReasonGroups(state),
   originalAbsence: state.originalAbsence,
   absence: state.absence,
   currentEvents: currentEvents(state),
@@ -113,8 +107,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   selectCurrentEmployee,
   setCurrentYear,
-  selectPreviousYear,
-  selectNextYear,
   addAbsence,
   removeAbsence,
   fetchAbsenceReasons,

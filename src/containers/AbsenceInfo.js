@@ -5,12 +5,15 @@ import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 import isFuture from 'date-fns/is_future';
 import isFriday from 'date-fns/is_friday';
 import getYear from 'date-fns/get_year';
-import IconButton from 'material-ui/IconButton';
 
-import { reasonToEventName, dateRangeToDateString } from '../selectors';
-import AbsenceColorCodes from './AbsenceColorCodes';
+import { selectPreviousYear, selectNextYear } from '../actions';
 
-class AbsenceInfo extends React.PureComponent {
+import { absenceReasonGroups } from '../selectors';
+
+import AbsenceInfoBig from '../components/AbsenceInfoBig';
+import AbsenceInfoSmall from '../components/AbsenceInfoSmall';
+
+class AbsenceInfo extends React.Component {
 
   constructor(props) {
     super(props)
@@ -21,7 +24,9 @@ class AbsenceInfo extends React.PureComponent {
         available: 0,
         planned: 0,
         used: 0,
-      }
+      },
+      displayVacation: false,
+      displayColorCodes: false
     }
   }
 
@@ -43,72 +48,29 @@ class AbsenceInfo extends React.PureComponent {
   }
 
   render() {
+    if (window.innerWidth < 950) {
+      return (
+        <AbsenceInfoSmall
+          year={this.props.year}
+          selectPreviousYear={() => this.props.selectPreviousYear()}
+          selectNextYear={() => this.props.selectNextYear(1)}
+          absenceReasonGroups={this.props.absenceReasonGroups}
+          activeAbsenceReason={this.props.activeAbsenceReason}
+          holidayDays={this.state.holidayDays}
+        />
+      );
+    }
+
     return (
-      <div className='info'>
-        <div className='info-inner'>
-          <h6 className='employee-container'>
-            {this.props.currentEmployee ? this.props.currentEmployee.name.toUpperCase() : ''}
-          </h6>
-          <div className='year-selector'>
-            <IconButton
-              iconClassName='material-icons'
-              onClick={this.props.selectPreviousYear}
-              iconStyle={{ fontSize: 18, color: '#6600ff' }}>
-              arrow_back
-            </IconButton>
-            <h1 className={'year-selector-text'}>
-              {this.props.year.toString()}
-            </h1>
-            <IconButton
-              iconClassName='material-icons'
-              onClick={this.props.selectNextYear}
-              iconStyle={{ fontSize: 18, color: '#6600ff' }}>
-              arrow_forward
-          </IconButton>
-          </div>
-          <div className='info-box vacation-box'>
-            <h5> FERIE </h5>
-            <div className='vacation-box-purple vacation-box-dotted'>
-              <p>Totalt tilgjengelig</p>
-              <p className='vacation-box-number'>{(Math.round((this.state.holidayDays.totAvailable) * 100) / 100).toLocaleString('nb-NO')}</p>
-            </div>
-            <div className='vacation-box-pink vacation-box-dotted'>
-              <p>Brukt</p>
-              <p className='vacation-box-number'>{this.state.holidayDays.used !== 0 ?
-                '-' + (Math.round((this.state.holidayDays.used) * 100) / 100).toLocaleString('nb-NO')
-                : 0}</p>
-            </div>
-            <div className='vacation-box-pink vacation-box-line'>
-              <p>Planlagt</p>
-              <p className='vacation-box-number'>{this.state.holidayDays.planned !== 0 ? '-' + this.state.holidayDays.planned : 0}</p>
-            </div>
-            <div className='vacation-box-purple vacation-box-double'>
-              <p>SUM igjen</p>
-              <p className='vacation-box-number'>{(Math.round((this.state.holidayDays.available) * 100) / 100).toLocaleString('nb-NO')}</p>
-            </div>
-          </div>
-          <div className='info-box'>
-            <AbsenceColorCodes
-              absenceReasonGroups={this.props.absenceReasonGroups}
-              activeAbsenceReason={this.props.activeAbsenceReason}
-            />
-          </div>
-          <div className='info-box absence-box'>
-            <h5> KOMMENDE FRAVÆR </h5>
-            <ul className='info-list'>
-              {this.state.dates.map(el => {
-                const key = Object.keys(el)[0];
-                const dates = dateRangeToDateString(el[key]);
-                return (
-                  <li key={dates}>
-                    <span>{reasonToEventName(key)}</span> {dates}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </div>
-      </div>
+      <AbsenceInfoBig
+        year={this.props.year}
+        selectPreviousYear={() => this.props.selectPreviousYear()}
+        selectNextYear={() => this.props.selectNextYear(1)}
+        absenceReasonGroups={this.props.absenceReasonGroups}
+        activeAbsenceReason={this.props.activeAbsenceReason}
+        holidayDays={this.state.holidayDays}
+        dates={this.state.dates}
+      />
     );
   }
 
@@ -201,11 +163,29 @@ class AbsenceInfo extends React.PureComponent {
     }
     return result;
   }
+
+  openVacationDropdown = () => {
+    this.setState({ displayVacation: true, displayColorCodes: false });
+  }
+
+  openColorCodeDropdown = () => {
+    this.setState({ displayVacation: false, displayColorCodes: true });
+  }
+
+  closeDropdown = () => {
+    this.setState({ displayVacation: false, displayColorCodes: false });
+  }
 };
 
+const mapDispatchToProps = {
+  selectPreviousYear,
+  selectNextYear,
+};
 
 const mapStateToProps = (state) => ({
-  activeAbsenceReason: state.activeAbsenceReason
+  activeAbsenceReason: state.activeAbsenceReason,
+  year: state.currentYear,
+  absenceReasonGroups: absenceReasonGroups(state),
 });
 
-export default connect(mapStateToProps, {})(AbsenceInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(AbsenceInfo);

@@ -7,6 +7,7 @@ h4,
 h5,
 h6 {
   font-family: "WorkSans-Regular";
+  src: url("https://inni.blank.no/static/fonts/WorkSans-Regular.ttf");
 }
 
 #app {
@@ -26,7 +27,7 @@ h6 {
 }
 
 .wrapper {
-  max-width: 2000px;
+  max-width: 2200px;
   display: flex;
   align-items: start;
   margin: 1rem 3rem;
@@ -42,15 +43,13 @@ h6 {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 2;
+  z-index: 3;
 }
 
 /* Infobox */
 
 .info {
   display: flex;
-  align-items: flex-start;
-  flex: 1 2 15%;
   position: relative;
   background: #fff;
   color: #3c1345;
@@ -58,14 +57,9 @@ h6 {
   max-width: 500px;
 }
 
-.info-inner {
-  padding: 0.3rem 1rem;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
+.info-box {
+  min-width: 0;
+  padding: 1rem 0;
 }
 
 .year-selector {
@@ -74,7 +68,7 @@ h6 {
 }
 
 .year-selector-text {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 500;
   color: #6600ff;
   margin: auto 0;
@@ -107,10 +101,13 @@ h6 {
   font-size: 1.3rem;
 }
 
-
 .vacation-box div {
   display: flex;
   justify-content: space-between;
+}
+
+.vacation-box p {
+  margin: 0.5rem 0;
 }
 
 .vacation-box-pink {
@@ -138,7 +135,6 @@ h6 {
 }
 
 .absence-codes {
-
 }
 
 .absence-code {
@@ -166,15 +162,72 @@ h6 {
   text-decoration: underline;
 }
 
+/* AbsenceInfoBig */
+
+.info-big {
+  align-items: flex-start;
+  flex: 1 2 15%;
+}
+
+.info-inner-big {
+  padding: 0.3rem 1rem;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+
+/* AbsenceInfoSmall */
+
+.info-small {
+  flex-direction: column;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 3;
+}
+
+.info-inner-small {
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-small button {
+  color: #4a4a4a;
+  font-size: 1rem;
+  border: 0;
+  background: 0;
+  -webkit-appearance: none;
+}
+
+.info-small button:focus {
+  outline: none;
+}
+
+.info-small-dropdown {
+  padding: 0.5rem 3rem;
+}
+
+.close-small-dropdown {
+  background: #efe5ff;
+  color: #3c1345;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.8rem 3rem;
+}
+
 /* Calendar */
 
 .year-calendar {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .month {
-  width: 24rem;
+  width: 20rem;
   max-width: 90vw;
   margin: 1rem 0.5rem;
   position: relative;
@@ -240,7 +293,7 @@ h6 {
   display: flex;
   box-sizing: border-box;
   width: calc(100% / 5);
-  height: 4rem;
+  height: 3.5rem;
   border: 1px solid #f5f6f5;
   background: #fff;
   color: #6600ff;
@@ -408,26 +461,21 @@ h6 {
 }
 
 .absence-reasons-nothing {
+  margin-bottom: 0 !important;
+  padding: 0 !important;
   background: #efe5ff;
   color: #3c1345;
-  text-align: right;
+  display: flex;
 }
 
-.cross {
-  background: #3c1345;
-  color: #fff;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 1rem;
-  position: absolute;
-  right: -25px;
-  top: -5px;
+.absence-reasons-nothing div {
+  flex: 1;
+  text-align: center;
+  padding: 0.6rem 1rem;
+}
+
+.absence-reasons-nothing div:first-child {
+  background: #dcd0ed;
 }
 
 /* RESPONSIVE */
@@ -439,13 +487,6 @@ h6 {
   }
   .info {
     max-width: none;
-  }
-  .info-inner {
-    padding: 0.5rem;
-  }
-  .info-box {
-    min-width: 0;
-    padding: 1rem 0;
   }
   .wrapper {
     margin: 1rem 0.5rem;
@@ -466,6 +507,9 @@ h6 {
   .absence-box {
     display: none;
   }
+  .employee-container {
+    display: none;
+  }
 }
 
 @media only screen and (min-width: 1800px) {
@@ -473,13 +517,13 @@ h6 {
     height: calc(100vh - 64px);
   }
   .month {
-    width: 18vw;
+    width: 15vw;
   }
   .date {
-    height: calc(18vw / 5);
+    height: calc(15vw / 5);
   }
   .absence-reasons {
-    top: calc(18vw / 5 - 1px);
+    top: calc(15vw / 5 - 1px);
   }
   .info-box {
     padding: 3.5rem 0;
@@ -487,13 +531,19 @@ h6 {
 }
 
 @media only screen and (min-width: 2400px) {
+  #container {
+    height: calc(100vh - 64px);
+  }
   .month {
-    width: 16vw;
+    width: 12vw;
   }
   .date {
-    height: calc(16vw / 5);
+    height: calc(12vw / 5);
   }
   .absence-reasons {
-    top: calc(16vw / 5 - 1px);
+    top: calc(12vw / 5 - 1px);
+  }
+  .info-box {
+    padding: 3.5rem 0;
   }
 }
