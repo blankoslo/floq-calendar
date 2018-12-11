@@ -6,7 +6,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "WorkSans-Regular";
+  font-family: "WorkSans-Regular", Arial, Helvetica, sans-serif;
   src: url("https://inni.blank.no/static/fonts/WorkSans-Regular.ttf");
 }
 
