@@ -94,7 +94,6 @@ class Calendar extends React.Component {
                           saveAbsence={this.saveAbsence}
                           removeAbsence={this.removeAbsence}
                           cancel={this.cancel}
-                          dateString={dateFns.isEqual(date, this.state.startDate) ? dateRangeString : ''}
                           dateRangeString={dateRangeString}
                         />
                       );
