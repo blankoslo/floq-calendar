@@ -21,7 +21,7 @@ import {
 } from '../actions';
 
 import {
-  currentEmployee, currentEvents
+  currentEmployee, currentEvents, plannableAbsenceReasons
 } from '../selectors';
 
 import AbsenceInfo from './AbsenceInfo';
@@ -97,7 +97,7 @@ const mapStateToProps = (state) => ({
   currentEmployee: currentEmployee(state),
   currentYear: state.currentYear,
   employees: state.employees,
-  absenceReasons: state.absenceReasons,
+  absenceReasons: plannableAbsenceReasons(state),
   originalAbsence: state.originalAbsence,
   absence: state.absence,
   currentEvents: currentEvents(state),
