@@ -17,8 +17,8 @@ export default class AbsenceInfoBig extends React.Component {
           </h6>
           <YearSelector
             year={this.props.year}
-            selectPreviousYear={() => this.props.selectPreviousYear()}
-            selectNextYear={() => this.props.selectNextYear(1)}
+            selectPreviousYear={this.props.selectPreviousYear}
+            selectNextYear={this.props.selectNextYear}
           />
           <div className='info-box'>
             <VacationInfo

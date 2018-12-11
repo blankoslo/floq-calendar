@@ -70,6 +70,7 @@ class AbsenceInfo extends React.Component {
         activeAbsenceReason={this.props.activeAbsenceReason}
         holidayDays={this.state.holidayDays}
         dates={this.state.dates}
+        currentEmployee={this.props.currentEmployee}
       />
     );
   }
