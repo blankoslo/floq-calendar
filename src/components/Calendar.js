@@ -21,6 +21,7 @@ class Calendar extends React.Component {
       startDate: undefined,
       endDate: undefined,
       selected: [],
+      selectDatesMode: false,
     }
 
     this.monthRefs = {}
@@ -50,6 +51,7 @@ class Calendar extends React.Component {
   render() {
     return (
       <div className='wrapper'>
+        <div className={this.state.selectDatesMode ? 'overlay' : ''} />
         <div className='year-calendar'>
           {Range(0, 12).map(month => {
             const firstDateOfMonth = new Date(this.props.year, month, 1);
@@ -113,6 +115,14 @@ class Calendar extends React.Component {
         </div>
       </div>
     );
+  }
+
+  openLayover = () => {
+    this.setState({ selectDatesMode: true });
+  }
+
+  closeLayover = () => {
+    this.setState({ selectDatesMode: false });
   }
 
   scroll = (month) => {
