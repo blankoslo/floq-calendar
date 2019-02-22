@@ -430,7 +430,7 @@ h6 {
 .absence-reasons {
   z-index: 5;
   position: absolute;
-  top: calc(4rem - 1px);
+  top: calc(3.5rem - 1px);
   right: -1px;
   list-style: none;
   padding-left: 0;

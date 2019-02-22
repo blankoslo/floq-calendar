@@ -70,12 +70,9 @@ class Date extends React.PureComponent {
           className='date-inner'
           onClick={this.handleClick}
         >
-          {this.props.clicked ?
-            <div className={'date-number'}>
-              {this.props.dateString}
-            </div> : <div className={'date-number'}>
-              {getDate(this.props.date)}
-            </div>}
+          <div className={'date-number'}>
+            {getDate(this.props.date)}
+          </div>
           <p className={'date-text'}>
             {hours ? hours + ' t' : null}
           </p>

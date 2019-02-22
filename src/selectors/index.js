@@ -7,10 +7,13 @@ import isToday from 'date-fns/is_today';
 import format from 'date-fns/format';
 import nbLocale from 'date-fns/locale/nb';
 
+const notPlannableAbsenceReasons = ['SYK1000', 'SYK1002'];
+
 export const reasonToEventGroup = (reason) => {
   switch (reason) {
     case 'FER1000':
       return 'vacation';
+    case 'SYK1000':
     case 'SYK1001':
     case 'SYK1002':
       return 'sick';
@@ -30,6 +33,8 @@ export const reasonToEventName = (reason) => {
   switch (reason) {
     case 'FER1000':
       return 'Ferie';
+    case 'SYK1000':
+      return 'Egenmelding';
     case 'SYK1001':
       return 'Sykemelding';
     case 'SYK1002':
@@ -146,6 +151,12 @@ export const pastAbsence = createSelector(
       }])])
   )
 );
+
+export const plannableAbsenceReasons = createSelector(
+  (state) => state.absenceReasons,
+  (absenceReasons) => (
+    absenceReasons.filter(reason => !notPlannableAbsenceReasons.find(id => reason.id === id))
+  ));
 
 export const absenceReasonGroups = createSelector(
   absenceReasonMap,

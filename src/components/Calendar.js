@@ -21,6 +21,7 @@ class Calendar extends React.Component {
       startDate: undefined,
       endDate: undefined,
       selected: [],
+      selectDatesMode: false,
     }
 
     this.monthRefs = {}
@@ -50,6 +51,7 @@ class Calendar extends React.Component {
   render() {
     return (
       <div className='wrapper'>
+        <div className={this.state.selectDatesMode ? 'overlay' : ''} />
         <div className='year-calendar'>
           {Range(0, 12).map(month => {
             const firstDateOfMonth = new Date(this.props.year, month, 1);
@@ -94,7 +96,6 @@ class Calendar extends React.Component {
                           saveAbsence={this.saveAbsence}
                           removeAbsence={this.removeAbsence}
                           cancel={this.cancel}
-                          dateString={dateFns.isEqual(date, this.state.startDate) ? dateRangeString : ''}
                           dateRangeString={dateRangeString}
                         />
                       );
@@ -156,13 +157,11 @@ class Calendar extends React.Component {
   }
 
   selectEndDate = (date) => {
-    this.setState({ endDate: date });
-    this.props.openLayover();
+    this.setState({ endDate: date, selectDatesMode: true });
   }
 
   getSelectedDatesAndResetState = () => {
-    this.props.closeLayover();
-    this.setState({ startDate: undefined, endDate: undefined, selected: [] });
+    this.setState({ startDate: undefined, endDate: undefined, selected: [], selectDatesMode: false });
 
     const array = this.state.selected.find(d => d === this.state.startDate) ?
       this.state.selected : [...this.state.selected, this.state.startDate];
@@ -184,8 +183,7 @@ class Calendar extends React.Component {
   }
 
   cancel = () => {
-    this.props.closeLayover();
-    this.setState({ startDate: undefined, endDate: undefined, selected: [] });
+    this.setState({ startDate: undefined, endDate: undefined, selected: [], selectDatesMode: false });
   }
 
   getMonthText = (date) => {
