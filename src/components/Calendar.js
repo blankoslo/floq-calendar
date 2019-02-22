@@ -117,14 +117,6 @@ class Calendar extends React.Component {
     );
   }
 
-  openLayover = () => {
-    this.setState({ selectDatesMode: true });
-  }
-
-  closeLayover = () => {
-    this.setState({ selectDatesMode: false });
-  }
-
   scroll = (month) => {
     this.monthRefs[monthToRef(month)].scrollIntoView();
   }
@@ -165,13 +157,11 @@ class Calendar extends React.Component {
   }
 
   selectEndDate = (date) => {
-    this.setState({ endDate: date });
-    this.props.openLayover();
+    this.setState({ endDate: date, selectDatesMode: true });
   }
 
   getSelectedDatesAndResetState = () => {
-    this.props.closeLayover();
-    this.setState({ startDate: undefined, endDate: undefined, selected: [] });
+    this.setState({ startDate: undefined, endDate: undefined, selected: [], selectDatesMode: false });
 
     const array = this.state.selected.find(d => d === this.state.startDate) ?
       this.state.selected : [...this.state.selected, this.state.startDate];
@@ -193,8 +183,7 @@ class Calendar extends React.Component {
   }
 
   cancel = () => {
-    this.props.closeLayover();
-    this.setState({ startDate: undefined, endDate: undefined, selected: [] });
+    this.setState({ startDate: undefined, endDate: undefined, selected: [], selectDatesMode: false });
   }
 
   getMonthText = (date) => {
