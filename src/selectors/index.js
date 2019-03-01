@@ -177,19 +177,23 @@ export const currentEvents = createSelector(
   (state) => state.absence,
   absenceReasonMap,
   pastAbsence,
-  (currentEmployee, holidays, absence, absenceReasons, pastAbsence) => (
-    Map(holidays
-      .concat(pastAbsence)
-      .concat(
-        absence.get(currentEmployee && currentEmployee.id, Map())
-          .entrySeq()
-          .filter(([k, v]) => isFuture(k) || isToday(k))
-          .map(([k, v]) => [k, v.map((y) => ({
-            date: y.date,
-            eventId: y.reason,
-            event: absenceReasons.get(y.reason),
-            eventClassName: reasonToEventGroup(y.reason)
-          }))])
-      ))
-  )
+  (currentEmployee, holidays, absence, absenceReasons, pastAbsence) => {
+
+    const futureAbsence = absence.get(currentEmployee && currentEmployee.id, Map())
+      .entrySeq()
+      .filter(([k, v]) => isFuture(v.get(0).date) || isToday(v.get(0).date))
+      .map(([k, v]) => [k, v.map((y) => ({
+        date: y.date,
+        eventId: y.reason,
+        event: absenceReasons.get(y.reason),
+        eventClassName: reasonToEventGroup(y.reason)
+      }))]);
+
+    return (
+      Map(holidays
+        .concat(pastAbsence)
+        .concat(futureAbsence)
+      )
+    );
+  }
 );
