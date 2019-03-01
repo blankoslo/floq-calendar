@@ -61,16 +61,19 @@ class App extends React.PureComponent {
   }
 
   render() {
+
+    if (!this.props.currentEmployee) {
+      return null;
+    }
+
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div id='container'>
           <div id='main'>
             <AbsenceInfo
               currentEmployee={this.props.currentEmployee}
-              absence={this.props.currentEmployee ?
-                this.props.absence.get(this.props.currentEmployee.id, Map()) : undefined}
-              holidayDays={this.props.currentEmployee ?
-                this.props.holidayDays.get(this.props.currentEmployee.id, List()) : undefined}
+              absence={this.props.absence.get(this.props.currentEmployee.id, Map())}
+              holidayDays={this.props.holidayDays.get(this.props.currentEmployee.id, List())}
             />
             <Calendar
               openLayover={this.openLayover}
