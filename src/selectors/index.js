@@ -181,7 +181,12 @@ export const currentEvents = createSelector(
 
     const futureAbsence = absence.get(currentEmployee && currentEmployee.id, Map())
       .entrySeq()
-      .filter(([k, v]) => isFuture(v.get(0).date) || isToday(v.get(0).date))
+      .filter(([k, v]) => {
+        if (v && v.get(0) && v.get(0).date) {
+          return isFuture(v.get(0).date) || isToday(v.get(0).date);
+        }
+        return isFuture(k) || isToday(k);
+      })
       .map(([k, v]) => [k, v.map((y) => ({
         date: y.date,
         eventId: y.reason,
