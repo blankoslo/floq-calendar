@@ -18,7 +18,7 @@ class VacationInfo extends React.PureComponent {
         </div>
         <div className='vacation-box-pink vacation-box-line'>
           <p>Planlagt</p>
-          <p className='vacation-box-number'>{this.props.holidayDays.planned !== 0 ? '-' + this.props.holidayDays.planned : 0}</p>
+          <p className='vacation-box-number'>{this.props.holidayDays.planned !== 0 ? '−' + this.props.holidayDays.planned : 0}</p>
         </div>
         <div className='vacation-box-purple vacation-box-double'>
           <p>SUM igjen</p>
