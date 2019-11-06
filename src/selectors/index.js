@@ -6,6 +6,7 @@ import isFuture from 'date-fns/is_future';
 import isToday from 'date-fns/is_today';
 import format from 'date-fns/format';
 import nbLocale from 'date-fns/locale/nb';
+import jwt from "jsonwebtoken";
 
 const notPlannableAbsenceReasons = ['SYK1000', 'SYK1002'];
 
@@ -91,6 +92,12 @@ export const currentEmployee = createSelector(
       || employees.first()
   }
 );
+
+export const loggedInEmployee = (state) => {
+    const decoded = jwt.decode(window.apiToken);
+
+    return state.employees.find(employee => employee.email === decoded.email);
+}
 
 export const getCurrentAbsenceUpdates =
   (currentEmployee, originalAbsence, absence) => ({

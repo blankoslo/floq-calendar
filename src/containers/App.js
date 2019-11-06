@@ -21,7 +21,7 @@ import {
 } from '../actions';
 
 import {
-  currentEmployee, currentEvents, plannableAbsenceReasons
+  currentEmployee, loggedInEmployee, currentEvents, plannableAbsenceReasons
 } from '../selectors';
 
 import AbsenceInfo from './AbsenceInfo';
@@ -78,6 +78,7 @@ class App extends React.PureComponent {
             <Calendar
               openLayover={this.openLayover}
               closeLayover={this.closeLayover}
+              editable={this.props.loggedInEmployee === this.props.currentEmployee || this.props.loggedInEmployee.isAdmin}
               currentEmployee={this.props.currentEmployee}
               absence={this.props.absence}
               originalAbsence={this.props.originalAbsence}
@@ -96,6 +97,7 @@ class App extends React.PureComponent {
 }
 
 const mapStateToProps = (state) => ({
+  loggedInEmployee: loggedInEmployee(state),
   currentEmployee: currentEmployee(state),
   currentYear: state.currentYear,
   employees: state.employees,
