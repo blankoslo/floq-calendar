@@ -86,6 +86,7 @@ class Calendar extends React.Component {
                           key={dateString + '-' + i}
                           date={date}
                           events={this.props.currentEvents.get(dateString)}
+                          editable={this.props.editable}
                           clicked={isClicked}
                           clickDate={this.clickDate}
                           hoverDate={this.hoverDate}
