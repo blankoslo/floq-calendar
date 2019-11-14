@@ -7,6 +7,10 @@ import isToday from 'date-fns/is_today';
 import format from 'date-fns/format';
 import nbLocale from 'date-fns/locale/nb';
 
+const config = {
+    loggedInUserEmail: window.userEmail
+};
+
 const notPlannableAbsenceReasons = ['SYK1000', 'SYK1002'];
 
 export const reasonToEventGroup = (reason) => {
@@ -91,6 +95,10 @@ export const currentEmployee = createSelector(
       || employees.first()
   }
 );
+
+export const loggedInEmployee = (state) => {
+    return state.employees.find(employee => employee.email === config.loggedInUserEmail);
+}
 
 export const getCurrentAbsenceUpdates =
   (currentEmployee, originalAbsence, absence) => ({

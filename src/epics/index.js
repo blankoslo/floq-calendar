@@ -87,7 +87,7 @@ export const fetchEmployees = () => ({
 const fetchEmployeesEpic = action$ => action$
   .ofType(FETCH_EMPLOYEES)
   .mergeMap((x) => Observable.ajax({
-    url: `${getApiConfig().apiHost}/employees`,
+    url: `${getApiConfig().apiHost}/rpc/employees_roles`,
     method: 'GET',
     responseType: 'json',
     headers: {
@@ -95,9 +95,10 @@ const fetchEmployeesEpic = action$ => action$
     }
   }))
   .map((x) => List(x.response).map((y) => ({
-    id: y.id.toString(),
-    name: `${y.first_name} ${y.last_name}`,
-    email: y.email
+    id: y.employee.id.toString(),
+    name: `${y.employee.first_name} ${y.employee.last_name}`,
+    email: y.employee.email,
+    isAdmin: y.roles.includes('admin')
   })))
   .map(loadEmployees);
 
