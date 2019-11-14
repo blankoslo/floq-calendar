@@ -88,7 +88,7 @@ const fetchEmployeesEpic = action$ => action$
   .ofType(FETCH_EMPLOYEES)
   .mergeMap((x) => Observable.ajax({
     url: `${getApiConfig().apiHost}/rpc/employees_roles`,
-    method: 'GET',
+    method: 'POST',
     responseType: 'json',
     headers: {
       'Authorization': 'Bearer ' + getApiConfig().apiToken
